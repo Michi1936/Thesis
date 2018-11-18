@@ -1,0 +1,65 @@
+\documentclass{jsarticle}
+
+\begin{document}
+\begin{center}
+\LARGE{\textbf{修論計画書}}
+\end{center}
+
+\begin{flushright}
+  \today
+
+佐藤道矩
+\end{flushright}
+
+研究テーマ
+\begin{itemize}
+\item SPH法\cite{Monaghan2005, Teschner}を用いた回転する円柱を水中に落とした後の軌道。
+\item 半分が親水性、もう半分が疎水性の円柱を水中に落とした際の軌道。
+\end{itemize}
+
+
+先行研究
+\begin{itemize}
+\item 水中に球を回転させながら落とした際の軌道。半分が親水性もう半分が疎水性の球を水中に落とした際の軌道の実験結果。\cite{Truscott} 
+\item SPHを用いた回転する円柱のシミュレーション。\cite{Kiara} 
+\item VOF法による半分が親水性、もう半分が疎水性の球のシミュレーション。\cite{Zhao} 
+\end{itemize}
+
+調べられそうなこと
+\begin{itemize}
+\item 回転数と変位の関係
+\item Contact angleの比と変位の関係
+\item 楕円ではどうなるか
+\item 回転と親水、疎水の同時計算
+\end{itemize}
+課題、その他諸々
+\begin{itemize}
+\item \textgt{粒子法による親水疎水の表現。\cite{Akinci} }
+\item 剛体の取り扱い、境界条件（現在Monaghan \cite{Monaghan2005}のものを使用 ）
+\item splashを見るだけなら空気粒子は必要ないか？
+\end{itemize}
+
+\begin{thebibliography}{99}
+
+\bibitem{Monaghan2005}
+  Monaghan, J. J., Smoothed particle hydrodynamics. Reports Prog. Phys. 68, 1703-1759 (2005).
+  
+\bibitem{Teschner}
+  Becker, M.,Teschner, M., Weakly compressible SPH for free surface flows. Proc. 2007 ACM SIGGRAPH/Eurographics Symposium on Computer Animation, 209-217 (2007).
+  
+\bibitem{Truscott}
+  Truscott, T. T., Techet, A. H., A spin on cavity formation during water entry of hydrophobic and hydrophilic spheres. Phys. Fluids 21, 121703 (2009).
+  
+\bibitem{Kiara}
+  Kiara, A., Paredes, R., Yue, D. K. P., Numerical investigation of the water entry of cylinders without and with spin. J. Fluid Mech. 814, 131-164 (2017).
+  
+\bibitem{Zhao}
+  Zhao, S., Wei, C., Cong, W., Numerical Investigation of Water Entry of Half Hydrophilic and Half Hydrophobic Spheres. Math. Probl. Eng. 2016, 1-15 (2016).
+  
+\bibitem{Akinci}
+  Akinci, N., Akinci, G., Teschner, M., Versatile surface tension and adhesion for SPH fluids. ACM Trans. Graph. 32, 1-8 (2013).
+
+\bibitem{Akinci2012}
+  Akinci, N., Ihmsen, M., Akinci, G., Solenthaler, B., Teschner, M., Versatile rigid-fluid coupling for incompressible SPH. ACM Trans. Graph. 31, 1–8 (2012).
+\end{thebibliography}
+\end{document}

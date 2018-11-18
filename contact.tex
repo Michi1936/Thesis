@@ -1,0 +1,64 @@
+\documentclass[]{jsarticle}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage[dvipdfmx]{graphicx}
+\begin{document}
+\subsection{表面張力、親水性および疎水性の表現}
+表面張力および親水性、疎水性の表現にはYangらの手法を用いた。この手法は2粒子間で引力あるいは斥力を加えるもので、次の式で表される。
+\begin{equation}
+F^{int}_i=\sum_{j} \bm{f}_{ji}
+\end{equation}
+\begin{equation}
+  \bm{f}_{ji}=\begin{cases}
+    c_{ij}m_im_jcos(\frac{3\pi}{2kh}r_{ij})\frac{\bm{r}_{ij}}{r_{ij}} & \text{$|\bm{r}_{ij}|\leq kh$}\\
+    0 & \text{$|\bm{r}_{ij}|\leq kh$}
+\end{cases}
+\end{equation}
+ここで$\bm{r}_{ij}$は$\bm{r}_i-\bm{r}_{j}$で、$r_{ij}=|\bm{r}_{ij}|$を表す。kはenlargement ratioと呼ばれるパラメータであり、相互作用の力が働く粒子の距離を調節している。
+
+$c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相に属しているかによって値は変化する。それらの値は次の関係を満たす。
+\begin{equation}
+cos\theta=\frac{c_{\alpha\alpha}-c_{\beta\beta}+2c_{\omega\alpha}-2c_{\omega\beta}}{c_{\alpha\alpha} +c_{\beta\beta} -2c_{\alpha\beta}}
+\end{equation}
+ここで$\theta$は流体と床の接触角、$\alpha,\beta,\omega$はそれぞれ流体、空気、床に粒子が存在していることを意味している。
+
+今、$c_{\alpha\beta},c_{\omega\beta}$は小さいことが物理的な観測より分かっているため0とする。また$c_{\alpha\alpha}=c_{\beta\beta}$としてもよいため
+\begin{equation}
+cos\theta\simeq c_{\omega\alpha}/c_{\alpha\alpha}
+\end{equation}
+となる。
+\begin{table}[h]
+  \caption{相互作用の計算に用いられるパラメータ}
+  \label{interParam}
+  \begin{center}
+    \begin{tabular}{|c|c|}\hline
+      k&3.0 \\ \hline
+      $c_{\alpha\alpha}$ & 60.0 \\ \hline
+    \end{tabular}
+  \end{center}  
+\end{table}
+
+半円状の流体を床の上に配置し、流体の運動が平衡状態に達した時の様子を比較する。図\ref{fig:Phoby}\ref{fig:Phile}は接触角として$3\pi/4, \pi/4$を与えた時の流体の振る舞いを、80000ステップ時点で出力したものである。接触角が$\pi/2$より大きい、あるいは小さいことが観測されたため、親水性あるいは疎水性の床に対する流体の振る舞いを定性的に再現できている。
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=5cm]{initial.png}
+  \caption{初期状態}
+  \label{fig:initial}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{minipage}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Phoby.png}
+    \caption{疎水性}
+    \label{fig:Phoby}
+  \end{minipage}
+  \begin{minipage}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Phile.png}
+    \caption{親水性}
+    \label{fig:Phile}
+  \end{minipage}
+\end{figure}
+\end{document}
