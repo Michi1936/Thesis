@@ -3,29 +3,50 @@
 \usepackage{bm}
 \usepackage{amsmath}
 \usepackage[dvipdfmx]{graphicx}
+\bmdefine{\bex}{x}
 \begin{document}
+\section{しんちょく}
+\subsection{SPH法}
+座標$\bm{x}$の粒子がもつ物理量Aは次のように表現される。 \cite{Becker}
+\begin{equation}
+A(\bex)=\sum_j \frac{A_j}{\rho_j} W(\bex-\bex_j,h)
+\end{equation}
+ここでWはKernel関数と呼ばれるもので、本計算では次の関数を用いた。
+\begin{equation}
+  q=\frac{|\bex-\bex|}{h}, 
+  W(\bex-\bex_j,h)=\begin{cases}
+    \frac{15}{14\pi h^2} \{(2-q)^3-4(1-q)^3\} & \text{$ 0 \leq q \leq 1$}\\
+    \frac{15}{14\pi h^2} (2-q)^3 & \text{$1\leq q \leq 2$}\\
+    0 & \text{otherwise}
+\end{cases}
+\end{equation}
+密度は次のように表される。
+\begin{equation}
+\rho_{a}=\sum_bm_bW_{ab}
+\end{equation}
+ここで$W_{ab}=W(\bex_a-\bex_b)$である。
 \subsection{表面張力、親水性および疎水性の表現}
-表面張力および親水性、疎水性の表現にはYangらの手法を用いた。この手法は2粒子間で引力あるいは斥力を加えるもので、次の式で表される。
+表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang}を用いた。この手法は2粒子間で引力あるいは斥力を加えるもので、次の式で表される。
 \begin{equation}
 F^{int}_i=\sum_{j} \bm{f}_{ji}
 \end{equation}
 \begin{equation}
   \bm{f}_{ji}=\begin{cases}
-    c_{ij}m_im_jcos(\frac{3\pi}{2kh}r_{ij})\frac{\bm{r}_{ij}}{r_{ij}} & \text{$|\bm{r}_{ij}|\leq kh$}\\
+    c_{ij}m_im_j\cos(\frac{3\pi}{2kh}r_{ij})\frac{\bm{r}_{ij}}{r_{ij}} & \text{$|\bm{r}_{ij}|\leq kh$}\\
     0 & \text{$|\bm{r}_{ij}|\leq kh$}
 \end{cases}
 \end{equation}
-ここで$\bm{r}_{ij}$は$\bm{r}_i-\bm{r}_{j}$で、$r_{ij}=|\bm{r}_{ij}|$を表す。kはenlargement ratioと呼ばれるパラメータであり、相互作用の力が働く粒子の距離を調節している。
+ここで$\bm{r}_{ij}=\bm{r}_i-\bm{r}_{j}$、$r_{ij}=|\bm{r}_{ij}|$である。kはenlargement ratioと呼ばれるパラメータであり、相互作用の力が働く粒子の距離を調節している。
 
 $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相に属しているかによって値は変化する。それらの値は次の関係を満たす。
 \begin{equation}
-cos\theta=\frac{c_{\alpha\alpha}-c_{\beta\beta}+2c_{\omega\alpha}-2c_{\omega\beta}}{c_{\alpha\alpha} +c_{\beta\beta} -2c_{\alpha\beta}}
+\cos\theta=\frac{c_{\alpha\alpha}-c_{\beta\beta}+2c_{\omega\alpha}-2c_{\omega\beta}}{c_{\alpha\alpha} +c_{\beta\beta} -2c_{\alpha\beta}}
 \end{equation}
-ここで$\theta$は流体と床の接触角、$\alpha,\beta,\omega$はそれぞれ流体、空気、床に粒子が存在していることを意味している。
+ここで$\theta$は流体と床の接触角であり、$\alpha,\beta,\omega$はそれぞれ流体、空気、床に粒子が存在していることを意味している。
 
 今、$c_{\alpha\beta},c_{\omega\beta}$は小さいことが物理的な観測より分かっているため0とする。また$c_{\alpha\alpha}=c_{\beta\beta}$としてもよいため
 \begin{equation}
-cos\theta\simeq c_{\omega\alpha}/c_{\alpha\alpha}
+\cos\theta\simeq c_{\omega\alpha}/c_{\alpha\alpha}
 \end{equation}
 となる。
 \begin{table}[h]
@@ -39,26 +60,35 @@ cos\theta\simeq c_{\omega\alpha}/c_{\alpha\alpha}
   \end{center}  
 \end{table}
 
-半円状の流体を床の上に配置し、流体の運動が平衡状態に達した時の様子を比較する。図\ref{fig:Phoby}\ref{fig:Phile}は接触角として$3\pi/4, \pi/4$を与えた時の流体の振る舞いを、80000ステップ時点で出力したものである。接触角が$\pi/2$より大きい、あるいは小さいことが観測されたため、親水性あるいは疎水性の床に対する流体の振る舞いを定性的に再現できている。
-\begin{figure}[h]
+半円状の流体を床の上に配置し、流体の運動が平衡状態に達した時の様子を比較する。図\ref{fig:Phoby}\ref{fig:Phile}は接触角として$3\pi/4, \pi/4$を与えた時の流体の振る舞いを、80000ステップ時点で出力したものである。流体との接触角が$\pi/2$より小さいを親水性といい、$\pi/2$よりも大きい物を疎水性という。図を見ると接触角がそれぞれ$\pi/2$よりも大きいあるいは小さいことが観測されるため、本モデルは親水性および疎水性の振る舞いを定性的に再現していると考えられる。
+\begin{figure}[H]
   \centering
   \includegraphics[width=5cm]{initial.png}
   \caption{初期状態}
   \label{fig:initial}
 \end{figure}
-\begin{figure}[h]
-  \centering
-  \begin{minipage}{0.4\columnwidth}
+\begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{Phoby.png}
     \caption{疎水性}
     \label{fig:Phoby}
-  \end{minipage}
-  \begin{minipage}{0.4\columnwidth}
+  \end{figure}
+  \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{Phile.png}
     \caption{親水性}
     \label{fig:Phile}
-  \end{minipage}
 \end{figure}
+
+\begin{thebibliography}{99}
+\bibitem{Becker}
+  Becker, M. \& Teschner, M. \textit{Weakly compressible SPH for free surface flows}. Proc. 2007 ACM SIGGRAPH/ … 1, 1–8 (2007).
+\bibitem{Yang}
+  Yang, T., Martin, R. R., Lin, M. C., Chang, J. \& Hu, S. M.
+  \textit{Pairwise Force SPH Model for Real-Time Multi-Interaction Applications}.
+  IEEE Trans. Vis. Comput. Graph. 23, 2235–2247 (2017).
+\end{thebibliography}
+
 \end{document}
+
+
