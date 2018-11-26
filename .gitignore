@@ -2,4 +2,6 @@
 *.log
 *.pdf
 *.png
+*.bbl
+*.blg
 /Data
