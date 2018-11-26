@@ -8,7 +8,7 @@
 \begin{document}
 \section{しんちょく}
 \subsection{SPH法}
-座標$\bm{x}$の粒子がもつ物理量Aは次のように表現される。 \cite{Becker}
+座標$\bm{x}$の粒子がもつ物理量Aは次のように表現される。 \cite{Becker2007}
 \begin{equation}
 A(\bex)=\sum_j \frac{A_j}{\rho_j} W(\bex-\bex_j,h)
 \end{equation}
@@ -27,7 +27,7 @@ A(\bex)=\sum_j \frac{A_j}{\rho_j} W(\bex-\bex_j,h)
 \end{equation}
 ここで$W_{ab}=W(\bex_a-\bex_b)$である。
 
-得られた密度から圧力を計算する。非圧縮性を厳密に考慮した場合Poisson方程式$\nabla^2P=\rho\frac{\nabla\cdot\bm{v}}{\delta t}$を解かなければならないが、計算コストが大きい。そのため本計算ではTait方程式と呼ばれる状態方程式を用いて圧力を導出する。
+得られた密度から圧力を計算する。非圧縮性を満たすためにはPoisson方程式$\nabla^2P=\rho\frac{\nabla\cdot\bm{v}}{\delta t}$を解かなければならないが、計算コストが大きい。そのため本計算ではTait方程式と呼ばれる状態方程式を用いて圧力を導出する。
 
 Tait方程式は次のように表される。
 \begin{equation}
@@ -42,7 +42,7 @@ B=\frac{\rho_oc_s^2}{\gamma}
 \begin{equation}
 \frac{d\vex_a}{dt}=-\sum_bm_b(\frac{P_a}{\rho_a^2}+\frac{P_b}{\rho_b^2})\nabla_aW_{ab}
 \end{equation}
-粘性による加速度はMonaghanによる形式 \cite{Monaghan}を用いた。
+粘性による加速度はMonaghanによる形式 \cite{Monaghan2005}を用いた。
 \begin{equation}
 \frac{d\vex_a}{dt}=\begin{cases}
   -\sum_bm_b\Pi_{ab}\nabla_aW_{ab} & \vex_{ab}\cdot\bex_{ab}<0 \\
@@ -54,6 +54,27 @@ B=\frac{\rho_oc_s^2}{\gamma}
 \Pi_{ab}=-\nu(\frac{\vex_{ab}\cdot\bex_{ab}}{|\bex_{ab}|^2+\epsilon h^2})
 \end{equation}
 粘性係数$\nu=\frac{2\alpha h c_s}{\rho_a+\rho_b}$である。
+
+\subsection{近傍粒子の探索法}
+粒子法では、ある粒子はその影響範囲内に存在する他の粒子とのみ相互作用を計算すればよい。影響範囲内に存在するか否かを判定する最も単純な方法は、2つの粒子間の距離を計算することであるが、全ての粒子に対して距離の計算を行うと
+計算コストが大きくなる。本計算では、バケット構造を用いてある粒子の近傍にある粒子とのみ相互作用の計算をするようにしている。\cite{Koshiduka2014}
+　
+計算領域全体に正方形のバケットを敷き詰め、それぞれのバケットは次のような番号を持っている
+\begin{equation}
+ib=ix+iy*nBx
+\end{equation}
+ここでibはバケットに付与された数、nBxはx軸方向に並べられたバケットの数であり、ix,iyはそれぞれバケットのx,y座標であり、次のようにして求められる。
+\begin{equation}
+ix=\lfloor(r_x-MIN\_X)/DB \rfloor
+\end{equation}
+\begin{equation}
+iy=\lfloor(r_y-MIN\_Y)/DB \rfloor
+\end{equation}
+ここで$r_x,r_y$は粒子のxおよびy座標、DBはバケット一辺の長さであり、MIN\_X,MIN\_Yは計算範囲におけるxおよびyの最小値である。
+
+近傍粒子の探索は以下のようにして行う。
+\label{subsec:label}
+
 
 \subsection{時間発展}
 本計算の時間発展にはleap-frog法を用いた。Leap-frog法では時刻iにて次のように速度および位置を更新する。
@@ -79,7 +100,7 @@ B=\frac{\rho_oc_s^2}{\gamma}
 
 
 \subsection{表面張力、親水性および疎水性の表現}
-表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang}を用いた。この手法は2粒子間で引力あるいは斥力を加えるもので、次の式で表される。
+表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang2017}を用いた。この手法は2粒子間で引力あるいは斥力を加えるもので、次の式で表される。
 \begin{equation}
 F^{\rm{int}}_i=\sum_{j} \bm{f}_{ji}
 \end{equation}
@@ -133,17 +154,10 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
     \label{fig:Phile}
 \end{figure}
 
-\begin{thebibliography}{99}
-\bibitem{Monaghan}
-  Monaghan, J. J. Smoothed particle hydrodynamics. Reports Prog. Phys. 68, 1703–1759 (2005).
-\bibitem{Becker}
-  Becker, M. \& Teschner, M. \textit{Weakly compressible SPH for free surface flows}. Proc. 2007 ACM SIGGRAPH/ … 1, 1–8 (2007).
-\bibitem{Yang}
-  Yang, T., Martin, R. R., Lin, M. C., Chang, J. \& Hu, S. M.
-  \textit{Pairwise Force SPH Model for Real-Time Multi-Interaction Applications}.
-  IEEE Trans. Vis. Comput. Graph. 23, 2235–2247 (2017).
-\end{thebibliography}
+\bibliography{thesis}
+\bibliographystyle{junsrt}
 
 \end{document}
+
 
 

@@ -1,0 +1,14 @@
+\begin{thebibliography}{99}
+\bibitem{Monaghan}
+  Monaghan, J. J. Smoothed particle hydrodynamics. Reports Prog. Phys. 68, 1703–1759 (2005).
+\bibitem{Becker}
+  Becker, M. \& Teschner, M. \textit{Weakly compressible SPH for free surface flows}. Proc. 2007 ACM SIGGRAPH/ … 1, 1–8 (2007).
+\bibitem{Yang}
+  Yang, T., Martin, R. R., Lin, M. C., Chang, J. \& Hu, S. M.
+  \textit{Pairwise Force SPH Model for Real-Time Multi-Interaction Applications}.
+  IEEE Trans. Vis. Comput. Graph. 23, 2235–2247 (2017).
+\bibitem{Truscott}
+  Truscott, T. T., Epps, B. P. \& Belden, J. Water Entry of Projectiles. Annu. Rev. Fluid Mech. 46, 355–378 (2014).
+\bibitem{Koshiduka}
+  越塚誠一, 柴田和也, 室谷浩平, 粒子法入門　流体シミュレーションの基礎から並列計算と可視化まで, 107-114, 2014
+\end{thebibliography}
