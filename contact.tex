@@ -21,13 +21,13 @@ A(\bex)=\sum_j \frac{A_j}{\rho_j} W(\bex-\bex_j,h)
     0 & \text{otherwise}
 \end{cases}
 \end{equation}
-密度は次のように表される。
+密度は次のように計算される。
 \begin{equation}
 \rho_{a}=\sum_bm_bW_{ab}
 \end{equation}
 ここで$W_{ab}=W(\bex_a-\bex_b)$である。
 
-得られた密度から圧力を計算する。非圧縮性を満たすためにはPoisson方程式$\nabla^2P=\rho\frac{\nabla\cdot\bm{v}}{\delta t}$を解かなければならないが、計算コストが大きい。そのため本計算ではTait方程式と呼ばれる状態方程式を用いて圧力を導出する。
+得られた密度から圧力を計算する。非圧縮性を満たすためにはPoisson方程式$\nabla^2P=\rho\frac{\nabla\cdot\bm{v}}{\Delta t}$を解かなければならないが、計算コストが大きい。そのため本計算ではTait方程式と呼ばれる状態方程式を用いて圧力を導出する。
 
 Tait方程式は次のように表される。
 \begin{equation}
