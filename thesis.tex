@@ -7,6 +7,13 @@
 \usepackage[dvipdfmx]{graphicx}
 
 \begin{document}
+\title{水面に剛体が衝突した際に生じる気泡の解析}
+\author{京都大学理学研究科　物理学宇宙物理学専攻\\流体物理学研究室\\佐藤道矩}
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
 \section{イントロダクション}
 \subsection{界面の変形}
 水面に水滴あるいは剛体を衝突させた際の現象、即ち水面の変形や気泡の生成は身近な物理現象の一つであり、古くから研究が行われてきた。
@@ -30,7 +37,7 @@ CG分野でもしばしば用いられており、、、
 
 \label{subsec:label}
 
-\section{計算スキームについて}
+\section{SPH法}
 \subsection{SPH法の支配方程式}
 座標$\bm{x}$の粒子がもつ物理量Aは次のように表現される。 \cite{Becker2007}
 \begin{equation}
@@ -80,8 +87,8 @@ B=\frac{\rho_oc_s^2}{\gamma}
 粘性係数$\nu=\frac{2\alpha h c_s}{\rho_a+\rho_b}$である。
 
 \subsection{剛体の表現}
-剛体の表現は越塚1998\cite{Koshizuka1998}によった。
-各タイムステップごとに剛体粒子を流体粒子と同様に計算し、速度を導出する。次に得られた速度を用いて以下の量を計算する。
+剛体の表現はPMS(Passively Moving Solid)法\cite{Gotoh2018}と呼ばれるモデルを用いた。
+剛体は複数の剛体粒子が集まったものとして表現される。各タイムステップごとに剛体粒子を流体粒子と同様に計算し、速度を導出する。次に得られた速度を用いて以下の量を計算する。
 \begin{equation}
   \bm{r}_g=\sum_{i}^n{\bm{r}_i}
 \end{equation}
@@ -106,7 +113,7 @@ B=\frac{\rho_oc_s^2}{\gamma}
 
 \subsection{近傍粒子の探索法}
 粒子法では、ある粒子はその影響範囲内に存在する他の粒子とのみ相互作用を計算すればよい。影響範囲内に存在するか否かを判定する最も単純な方法は、2つの粒子間の距離を計算することであるが、全ての粒子に対して距離の計算を行うと
-計算コストが大きくなる。本計算では、バケット構造を用いてある粒子の近傍にある粒子とのみ相互作用の計算をするようにしている。\cite{Koshiduka2014}
+計算コストが大きくなる。本計算では、バケット構造を用いてある粒子の近傍にある粒子とのみ相互作用の計算をするようにしている。\cite{Koshiduka2014}ここで格子は粒子の位置の判別に用いられるのであって、Euler法のように格子自体が物理量を持っているわけではない。
 　
 計算領域全体に正方形のバケットを敷き詰め、それぞれのバケットは次のような番号を持っている
 \begin{equation}
@@ -193,7 +200,14 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
   \end{center}  
 \end{table}
 
+\newpage
 \section{計算結果}
+\subsection{粘性、表面張力の測定}
+粒子法における粘性・表面張力と、水が持つ粘性・表面張力を比較するために、次の数値計算を行った。
+
+\label{subsec:label}
+
+
 \subsection{親水性、疎水性の妥当性}
 \label{subsec:label}
 
@@ -222,7 +236,19 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 表面が親水性および疎水性の剛体球を水面に衝突させる。初速を変化させて、水面の変形による気泡の取り込みが見られるか否かを調べる。実験の値はDuez\cite{Duez2007}らによるものを参照した。
 \label{subsec:label}
 
+\newpage
 
+\section{議論}
+The cavity! The cavity!
+\newpage
+\section{結論}
+\subsection{まとめ}
+Blah, blah, blah...
+\newpage
+
+\section{謝辞}
+Thank, danke, merci!
+\newpage
 
 \bibliography{thesis}
 \bibliographystyle{junsrt}
