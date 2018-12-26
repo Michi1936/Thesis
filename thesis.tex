@@ -204,7 +204,12 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \section{計算結果}
 \subsection{粘性、表面張力の測定}
 粒子法における粘性・表面張力と、水が持つ粘性・表面張力を比較するために、次の数値計算を行った。
-
+水面を波立たせた初期条件を与え、時間発展をさせる。その時に見られる波の波長を理論値と比べた。
+まず重力波の比較を行う。重力波の分散関係は
+\begin{equation}
+  \omega(k)=\sqrt{gk\rm{tanh}\it{kh}}
+\end{equation}
+で与えられる\cite{tatsumiKiso}。$g=9.8, k=\frac{2\pi}{\lambda}=\frac{2pi}{6.0}, h=3.0$を代入すると$\omega~3.18$である。これより周期は$\frac{2\pi}{3.18}~1.98$となる。実験で得られた周期はおよそ2.0であるためまず水面波を大方再現しているものと考えられる。
 \label{subsec:label}
 
 
@@ -234,7 +239,6 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 
 \subsection{剛体球の水面への衝突}
 表面が親水性および疎水性の剛体球を水面に衝突させる。初速を変化させて、水面の変形による気泡の取り込みが見られるか否かを調べる。実験の値はDuez\cite{Duez2007}らによるものを参照した。
-\label{subsec:label}
 
 \newpage
 
@@ -252,6 +256,5 @@ Thank, danke, merci!
 
 \bibliography{thesis}
 \bibliographystyle{junsrt}
-
 
 \end{document}
