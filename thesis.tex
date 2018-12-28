@@ -166,7 +166,7 @@ iy=\lfloor(r_y-MIN\_Y)/DB \rfloor
 
 
 \subsection{表面張力、親水性および疎水性の表現}
-表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang2017}を用いた。この手法は2粒子の間で力を働かせる手法であり、次の式で表される。
+表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang2016},\cite{Yang2017}を用いた。この手法は粒子の間に力を作用させることで、表面張力や個体表面での性質を再現する。
 \begin{equation}
 F^{\rm{int}}_i=\sum_{j} \bm{f}_{ji}
 \end{equation}
@@ -209,7 +209,28 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \begin{equation}
   \omega(k)=\sqrt{gk\rm{tanh}\it{kh}}
 \end{equation}
-で与えられる\cite{tatsumiKiso}。$g=9.8, k=\frac{2\pi}{\lambda}=\frac{2pi}{6.0}, h=3.0$を代入すると$\omega~3.18$である。これより周期は$\frac{2\pi}{3.18}~1.98$となる。実験で得られた周期はおよそ2.0であるためまず水面波を大方再現しているものと考えられる。
+で与えられる\cite{tatsumiKiso}。$g=9.8, k=\frac{2\pi}{\lambda}=\frac{2\pi}{6.0}, h=3.0$を代入すると$\omega\sim3.18$である。これより周期は$\frac{2\pi}{3.18}\sim1.98$となる。実験で得られた周期はおよそ2.0であるためまず水面波を大方再現しているものと考えられる。
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{waveSurf_1226_1953_3.png}
+  \caption{粒子の初期配置}
+  \label{fig:waveSurfInit}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{waveSurf_1226_1953_.png}
+  \caption{x=12における波高の時間発展}
+  \label{fig:waveSurfEvol}
+\end{figure}
+
+
+次に表面張力係数の比較を行う。表面張力を考慮した水面派の分散関係は
+\begin{equation}
+\omega=\sqrt{(g+\frac{\gamma}{\rho}k^2)k\rm{tanh}(\it{kh})}
+\end{equation}
+で与えられる\cite{tatsumiKiso}。$\rho\sim1000, \omega\sim4.18$の値を用いて$\gamma$の値を求めると、6399.5を得た。
+
+表面張力を流体の密度で割った値を比較する。約18℃の水の場合、この値はおよそ80であり、数値計算から得られた値はおよそ６となる。これより、水の物性値と数値計算の間にはひと桁のズレが存在している。
 \label{subsec:label}
 
 
