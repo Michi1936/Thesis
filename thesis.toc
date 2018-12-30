@@ -12,7 +12,9 @@
 \contentsline {subsection}{\numberline {3.1}粘性、表面張力の測定}{8}
 \contentsline {subsection}{\numberline {3.2}親水性、疎水性の妥当性}{9}
 \contentsline {subsection}{\numberline {3.3}剛体球の水面への衝突}{12}
-\contentsline {section}{\numberline {4}議論}{13}
-\contentsline {section}{\numberline {5}結論}{14}
-\contentsline {subsection}{\numberline {5.1}まとめ}{14}
-\contentsline {section}{\numberline {6}謝辞}{15}
+\contentsline {subsubsection}{\numberline {3.3.1}疎水性の剛体}{12}
+\contentsline {subsubsection}{\numberline {3.3.2}親水性の剛体}{14}
+\contentsline {section}{\numberline {4}議論}{17}
+\contentsline {section}{\numberline {5}結論}{18}
+\contentsline {subsection}{\numberline {5.1}まとめ}{18}
+\contentsline {section}{\numberline {6}謝辞}{19}

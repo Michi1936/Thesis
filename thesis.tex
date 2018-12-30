@@ -5,6 +5,7 @@
 \bmdefine{\bex}{x}
 \bmdefine{\vex}{v}
 \usepackage[dvipdfmx]{graphicx}
+\usepackage{subcaption}
 
 \begin{document}
 \title{水面に剛体が衝突した際に生じる気泡の解析}
@@ -34,8 +35,6 @@ SPH法は1977年に、宇宙物理における気体運動の問題を解くた�
 ポワソン方程式を解かない場合、計算時間を大きく削減することが可能。
 などが挙げられる。
 CG分野でもしばしば用いられており、、、
-
-\label{subsec:label}
 
 \section{SPH法}
 \subsection{SPH法の支配方程式}
@@ -231,11 +230,9 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 で与えられる\cite{tatsumiKiso}。$\rho\sim1000, \omega\sim4.18$の値を用いて$\gamma$の値を求めると、6399.5を得た。
 
 表面張力を流体の密度で割った値を比較する。約18℃の水の場合、この値はおよそ80であり、数値計算から得られた値はおよそ６となる。これより、水の物性値と数値計算の間にはひと桁のズレが存在している。
-\label{subsec:label}
 
 
 \subsection{親水性、疎水性の妥当性}
-\label{subsec:label}
 
 
 半円状の流体を床の上に配置し、流体の運動が平衡状態に達した時の様子を比較する。図\ref{fig:Phoby}\ref{fig:Phile}は接触角として$3\pi/4, \pi/4$を与えた時の流体の振る舞いを、80000ステップ時点で出力したものである。流体との接触角が$\pi/2$より小さいを親水性といい、$\pi/2$よりも大きい物を疎水性という \cite{Truscott2012}。図を見ると接触角がそれぞれ$\pi/2$よりも大きいあるいは小さいことが観測されるため、本モデルは親水性および疎水性の振る舞いを定性的に再現していると考えられる。
@@ -260,7 +257,128 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 
 \subsection{剛体球の水面への衝突}
 表面が親水性および疎水性の剛体球を水面に衝突させる。初速を変化させて、水面の変形による気泡の取り込みが見られるか否かを調べる。実験の値はDuez\cite{Duez2007}らによるものを参照した。
+\subsubsection{疎水性の剛体}
+図\ref{fig:hydrophobic}は、初速を変化させて疎水性の剛体を水面に衝突させ、左右に分離した流体が再び合体する箇所をグラフに出力したものである。
+\begin{figure}[H]
+  \centering
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1221_1836_389_cropped.png}
+  \caption{衝突速度10}
+  \label{fig:vel10}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1221_2215_389_cropped.png}
+  \caption{衝突速度20}
+  \label{fig:vel20}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_0151_393_cropped.png}
+  \caption{衝突速度30}
+  \label{fig:vel30}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_0528_403_cropped.png}
+  \caption{衝突速度40}
+  \label{fig:vel40}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_0903_401_cropped.png}
+  \caption{衝突速度50}
+  \label{fig:vel50}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_1237_401_cropped.png}
+  \caption{衝突速度60}
+  \label{fig:vel60}
+\end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}
+\ContinuedFloat
+  \begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_1609_393_cropped.png}
+  \caption{衝突速度70}
+  \label{fig:vel70}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_1919_385_cropped.png}
+  \caption{衝突速度80}
+  \label{fig:vel80}
+\end{subfigure}
+\caption{初速を変化させて疎水性の剛体を水面に衝突させた際の気泡の生成}
+\label{fig:hydrophobic}
+\end{figure}
+初速20の時点で、界面の変形による気泡の取り込みが確認できる。
 
+
+\subsubsection{親水性の剛体}
+図\ref{fig:hydrophilic}は、初速を変化させて親水性の剛体を水面に衝突させ、左右に分離した流体が再び合体する箇所をグラフに出力したものである。
+\begin{figure}[H]
+  \centering
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1219_2335_341_cropped.png}
+  \caption{衝突速度10}
+  \label{fig:philevel10}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_0312_351_cropped.png}
+  \caption{衝突速度20}
+  \label{fig:philevel20}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_0616_357_cropped.png}
+  \caption{衝突速度30}
+  \label{fig:philevel30}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_0950_347_cropped.png}
+  \caption{衝突速度40}
+  \label{fig:philevel40}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_1324_377_cropped.png}
+  \caption{衝突速度50}
+  \label{fig:philevel50}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_1701_377_cropped.png}
+  \caption{衝突速度60}
+  \label{fig:philevel60}
+\end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}
+\ContinuedFloat
+  \begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_2037_361_cropped.png}
+  \caption{衝突速度70}
+  \label{fig:philevel70}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1221_0008_361_cropped.png}
+  \caption{衝突速度80}
+  \label{fig:philevel80}
+\end{subfigure}
+\caption{初速を変化させて親水性の剛体を水面に衝突させた際の気泡の生成}
+\label{fig:hydrophilic}
+\end{figure}
+左右に大きく移動しているのは、SPH法で激しい運動を計算した時に見られるhigh-frequency oscillatory(HFO)\cite{Kiara2013}によるものと考えられる。
 \newpage
 
 \section{議論}
