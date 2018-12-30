@@ -160,6 +160,23 @@ iy=\lfloor(r_y-MIN\_Y)/DB \rfloor
 粒子法での各値は$D=1, g=9.8$であるので、$U_0^*=11.25$を得るために、剛体球の初速は35.12でなければならない。
 
 以上のようにして実験での値と数値計算での値を比較する。
+\begin{table}[h]
+  \caption{数値計算の初速と実験での初速の対応}
+  \label{tab:velocity_non_dim}
+  \begin{center}
+    \begin{tabular}{|c|c|c|}\hline
+      数値計算での初速&無次元化された初速&実験での初速 \\ \hline
+      10.00 & 3.19 & 1.41 \\ \hline
+      20.00 & 6.39 & 2.83 \\ \hline
+      30.00 & 9.58 & 4.24 \\ \hline
+      40.00 & 12.78 & 5.66 \\ \hline
+      50.00 & 15.97 & 7.07 \\ \hline
+      60.00 & 19.17 & 8.49 \\ \hline
+      70.00 & 22.36 & 9.90 \\ \hline
+      80.00 & 25.56 & 11.31 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
 
 
 
@@ -235,25 +252,34 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \subsection{親水性、疎水性の妥当性}
 
 
-半円状の流体を床の上に配置し、流体の運動が平衡状態に達した時の様子を比較する。図\ref{fig:Phoby}\ref{fig:Phile}は接触角として$3\pi/4, \pi/4$を与えた時の流体の振る舞いを、80000ステップ時点で出力したものである。流体との接触角が$\pi/2$より小さいを親水性といい、$\pi/2$よりも大きい物を疎水性という \cite{Truscott2012}。図を見ると接触角がそれぞれ$\pi/2$よりも大きいあるいは小さいことが観測されるため、本モデルは親水性および疎水性の振る舞いを定性的に再現していると考えられる。
+半円状の流体を床の上に配置し、流体の運動が平衡状態に達した時の様子を比較する。
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\columnwidth]{initial.png}
+  \includegraphics[width=\columnwidth]{Phobyhalf40_1116_1906_1.png}
   \caption{初期状態}
-  \label{fig:initial}
+  \label{fig:contactInitial}
 \end{figure}
+
 \begin{figure}[H]
+  \centering
+  \begin{subfigure}{\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Phoby.png}
+    \includegraphics[width=\columnwidth]{Phobyhalf40_1116_1906_1601.png}
     \caption{疎水性}
-    \label{fig:Phoby}
-  \end{figure}
-  \begin{figure}[H]
+    \label{fig:PhobyDrop}
+  \end{subfigure}
+  \begin{subfigure}{\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Phile.png}
+    \includegraphics[width=\columnwidth]{Philehalf40_1118_1813_1601.png}
     \caption{親水性}
-    \label{fig:Phile}
+    \label{fig:PhileDrop}
+  \end{subfigure}
+  \caption{親水性および疎水性の床の上に放置された水滴}
+  \label{fig:contactAngles}
 \end{figure}
+
+図\ref{fig:PhobyDrop}および\ref{fig:PhileDrop}は接触角として$3\pi/4, \pi/4$を与えた時の流体の振る舞いを、80000ステップ時点で出力したものである。流体との接触角が$\pi/2$より小さいを親水性といい、$\pi/2$よりも大きい物を疎水性という \cite{Truscott2012}。図を見ると接触角がそれぞれ$\pi/2$よりも大きいあるいは小さいことが観測されるため、本モデルは親水性および疎水性の振る舞いを定性的に再現していると考えられる。
+次に接触角の設定を変えて数値計算を行った。どの値に於いても、親水性および疎水性の定性的な再現は見られたが、接触角の値の変化を見ることはできなかった。
 
 \subsection{剛体球の水面への衝突}
 表面が親水性および疎水性の剛体球を水面に衝突させる。初速を変化させて、水面の変形による気泡の取り込みが見られるか否かを調べる。実験の値はDuez\cite{Duez2007}らによるものを参照した。
