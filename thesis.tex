@@ -28,7 +28,7 @@
 \subsection{SPH法}
 流体を粒子の集合として計算する手法は粒子法と呼ばれ、\rm{Smoothed Particle Hydrodynamics}（略称SPH）法は粒子法のモデルの一つである。
 
-SPH法は1977年に、宇宙物理における気体運動の問題を解くための手法として、MonaghanとGingold\cite{Gingold1977}のペア及びLucy\cite{Lucy1977}が別々に発表した。1980年台には宇宙物理に加えて、電磁流体力学や弾性・破壊過程の計算に用いられるようになったが、非圧縮性流体に適応されるようになったのは1990年代の半ばになってからである。1994年にMonaghan\cite{Monaghan1994}が発表した手法が現在流体計算に用いられているモデルの基本となり、以来計算の目的に応じて様々な改良が施され続けている。
+SPH法は1977年に、宇宙物理における気体運動の問題を解くための手法として、MonaghanとGingold\cite{Gingold1977}のペア及びLucy\cite{Lucy1977}が別々に発表した。1980年代には宇宙物理に加えて、電磁流体力学や弾性・破壊過程の計算に用いられるようになったが、非圧縮性流体に適応されるようになったのは1990年代の半ばになってからである。1994年にMonaghan\cite{Monaghan1994}が発表した手法が現在流体計算に用いられているモデルの基本となり、以来計算の目的に応じて様々な改良が施され続けている。
 
 粒子法は流体を物理量を持った粒子の集合として計算する手法であり、計算領域を格子に分割して計算する手法との差を強調してmesh-freeな方法と呼ばれることもある。利点としては、粒子の運動がそのまま流体の運動になるため、流体の分離や合体といった複雑な変形を容易に扱うことができる。
 プログラムの記述が容易。
@@ -38,11 +38,13 @@ CG分野でもしばしば用いられており、、、
 
 \section{SPH法}
 \subsection{SPH法の支配方程式}
+\subsubsection{Kernel関数による補間}
 座標$\bm{x}$の粒子がもつ物理量Aは次のように表現される。 \cite{Becker2007}
 \begin{equation}
+  \label{eqn:SPH_int}
 A(\bex)=\sum_j \frac{A_j}{\rho_j} W(\bex-\bex_j,h)
 \end{equation}
-ここでWはKernel関数と呼ばれるもので、本計算では次の関数を用いた。
+ここで$A_j=A(\bex_j)$である。WはKernel関数と呼ばれるもので、本計算では次の関数を用いた。
 \begin{equation}
   q=\frac{|\bex-\bex_j|}{h}, 
   W(\bex-\bex_j,h)=\begin{cases}
@@ -51,16 +53,25 @@ A(\bex)=\sum_j \frac{A_j}{\rho_j} W(\bex-\bex_j,h)
     0 & \text{otherwise}
 \end{cases}
 \end{equation}
-密度は次のように計算される。
+式(\ref{eqn:SPH_int})の意味するところは、ある位置$\bex$に関して、$\bex$周囲に存在する粒子の物理量Aとその粒子までの距離に応じて減衰するKernel関数を掛けあわせた量を足し合わせることで、$\bex$における物理量Aを求めるものである。
+
+式(\ref{eqn:SPH_int})はKernel関数が微分可能である場合、両辺を微分することが可能であり、次のように表される。
+\begin{equation}
+\frac{\partial A}{\partial x}=\sum_jm_j\frac{A_j}{\rho_j}\frac{\partial W}{\partial x}
+\end{equation}
+
+密度は式(\ref{eqn:SPH_int})の$A_j$を$\rho_j$とすればよく、次のように表される。
 \begin{equation}
 \rho_{a}=\sum_bm_bW_{ab}
 \end{equation}
 ここで$W_{ab}=W(\bex_a-\bex_b)$である。
 
+\subsubsection{圧力項}
 得られた密度から圧力を計算する。非圧縮性を満たすためにはPoisson方程式$\nabla^2P=\rho\frac{\nabla\cdot\bm{v}}{\Delta t}$を解かなければならないが、計算コストが大きい。そのため本計算ではTait方程式と呼ばれる状態方程式を用いて圧力を導出する。
 
 Tait方程式は次のように表される。
 \begin{equation}
+  \label{eqn:Tait}
 P=B((\frac{\rho}{\rho_0})^\gamma-1)
 \end{equation}
 ここで係数Bは次のように与えられる。
@@ -68,11 +79,32 @@ P=B((\frac{\rho}{\rho_0})^\gamma-1)
 B=\frac{\rho_oc_s^2}{\gamma}
 \end{equation}
 本計算では$\gamma=7$を用いた。
-圧力により粒子に与えられる加速度は次のようになる。
+式(\ref{eqn:Tait})で得られた圧力を用いて、粒子に与えられる加速度は次のように与えられる。
+\begin{equation}
+  \label{eqn:pressure_Ante}
+\frac{d\vex_a}{dt}=-\frac{1}{\rho_a}\sum_bm_b\frac{P_a}{\rho_b}\nabla_aW_{ab}
+\end{equation}
+しかしこの式では、粒子bから粒子aに働く力の大きさと粒子aから粒子bに働く力の大きさが等しくない即ち
+\begin{equation}
+\frac{m_am_bP_b}{\rho_a\rho_b}\nabla_aW_{ab} \neq -\frac{m_am_bP_a}{\rho_a\rho_b}\nabla_bW_{ab}
+\end{equation}
+であるため、運動量が正しく保存されない。そこで次のように式を変形する。
+
+\begin{equation}
+\frac{\nabla P}{\rho}=\nabla(\frac{P}{\rho})+\frac{P}{\rho^2}\nabla \rho
+\end{equation}
+であることを用いると、式(\ref{eqn:pressure_Ante})は
 \begin{equation}
 \frac{d\vex_a}{dt}=-\sum_bm_b(\frac{P_a}{\rho_a^2}+\frac{P_b}{\rho_b^2})\nabla_aW_{ab}
 \end{equation}
-粘性による加速度はMonaghanによる形式 \cite{Monaghan2005}を用いた。
+と書くことができる。$|\bm{r}_a-\bm{r}_b|$のスカラー関数$F_{ab}$を用いて$\nabla_aW_{ab}=\bm{r}_{ab}F_{ab}$と書くと、粒子bから粒子aに働く力は
+\begin{equation}
+m_am_b(\frac{P_b}{\rho_b^2}+\frac{P_a}{\rho_a^2})\bm{r}_{ab}F_{ab}
+\end{equation}
+と表すことができる。この式より粒子bから粒子aに働く力と粒子aから粒子bに働く力は、向きが反対で大きさが同じであることが分かる。以上の議論は\cite{Monaghan2005}に依る。
+
+\subsubsection{粘性項}
+計算の安定性向上、および衝撃波を取り扱うために人口粘性を導入する。粘性による加速度はMonaghanによる形式 \cite{Monaghan2005}を用いた。
 \begin{equation}
 \frac{d\vex_a}{dt}=\begin{cases}
   -\sum_bm_b\Pi_{ab}\nabla_aW_{ab} & \vex_{ab}\cdot\bex_{ab}<0 \\
@@ -84,6 +116,41 @@ B=\frac{\rho_oc_s^2}{\gamma}
 \Pi_{ab}=-\nu(\frac{\vex_{ab}\cdot\bex_{ab}}{|\bex_{ab}|^2+\epsilon h^2})
 \end{equation}
 粘性係数$\nu=\frac{2\alpha h c_s}{\rho_a+\rho_b}$である。
+
+\subsection{表面張力、親水性および疎水性の表現}
+表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang2016},\cite{Yang2017}を用いた。この手法は粒子の間に力を作用させることで、表面張力や個体表面での性質を再現する。
+\begin{equation}
+F^{\rm{int}}_i=\sum_{j} \bm{f}_{ji}
+\end{equation}
+\begin{equation}
+  \bm{f}_{ji}=\begin{cases}
+    c_{ij}m_im_j\cos(\frac{3\pi}{2kh}r_{ij})\frac{\bm{r}_{ij}}{r_{ij}} & \text{$|\bm{r}_{ij}|\leq kh$}\\
+    0 & \text{$|\bm{r}_{ij}|\geq kh$}
+\end{cases}
+\end{equation}
+ここで$\bm{r}_{ij}=\bm{r}_i-\bm{r}_{j}$、$r_{ij}=|\bm{r}_{ij}|$である。kはenlargement ratioと呼ばれるパラメータであり、相互作用の力が働く粒子の距離を調節している。
+
+$c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相に属しているかによって値は変化する。それらの値は次の関係を満たす。
+\begin{equation}
+\cos\theta=\frac{c_{\alpha\alpha}-c_{\beta\beta}+2c_{\omega\alpha}-2c_{\omega\beta}}{c_{\alpha\alpha} +c_{\beta\beta} -2c_{\alpha\beta}}
+\end{equation}
+ここで$\theta$は流体と床の接触角であり、$\alpha,\beta,\omega$はそれぞれ流体、空気、床に粒子が存在していることを意味している。
+
+今、$c_{\alpha\beta},c_{\omega\beta}$は小さいことが物理的な観測より分かっているため0とする。また$c_{\alpha\alpha}=c_{\beta\beta}$としてもよいため
+\begin{equation}
+\cos\theta\simeq c_{\omega\alpha}/c_{\alpha\alpha}
+\end{equation}
+となる。
+\begin{table}[h]
+  \caption{相互作用の計算に用いられるパラメータ}
+  \label{interParam}
+  \begin{center}
+    \begin{tabular}{|c|c|}\hline
+      k&3.0 \\ \hline
+      $c_{\alpha\alpha}$ & 60.0 \\ \hline
+    \end{tabular}
+  \end{center}  
+\end{table}
 
 \subsection{剛体の表現}
 剛体の表現はPMS(Passively Moving Solid)法\cite{Gotoh2018}と呼ばれるモデルを用いた。
@@ -180,42 +247,6 @@ iy=\lfloor(r_y-MIN\_Y)/DB \rfloor
 
 
 
-
-\subsection{表面張力、親水性および疎水性の表現}
-表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang2016},\cite{Yang2017}を用いた。この手法は粒子の間に力を作用させることで、表面張力や個体表面での性質を再現する。
-\begin{equation}
-F^{\rm{int}}_i=\sum_{j} \bm{f}_{ji}
-\end{equation}
-\begin{equation}
-  \bm{f}_{ji}=\begin{cases}
-    c_{ij}m_im_j\cos(\frac{3\pi}{2kh}r_{ij})\frac{\bm{r}_{ij}}{r_{ij}} & \text{$|\bm{r}_{ij}|\leq kh$}\\
-    0 & \text{$|\bm{r}_{ij}|\geq kh$}
-\end{cases}
-\end{equation}
-ここで$\bm{r}_{ij}=\bm{r}_i-\bm{r}_{j}$、$r_{ij}=|\bm{r}_{ij}|$である。kはenlargement ratioと呼ばれるパラメータであり、相互作用の力が働く粒子の距離を調節している。
-
-$c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相に属しているかによって値は変化する。それらの値は次の関係を満たす。
-\begin{equation}
-\cos\theta=\frac{c_{\alpha\alpha}-c_{\beta\beta}+2c_{\omega\alpha}-2c_{\omega\beta}}{c_{\alpha\alpha} +c_{\beta\beta} -2c_{\alpha\beta}}
-\end{equation}
-ここで$\theta$は流体と床の接触角であり、$\alpha,\beta,\omega$はそれぞれ流体、空気、床に粒子が存在していることを意味している。
-
-今、$c_{\alpha\beta},c_{\omega\beta}$は小さいことが物理的な観測より分かっているため0とする。また$c_{\alpha\alpha}=c_{\beta\beta}$としてもよいため
-\begin{equation}
-\cos\theta\simeq c_{\omega\alpha}/c_{\alpha\alpha}
-\end{equation}
-となる。
-\begin{table}[h]
-  \caption{相互作用の計算に用いられるパラメータ}
-  \label{interParam}
-  \begin{center}
-    \begin{tabular}{|c|c|}\hline
-      k&3.0 \\ \hline
-      $c_{\alpha\alpha}$ & 60.0 \\ \hline
-    \end{tabular}
-  \end{center}  
-\end{table}
-
 \newpage
 \section{計算結果}
 \subsection{粘性、表面張力の測定}
@@ -255,20 +286,20 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 半円状の流体を床の上に配置し、流体の運動が平衡状態に達した時の様子を比較する。
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\columnwidth]{Phobyhalf40_1116_1906_1.png}
+  \includegraphics[width=0.8\columnwidth]{Phobyhalf40_1116_1906_1.png}
   \caption{初期状態}
   \label{fig:contactInitial}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \begin{subfigure}{\columnwidth}
+  \begin{subfigure}{0.8\columnwidth}
     \centering
     \includegraphics[width=\columnwidth]{Phobyhalf40_1116_1906_1601.png}
     \caption{疎水性}
     \label{fig:PhobyDrop}
   \end{subfigure}
-  \begin{subfigure}{\columnwidth}
+  \begin{subfigure}{0.8\columnwidth}
     \centering
     \includegraphics[width=\columnwidth]{Philehalf40_1118_1813_1601.png}
     \caption{親水性}
@@ -279,8 +310,98 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \end{figure}
 
 図\ref{fig:PhobyDrop}および\ref{fig:PhileDrop}は接触角として$3\pi/4, \pi/4$を与えた時の流体の振る舞いを、80000ステップ時点で出力したものである。流体との接触角が$\pi/2$より小さいを親水性といい、$\pi/2$よりも大きい物を疎水性という \cite{Truscott2012}。図を見ると接触角がそれぞれ$\pi/2$よりも大きいあるいは小さいことが観測されるため、本モデルは親水性および疎水性の振る舞いを定性的に再現していると考えられる。
-次に接触角の設定を変えて数値計算を行った。どの値に於いても、親水性および疎水性の定性的な再現は見られたが、接触角の値の変化を見ることはできなかった。
 
+次に接触角の設定を変えて数値計算を行った。
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1635_1001_.png}
+    \caption{接触角$\frac{5\pi}{6}$}
+    \label{fig:phoby_pi6}
+  \end{subfigure}
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1635_1001_wl.png}
+    \caption{補助線付き}
+    \label{fig:phoby_pi6wl}
+  \end{subfigure}
+
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1646_1001_.png}
+    \caption{接触角$\frac{3\pi}{4}$}
+    \label{fig:phoby_pi4}
+  \end{subfigure}
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1646_1001_wl.png}
+    \caption{補助線付き}
+    \label{fig:phoby_pi4wl}
+  \end{subfigure}
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1658_1001_.png}
+    \caption{接触角$\frac{2\pi}{3}$}
+    \label{fig:phoby_pi3}
+  \end{subfigure}
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1658_1001_wl.png}
+    \caption{補助線付き}
+    \label{fig:phoby_pi3wl}
+  \end{subfigure}
+
+  \caption{接触角を変化させた疎水性の床上の水滴}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Philehalf40_1231_1500_1001_.png}
+    \caption{接触角$\frac{\pi}{6}$}
+    \label{fig:phile_pi6}
+  \end{subfigure}
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Philehalf40_1231_1500_1001_wl.png}
+    \caption{補助線付き}
+    \label{fig:phile_pi6wl}
+  \end{subfigure}
+
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Philehalf40_1231_1506_1001_.png}
+    \caption{接触角$\frac{\pi}{4}$}
+    \label{fig:phile_pi4}
+  \end{subfigure}
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Philehalf40_1231_1506_1001_wl.png}
+    \caption{補助線付き}
+    \label{fig:phile_pi4wl}
+  \end{subfigure}
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Philehalf40_1231_1514_1001_.png}
+    \caption{接触角$\frac{\pi}{3}$}
+    \label{fig:phile_pi3}
+  \end{subfigure}
+  \begin{subfigure}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=\columnwidth]{Philehalf40_1231_1514_1001_wl.png}
+    \caption{補助線付き}
+    \label{fig:phile_pi3wl}
+  \end{subfigure}
+
+  \caption{接触角を変化させた親水性の床上の水滴}
+\end{figure}
+
+設定した接触角の傾きは緑色の直線でで、得られたグラフにフィッティングした傾きは黄色の直線で表されている。
+どの値に於いても、親水性および疎水性の定性的な再現は見られたが、接触角の値の変化は入力した値に対して小さいものとなった。
+
+\newpage
 \subsection{剛体球の水面への衝突}
 表面が親水性および疎水性の剛体球を水面に衝突させる。初速を変化させて、水面の変形による気泡の取り込みが見られるか否かを調べる。実験の値はDuez\cite{Duez2007}らによるものを参照した。
 \subsubsection{疎水性の剛体}
@@ -404,6 +525,14 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \caption{初速を変化させて親水性の剛体を水面に衝突させた際の気泡の生成}
 \label{fig:hydrophilic}
 \end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\columnwidth]{trajectory_x.png}
+  \caption{重心x座標の時間発展}
+  \label{fig:trajectory}
+\end{figure}
+
 左右に大きく移動しているのは、SPH法で激しい運動を計算した時に見られるhigh-frequency oscillatory(HFO)\cite{Kiara2013}によるものと考えられる。
 \newpage
 
