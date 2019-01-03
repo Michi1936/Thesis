@@ -19,7 +19,7 @@
 \subsection{界面の変形}
 水面に水滴あるいは剛体を衝突させた際の現象、即ち水面の変形や気泡の生成は身近な物理現象の一つであり、古くから研究が行われてきた。
 
-水面の変形に関する研究では、Worthingtonによるもの \cite{Worthington1908}がその嚆矢として挙げられることが多い。彼は水面に水滴を衝突させる実験を複数回行い、その度に少しずつ異なるタイミングでストロボを焚いて写真を撮影することで、水飛沫の生成の連続写真を作成することに成功した。以来、撮影器具の進歩に合わせ、より鮮明な画像が撮影され続けてきた。水しぶきの画像は、高速度撮影の代表的な成果の一つであり、1957年Harold Edgertonが撮影したミルククラウンの写真は、TIMEが選んだ”最も影響ある写真100枚”に選ばれている。
+水面の変形に関する研究では、Worthingtonによるもの \cite{Worthington1908}がその嚆矢として挙げられることが多い。彼は水面に水滴を衝突させる実験を複数回行い、その度に少しずつ異なるタイミングでストロボを焚いて写真を撮影することで、水飛沫の生成の連続写真を作成することに成功した。以来、撮影器具の進歩に合わせ、より鮮明な画像が撮影され続けてきた。……。
 
 水面に水滴や剛体を衝突させた際に界面が変形し、空気が水中に取り込まれることで気泡（cavity）が生成される現象が確認されている。生成される気泡の大きさは様々であり、剛体球に空気が引きずられるようなもの\cite{Worthington1908}\cite{Mallock1918}、水面の変形によって空気がちぎり取られるようなもの\cite{Oguz1990}などが一例である。
 
@@ -33,30 +33,36 @@ SPH法は1977年に、宇宙物理における気体運動の問題を解くた�
 流体の複雑な変形を容易に取り扱うことができることから、CG分野でもしばしば用いられており、、、
 
 粒子法は流体を物理量を持った粒子の集合として計算する手法であり、計算領域を格子に分割して計算する手法との差を強調してmesh-freeな方法と呼ばれることもある。利点としては、粒子の運動がそのまま流体の運動になるため、流体の分離や合体といった複雑な変形を容易に扱うことができる。
-その他の利点としては、プログラムの記述が容易であること、圧力計算の際に状態方程式を用いることで計算時間を大きく削減できることなどが挙げられる。
+
+他の利点としては、プログラムの記述が容易であること、圧力計算の際に状態方程式を用いることで計算時間を大きく削減できることなどが挙げられる。
 欠点としては、計算の解像度が粒子数に依存するため運動を詳細に解析するためには大量の粒子が必要となり計算時間が増大すること、激しい流れを扱う計算では高周波振動(High-Frequency Oscillatory, HFO)が観測されることなどが挙げられる。こうした欠点を解決するためのモデルも開発されているが、それらがどこまで物理的に妥当なものであるかは各々に議論が必要となる。
 
 \subsection{先行研究}
-\label{subsec:preres}
 剛体球を水面に落とした際の変形に関する研究は、上で述べた通り古くから多数が行われている。近年では、剛体球表面の性質を変えたり、水面突入時の剛体に回転運動を与えるなど、様々なヴァリエーションが存在している。
 
-Duez\cite{Duez2007}らによる研究は、親水性あるいは疎水性の剛体球を水面に衝突させ、気泡が取り込まれる衝突速度のしきい値を実験から導いている。
+Duez\cite{Duez2007}らによる研究は、親水性あるいは疎水性の剛体球を水面に衝突させ、気泡が取り込まれる衝突速度のしきい値を実験から導いた。また彼らは、剛体速度と濡れの関係に関するEggers\cite{Eggers2004}の議論を基に、衝突速度のしきい値についての理論式を導出している。剛体速度と濡れの関係の議論はLandau\cite{landau1942}らによるものまで遡る。
+
+SPH法における表面張力のモデルは複数考案されている。
+
+一つはContinuum Surface Force (CSF)モデルと呼ばれるもので、カラー関数あるいは粒子の配置から流体界面の曲率や法線ベクトルを求め、その値に基づき表面張力を計算する。SPH法にはMorris\cite{Morris2000}によって導入された。
+
+一つは、表面張力は微視的には分子間力に依るものであるため、粒子間にも相互作用力を導入し表面張力を再現するモデルである。この手法では流体粒子と個体粒子の間での相互作用力を変化させることで、個体の濡れ性を容易に表現することができる。Akinci\cite{Akinci2013}は流体粒子間の相互作用力を加え、表面積を最小にする計算を行うことで、表面張力を表現した。また個体粒子と流体粒子の間にも相互作用力を加え、個体の濡れ性をある程度制御している。
 
 
 
-
+\newpage
 \section{SPH法}
 \subsection{SPH法の支配方程式}
 \subsubsection{Kernel関数による補間}
 座標$\bm{x}$の粒子がもつ物理量Aは次のように表現される。 \cite{Becker2007}
-\begin{equation}
+\begin{equation}　　
   \label{eqn:SPH_int}
-A(\bex)=\sum_j \frac{A_j}{\rho_j} W(\bex-\bex_j,h)
+A(\bex)=\sum_b \frac{A_b}{\rho_b} W(\bex-\bex_b,h)
 \end{equation}
-ここで$A_j=A(\bex_j)$である。WはKernel関数と呼ばれるもので、本計算では次の関数を用いた。
+ここで$A_b=A(\bex_b)$である。WはKernel関数と呼ばれるもので、本計算では次の関数を用いた。
 \begin{equation}
-  q=\frac{|\bex-\bex_j|}{h}, 
-  W(\bex-\bex_j,h)=\begin{cases}
+  q=\frac{|\bex-\bex_b|}{h}, 
+  W(\bex-\bex_b,h)=\begin{cases}
     \frac{15}{14\pi h^2} \{(2-q)^3-4(1-q)^3\} & \text{$ 0 \leq q \leq 1$}\\
     \frac{15}{14\pi h^2} (2-q)^3 & \text{$1\leq q \leq 2$}\\
     0 & \text{otherwise}
@@ -66,10 +72,10 @@ A(\bex)=\sum_j \frac{A_j}{\rho_j} W(\bex-\bex_j,h)
 
 式(\ref{eqn:SPH_int})はKernel関数が微分可能である場合、両辺を微分することが可能であり、次のように表される。
 \begin{equation}
-\frac{\partial A}{\partial x}=\sum_jm_j\frac{A_j}{\rho_j}\frac{\partial W}{\partial x}
+\frac{\partial A}{\partial x}=\sum_bm_b\frac{A_b}{\rho_b}\frac{\partial W}{\partial x}
 \end{equation}
 
-密度は式(\ref{eqn:SPH_int})の$A_j$を$\rho_j$とすればよく、次のように表される。
+密度は式(\ref{eqn:SPH_int})の$A_b$を$\rho_b$とすればよく、次のように表される。
 \begin{equation}
 \rho_{a}=\sum_bm_bW_{ab}
 \end{equation}
@@ -125,8 +131,8 @@ m_am_b(\frac{P_b}{\rho_b^2}+\frac{P_a}{\rho_a^2})\bm{r}_{ab}F_{ab}
 \end{equation}
 と表すことができる。この式より粒子bから粒子aに働く力と粒子aから粒子bに働く力は、向きが反対で大きさが同じであることが分かる。以上の議論は\cite{Monaghan2005}に依る。
 
-\subsubsection{粘性項}
-計算の安定性向上、および衝撃波を取り扱うために人口粘性を導入する。粘性による加速度はMonaghanによる形式 \cite{Monaghan2005}を用いた。
+\subsubsection{人工粘性項}
+計算の安定性向上、および衝撃波を取り扱うために人工粘性を導入する。粘性による加速度はMonaghanによる形式 \cite{Monaghan2005}を用いた。
 \begin{equation}
 \frac{d\vex_a}{dt}=\begin{cases}
   -\sum_bm_b\Pi_{ab}\nabla_aW_{ab} & \vex_{ab}\cdot\bex_{ab}<0 \\
@@ -174,6 +180,17 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
   \end{center}  
 \end{table}
 
+\subsection{壁粒子の表現}
+壁となる領域に座標を固定した粒子を配置する方法を採用した。壁粒子が一列である場合、壁近傍での圧力が低下し流体粒子が壁を通り抜けることがある。この現象を防ぐため、3層にわたって壁粒子を配置した。
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\columnwidth]{wallBoundary.png}
+  \caption{壁粒子の様子}
+  \label{fig:wallParticles} 
+\end{figure}
+
+
+
 \subsection{剛体の表現}
 剛体の表現はPMS(Passively Moving Solid)法\cite{Gotoh2018}と呼ばれるモデルを用いた。
 剛体は複数の剛体粒子が集まったものとして表現される。各タイムステップごとに剛体粒子を流体粒子と同様に計算し、速度を導出する。次に得られた速度を用いて以下の量を計算する。
@@ -216,11 +233,11 @@ iy=\lfloor(r_y-\rm{MIN\_Y})/DB \rfloor
 \end{equation}
 ここで$r_x,r_y$は粒子のxおよびy座標、DBはバケット一辺の長さであり、MIN\_X,MIN\_Yは計算範囲におけるxおよびyの最小値である。
 
-近傍粒子の探索は以下のようにして行う。
+近傍粒子の探索は以下のようにして行う……。
 
 
 \subsection{時間発展}
-本計算の時間発展にはleap-frog法を用いた。Leap-frog法では時刻iにて次のように速度および位置を更新する。
+本計算の時間発展にはleap-frog法を用いた。leap-frog法では時刻iにて次のように速度および位置を更新する。
 \begin{equation}
   \vex^{i+\frac{1}{2}}=\vex^{i-\frac{1}{2}}+\bm{a}^idt
 \end{equation}
@@ -558,19 +575,27 @@ iy=\lfloor(r_y-\rm{MIN\_Y})/DB \rfloor
   \label{fig:trajectory}
 \end{figure}
 
-左右に大きく移動しているのは、SPH法で激しい運動を計算した時に見られるhigh-frequency oscillatory(HFO)\cite{Kiara2013}によるものと考えられる。
+左右に大きくずれているのは何故か。非圧縮性の問題は？云々……
 \newpage
 
 \section{議論}
-The cavity! The cavity!
+
+キャビティが見えたか見えなかったかの議論。
+
+親水性の剛体球で見られた左右の位置の変動。
+
+その他諸々を議論する予定。
 \newpage
 \section{結論}
 \subsection{まとめ}
-Blah, blah, blah...
+Duez\cite{Duez2007}での結果を再現できたか否かに対してYes/Noの結論を書いた後、その根拠を書き記す予定。
+\subsection{今後の展望}
+左右の壁の位置が近すぎたのでは？Yang\cite{Yang2017}にある改良された接触角のモデルではどうか？
+SPHの誤差を修正するモデルを加えてはどうか？そのモデルの物理的な妥当性は議論が必要で云々……など今回試していない事柄について書き記す予定。
 \newpage
 
 \section{謝辞}
-Thank, danke, merci!
+感謝の意を表す予定。
 \newpage
 
 \bibliography{thesis}

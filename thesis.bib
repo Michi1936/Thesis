@@ -31,7 +31,6 @@ year = {2017}
 }
 
 @inproceedings{Yang2016,
-abstract = {The realistic capture of various interactions at interfaces is a challenging problem for SPH-based simulation. Previous works have mainly considered a single type of interaction, while real-world phenomena typically exhibit multiple interactions at different interfaces. For instance, when cracking an egg, there are simultaneous interactions between air, egg white, egg yolk, and the shell. To conveniently handle all interactions simultaneously in a single simulation, a versatile approach is critical. In this paper, we present a new approach to the surface tension model based on pairwise interaction forces; its basis is to use a larger number of neighboring particles. Our model is stable, conserves momentum, and furthermore, prevents the particle clustering problem which commonly occurs at the free surface. It can be applied to simultaneous interactions at multiple interfaces (e.g. fluid-solid and fluid-fluid). Our method is versatile, physically plausible and easy-to-implement.We also consider the close connection between droplets and bubbles, and show how to animate bubbles in air as droplets, with the help of a new surface particle detection method. Examples are provided to demonstrate the capabilities and effectiveness of our approach.},
 author = {Yang, Tao and Lin, Ming C. and Martin, Ralph R. and Chang, Jian and Hu, Shi-Min},
 booktitle = {Eurographics},
 file = {:home/michinori/Dropbox/PDF/SCA2016.pdf:pdf},
@@ -60,6 +59,7 @@ url = {http://arxiv.org/abs/1007.1245 http://adsabs.harvard.edu/full/1992ARA{\&}
 volume = {68},
 year = {2005}
 }
+
 @misc{Hwang1991,
 author = {Hwang, Paul A. and Poon, Ying-Keung and Wu, Jin},
 booktitle = {Journal of Physical Oceanography},
@@ -73,6 +73,7 @@ url = {http://journals.ametsoc.org/doi/abs/10.1175/1520-0485{\%}281991{\%}29021{
 volume = {21},
 year = {1991}
 }
+
 @article{Truscott2014,
 author = {Truscott, Tadd T. and Epps, Brenden P. and Belden, Jesse},
 doi = {10.1146/annurev-fluid-011212-140753},
@@ -214,6 +215,29 @@ year = {2016}
   pages={1013--1024},
   year={1977}
 }
+@article{Eggers2004,
+author = {Eggers, Jens},
+doi = {10.1103/PhysRevLett.93.094502},
+file = {:home/michinori/Dropbox/PDF/1f86b3d55b4a64d3941189619c16a239218d.pdf:pdf},
+issn = {0031-9007},
+journal = {Physical Review Letters},
+month = {aug},
+number = {9},
+pages = {094502},
+title = {{Hydrodynamic Theory of Forced Dewetting}},
+url = {https://link.aps.org/doi/10.1103/PhysRevLett.93.094502},
+volume = {93},
+year = {2004}
+}
+
+@article{landau1942,
+  title={Dragging of a Liquid by a Moving Plate},
+  author={Landau, L. and Levich, B.},
+  journal={Acta Phys.-chim. URSS},
+  volume={17},
+  pages={42--53},
+  year={1942}
+}
 
 @article{Mallock1918,
 archivePrefix = {arXiv},
@@ -231,6 +255,55 @@ title = {{Sounds Produced by Drops falling on Water}},
 url = {http://rspa.royalsocietypublishing.org/cgi/doi/10.1098/rspa.1918.0055},
 volume = {95},
 year = {1918}
+}
+
+@article{Akinci2013,
+abstract = {Realistic handling of fluid-air and fluid-solid interfaces in SPH is a challenging problem. The main reason is that some important physical phenomena such as surface tension and adhesion emerge as a result of inter-molecular forces in a microscopic scale. This is different from scalar fields such as fluid pressure, which can be plausibly evaluated on a macroscopic scale using particles. Although there exist techniques to address this problem for some specific simulation scenarios, there does not yet exist a general approach to reproduce the variety of effects that emerge in reality from fluid-air and fluid-solid interactions. In order to address this problem, we present a new surface tension force and a new adhesion force. Different from the existing work, our surface tension force can handle large surface tensions in a realistic way. This property lets our approach handle challenging real scenarios, such as water crown formation, various types of fluid-solid interactions, and even droplet simulations. Furthermore, it prevents particle clustering at the free surface where inter-particle pressure forces are incorrect. Our adhesion force allows plausible two-way attraction of fluids and solids and can be used to model different wetting conditions. By using our forces, modeling surface tension and adhesion effects do not require involved techniques such as generating a ghost air phase or surface tracking. The forces are applied to the neighboring fluid-fluid and fluid-boundary particle pairs in a symmetric way, which satisfies momentum conservation. We demonstrate that combining both forces allows simulating a variety of interesting effects in a plausible way.},
+author = {Akinci, Nadir and Akinci, Gizem and Teschner, Matthias},
+doi = {10.1145/2508363.2508395},
+file = {:home/michinori/Dropbox/PDF/VersatileSurfaceTensionAndAdhesion.pdf:pdf},
+isbn = {0730-0301},
+issn = {07300301},
+journal = {ACM Transactions on Graphics},
+keywords = {adhesion,fluid simulation,physically-based animation,smoothed particle hydrodynamics,surface tension},
+month = {nov},
+number = {6},
+pages = {1--8},
+title = {{Versatile surface tension and adhesion for SPH fluids}},
+url = {http://doi.acm.org/10.1145/2508363.2508395{\%}5Cnhttp://dl.acm.org/ft{\_}gateway.cfm?id=2508395{\&}type=pdf http://dl.acm.org/citation.cfm?doid=2508363.2508395},
+volume = {32},
+year = {2013}
+}
+
+@article{Tartakovsky2016,
+author = {Tartakovsky, Alexandre M. and Panchenko, Alexander},
+doi = {10.1016/j.jcp.2015.08.037},
+file = {:home/michinori/Dropbox/PDF/1-s2.0-S0021999115005641-main.pdf:pdf},
+issn = {00219991},
+journal = {Journal of Computational Physics},
+month = {jan},
+pages = {1119--1146},
+title = {{Pairwise Force Smoothed Particle Hydrodynamics model for multiphase flow: Surface tension and contact line dynamics}},
+url = {https://linkinghub.elsevier.com/retrieve/pii/S0021999115005641},
+volume = {305},
+year = {2016}
+}
+
+
+@article{Morris2000,
+abstract = {A method for simulating two-phase flows including surface tension is presented. The approach is based upon smoothed particle hydrodynamics (SPH). The fully Lagrangian nature of SPH maintains sharp fluid-fluid interfaces without employing high-order advection schemes or explicit interface reconstruction. Several possible implementations of surface tension force are suggested and compared. The numerical stability of the method is investigated and optimal choices for numerical parameters are identified. Comparisons with a grid-based volume of fluid method for two-dimensional flows are excellent. The methods presented here apply to problems involving interfaces of arbitrary shape undergoing fragmentation and coalescence within a two-phase system and readily extend to three-dimensional problems. Boundary conditions at a solid surface, high viscosity and density ratios, and the simulation of free-surface flows are not addressed. Copyright � 2000 John Wiley {\&} Sons, Ltd.},
+author = {Morris, Joseph P.},
+doi = {10.1002/1097-0363(20000615)33:3<333::AID-FLD11>3.0.CO;2-7},
+file = {:home/michinori/Dropbox/PDF/SimulatingSurfaceTenstionWithSPH.pdf:pdf},
+isbn = {1097-0363},
+issn = {02712091},
+journal = {International Journal for Numerical Methods in Fluids},
+keywords = {Interfacial flow,Meshless methods,Surface tension},
+number = {3},
+pages = {333--353},
+title = {{Simulating surface tension with smoothed particle hydrodynamics}},
+volume = {33},
+year = {2000}
 }
 
 @article{Oguz1990,
