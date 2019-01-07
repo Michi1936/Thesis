@@ -54,40 +54,42 @@ SPH法における表面張力のモデルは複数考案されている。
 \section{SPH法}
 \subsection{SPH法の支配方程式}
 \subsubsection{Kernel関数による補間}
-座標$\bm{x}$の粒子がもつ物理量Aは次のように表現される。 \cite{Becker2007}
+座標$\bm{x}$の粒子がもつ物理量Aは次のように表現される、\cite{Becker2007}
 \begin{equation}　　
   \label{eqn:SPH_int}
-A(\bex)=\sum_b \frac{A_b}{\rho_b} W(\bex-\bex_b,h)
+A(\bex)=\sum_b \frac{A_b}{\rho_b} W(\bex-\bex_b,h).
 \end{equation}
-ここで$A_b=A(\bex_b)$である。WはKernel関数と呼ばれるもので、本計算では次の関数を用いた。
+ここで$A_b=A(\bex_b)$である。WはKernel関数と呼ばれるもので、本計算では次の関数を用いた、
 \begin{equation}
   q=\frac{|\bex-\bex_b|}{h}, 
   W(\bex-\bex_b,h)=\begin{cases}
-    \frac{15}{14\pi h^2} \{(2-q)^3-4(1-q)^3\} & \text{$ 0 \leq q \leq 1$}\\
-    \frac{15}{14\pi h^2} (2-q)^3 & \text{$1\leq q \leq 2$}\\
-    0 & \text{otherwise}
+    \frac{15}{14\pi h^2} \left\{(2-q)^3-4(1-q)^3 \right\} & \text{$ 0 \leq q \leq 1$,}\\
+    \frac{15}{14\pi h^2} (2-q)^3 & \text{$1\leq q \leq 2$,} \\
+    0 & \text{otherwise.}
 \end{cases}
 \end{equation}
-式(\ref{eqn:SPH_int})の意味するところは、ある位置$\bex$に関して、$\bex$周囲に存在する粒子の物理量Aとその粒子までの距離に応じて減衰するKernel関数を掛けあわせた量を足し合わせることで、$\bex$における物理量Aを求めるものである。
+式(\ref{eqn:SPH_int})は、ある位置$\bex$に関して、$\bex$周囲に存在する粒子の物理量Aとその粒子までの距離に応じて減衰するKernel関数を掛けあわせた量を足し合わせることで、$\bex$における物理量Aを求めるものである。
 
-式(\ref{eqn:SPH_int})はKernel関数が微分可能である場合、両辺を微分することが可能であり、次のように表される。
+式(\ref{eqn:SPH_int})はKernel関数が微分可能である場合、両辺を微分することが可能であり、次のように表される、
 \begin{equation}
-\frac{\partial A}{\partial x}=\sum_bm_b\frac{A_b}{\rho_b}\frac{\partial W}{\partial x}
+\frac{\partial A}{\partial x}=\sum_bm_b\frac{A_b}{\rho_b}\frac{\partial W}{\partial x}.
 \end{equation}
 
-密度は式(\ref{eqn:SPH_int})の$A_b$を$\rho_b$とすればよく、次のように表される。
+例として密度を計算するには、式(\ref{eqn:SPH_int})の$A_b$を$\rho_b$とすればよく、次のように表される、
 \begin{equation}
-\rho_{a}=\sum_bm_bW_{ab}
+\rho_{a}=\sum_bm_bW_{ab}.
 \end{equation}
 ここで$W_{ab}=W(\bex_a-\bex_b)$である。
 
 \subsubsection{圧力項}
 得られた密度から圧力を計算する。非圧縮性を満たすためにはPoisson方程式$\nabla^2P=\rho\frac{\nabla\cdot\bm{v}}{\Delta t}$を解かなければならないが、計算コストが大きい。そのため本計算ではTait方程式と呼ばれる状態方程式を用いて圧力を導出する。
 
-Tait方程式は次のように表される。
+Tait方程式は次のように表される、
 \begin{equation}
   \label{eqn:Tait}
-P=B((\frac{\rho}{\rho_0})^\gamma-1)
+  P=B\left(
+ \left(\frac{\rho}{\rho_0}\right)^\gamma-1
+    \right).
 \end{equation}
 本計算では$\gamma=7$である。
 係数Bは密度の変化幅に関係する係数であり、数値計算における音速と関連付けられる。音速は
@@ -96,7 +98,7 @@ C_s=\sqrt{\frac{\partial p}{\partial \rho}}
 \end{equation}
 で与えられるため、圧力が式(\ref{eqn:Tait})で与えられるとき
 \begin{equation}
-C_s^2=\frac{\partial p}{\partial \rho}=\frac{B\gamma}{\rho_0}(\frac{\rho}{\rho_0})^{\gamma -1}
+C_s^2=\frac{\partial p}{\partial \rho}=\frac{B\gamma}{\rho_0}\left(\frac{\rho}{\rho_0}\right)^{\gamma -1}
 \end{equation}
 となる。密度$\rho_0$の時の音速を$C_{s0}$と表すと
 \begin{equation}
@@ -104,13 +106,13 @@ B=\frac{\rho_0C_{s0}^2}{\gamma}
 \end{equation}
 となり、式(\ref{eqn:Tait})は
 \begin{equation}
-P=\frac{\rho_0C_{s0}^2}{\gamma}((\frac{\rho}{\rho_0})^\gamma-1)
+P=\frac{\rho_0C_{s0}^2}{\gamma}\left(\left(\frac{\rho}{\rho_0}\right)^\gamma-1\right)
 \end{equation}
 となる。
-式(\ref{eqn:Tait})で得られた圧力を用いて、粒子に与えられる加速度は次のように与えられる。
+式(\ref{eqn:Tait})で得られた圧力を用いて、粒子に与えられる加速度は次のように与えられる、
 \begin{equation}
   \label{eqn:pressure_Ante}
-\frac{d\vex_a}{dt}=-\frac{1}{\rho_a}\sum_bm_b\frac{P_a}{\rho_b}\nabla_aW_{ab}
+\frac{d\vex_a}{dt}=-\frac{1}{\rho_a}\sum_bm_b\frac{P_a}{\rho_b}\nabla_aW_{ab}.
 \end{equation}
 しかしこの式では、粒子bから粒子aに働く力の大きさと粒子aから粒子bに働く力の大きさが等しくない即ち
 \begin{equation}
@@ -119,48 +121,48 @@ P=\frac{\rho_0C_{s0}^2}{\gamma}((\frac{\rho}{\rho_0})^\gamma-1)
 であるため、運動量が正しく保存されない。そこで次のように式を変形する。
 
 \begin{equation}
-\frac{\nabla P}{\rho}=\nabla(\frac{P}{\rho})+\frac{P}{\rho^2}\nabla \rho
+\frac{\nabla P}{\rho}=\nabla \left(\frac{P}{\rho}\right)+\frac{P}{\rho^2}\nabla \rho
 \end{equation}
 であることを用いると、式(\ref{eqn:pressure_Ante})は
 \begin{equation}
-\frac{d\vex_a}{dt}=-\sum_bm_b(\frac{P_a}{\rho_a^2}+\frac{P_b}{\rho_b^2})\nabla_aW_{ab}
+\frac{d\vex_a}{dt}=-\sum_bm_b\left(\frac{P_a}{\rho_a^2}+\frac{P_b}{\rho_b^2}\right)\nabla_aW_{ab}
 \end{equation}
 と書くことができる。$|\bm{r}_a-\bm{r}_b|$のスカラー関数$F_{ab}$を用いて$\nabla_aW_{ab}=\bm{r}_{ab}F_{ab}$と書くと、粒子bから粒子aに働く力は
 \begin{equation}
-m_am_b(\frac{P_b}{\rho_b^2}+\frac{P_a}{\rho_a^2})\bm{r}_{ab}F_{ab}
+m_am_b\left(\frac{P_b}{\rho_b^2}+\frac{P_a}{\rho_a^2}\right)\bm{r}_{ab}F_{ab}
 \end{equation}
 と表すことができる。この式より粒子bから粒子aに働く力と粒子aから粒子bに働く力は、向きが反対で大きさが同じであることが分かる。以上の議論は\cite{Monaghan2005}に依る。
 
 \subsubsection{人工粘性項}
-計算の安定性向上、および衝撃波を取り扱うために人工粘性を導入する。粘性による加速度はMonaghanによる形式 \cite{Monaghan2005}を用いた。
+計算の安定性向上および衝撃波の取り扱いのために人工粘性を導入する。粘性による加速度はMonaghanによる次の形式 \cite{Monaghan2005}を用いた、
 \begin{equation}
 \frac{d\vex_a}{dt}=\begin{cases}
-  -\sum_bm_b\Pi_{ab}\nabla_aW_{ab} & \vex_{ab}\cdot\bex_{ab}<0 \\
-  0 & \vex_{ab}\cdot\bex_{ab}\geq0
+  -\sum_bm_b\Pi_{ab}\nabla_aW_{ab} & \vex_{ab}\cdot\bex_{ab}<0, \\
+  0 & \vex_{ab}\cdot\bex_{ab}\geq0.
 \end{cases}
 \end{equation}
-ここで$\Pi_{ab}$は以下のように与えられる。
+ここで$\Pi_{ab}$は以下のように与えられる、
 \begin{equation}
-\Pi_{ab}=-\nu(\frac{\vex_{ab}\cdot\bex_{ab}}{|\bex_{ab}|^2+\epsilon h^2})
+\Pi_{ab}=-\nu\left(\frac{\vex_{ab}\cdot\bex_{ab}}{|\bex_{ab}|^2+\epsilon h^2}\right).
 \end{equation}
-粘性係数$\nu=\frac{2\alpha h c_s}{\rho_a+\rho_b}$である。
+$\nu$は人工粘性を制御する係数であり、$\nu=\frac{2\alpha h c_s}{\rho_a+\rho_b}$で決定される。
 
 \subsection{表面張力、親水性および疎水性の表現}
-表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang2016},\cite{Yang2017}を用いた。この手法は粒子の間に力を作用させることで、表面張力や個体表面での性質を再現する。
+表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang2016},\cite{Yang2017}を用いた。この手法は粒子の間に力を作用させることで、表面張力や個体表面での性質を再現する。粒子$i$に加えられる力は、
 \begin{equation}
-F^{\rm{int}}_i=\sum_{j} \bm{f}_{ji}
+F^{\rm{int}}_i=\sum_{j} \bm{f}_{ji},
 \end{equation}
 \begin{equation}
   \bm{f}_{ji}=\begin{cases}
-    c_{ij}m_im_j\cos(\frac{3\pi}{2kh}r_{ij})\frac{\bm{r}_{ij}}{r_{ij}} & \text{$|\bm{r}_{ij}|\leq kh$}\\
-    0 & \text{$|\bm{r}_{ij}|\geq kh$}
+    c_{ij}m_im_j\cos\left(\frac{3\pi}{2kh}r_{ij}\right)\frac{\bm{r}_{ij}}{r_{ij}} & \text{$|\bm{r}_{ij}|\leq kh,$}\\
+    0 & \text{$|\bm{r}_{ij}|\geq kh.$}
 \end{cases}
 \end{equation}
-ここで$\bm{r}_{ij}=\bm{r}_i-\bm{r}_{j}$、$r_{ij}=|\bm{r}_{ij}|$である。kはenlargement ratioと呼ばれるパラメータであり、相互作用の力が働く粒子の距離を調節している。
+ここで$\bm{r}_{ij}=\bm{r}_i-\bm{r}_{j}$、$r_{ij}=|\bm{r}_{ij}|$である。$k$はenlargement ratioと呼ばれるパラメータであり、相互作用の力が働く粒子の距離を調節している。
 
 $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相に属しているかによって値は変化する。それらの値は次の関係を満たす。
 \begin{equation}
-\cos\theta=\frac{c_{\alpha\alpha}-c_{\beta\beta}+2c_{\omega\alpha}-2c_{\omega\beta}}{c_{\alpha\alpha} +c_{\beta\beta} -2c_{\alpha\beta}}
+\cos\theta=\frac{c_{\alpha\alpha}-c_{\beta\beta}+2c_{\omega\alpha}-2c_{\omega\beta}}{c_{\alpha\alpha} +c_{\beta\beta} -2c_{\alpha\beta}.}
 \end{equation}
 ここで$\theta$は流体と床の接触角であり、$\alpha,\beta,\omega$はそれぞれ流体、空気、床に粒子が存在していることを意味している。
 
@@ -174,7 +176,7 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
   \label{interParam}
   \begin{center}
     \begin{tabular}{|c|c|}\hline
-      k&3.0 \\ \hline
+      $k$&3.0 \\ \hline
       $c_{\alpha\alpha}$ & 60.0 \\ \hline
     \end{tabular}
   \end{center}  
@@ -237,31 +239,31 @@ iy=\lfloor(r_y-\rm{MIN\_Y})/DB \rfloor
 
 
 \subsection{時間発展}
-本計算の時間発展にはleap-frog法を用いた。leap-frog法では時刻iにて次のように速度および位置を更新する。
+本計算の時間発展にはleap-frog法を用いた。leap-frog法では時刻$i$にて次のように速度および位置を更新する。
 \begin{equation}
-  \vex^{i+\frac{1}{2}}=\vex^{i-\frac{1}{2}}+\bm{a}^idt
+  \vex^{i+\frac{1}{2}}=\vex^{i-\frac{1}{2}}+\bm{a}^idt,
 \end{equation}
 \begin{equation}
-  \bex^{i+1}=\bex^i+\vex^{i+\frac{1}{2}}dt
+  \bex^{i+1}=\bex^i+\vex^{i+\frac{1}{2}}dt,
 \end{equation}
 \begin{equation}
-  \vex^{i+1}=\vex^{i+\frac{1}{2}}+\frac{\bm{a}^i}{2}dt
+  \vex^{i+1}=\vex^{i+\frac{1}{2}}+\frac{\bm{a}^i}{2}dt.
 \end{equation}
 時刻1において$\vex^{-\frac{1}{2}}$が存在しないため、次のようにして導出する。
 \begin{equation}
-  \vex^{\frac{1}{2}}=\vex^{0}+\frac{\bm{a}^0}{2}dt
+  \vex^{\frac{1}{2}}=\vex^{0}+\frac{\bm{a}^0}{2}dt,
 \end{equation}
 \begin{equation}
-  \bex^{1}=\bex^0+\vex^{\frac{1}{2}}dt
+  \bex^{1}=\bex^0+\vex^{\frac{1}{2}}dt,
 \end{equation}
 \begin{equation}
-  \vex^{1}=\vex^{0}+\bm{a}^0dt
+  \vex^{1}=\vex^{0}+\bm{a}^0dt.
 \end{equation}
 
 \subsection{単位系}
-剛体球の直径Dと重力加速度gから、単位時間$T_g=(\frac{D}{g})^{1/2}$を定義する。剛体球の初速に$T_g$を乗じたものをDで割ることによって、単位時間あたりに剛体球の直径の何倍移動するかという無次元量で剛体球の初速を定義する。この値を$U_0^*$と書き表す。
+剛体球の直径Dと重力加速度gから、単位時間$T_g=\left(\frac{D}{g}\right)^{1/2}$を定義する。剛体球の初速に$T_g$を乗じたものをDで割ることによって、単位時間あたりに剛体球の直径の何倍移動するかという無次元量で剛体球の初速を定義する。この値を$U_0^*$と書き表す。
 
-例として、実験での各値が、$D=2.0\times10^{-2}m,v_0=5m/s$であるとき、$U_0^*\sim11.25$である。
+例として、実験での各値が、$D=2.0\times10^{-2}$[m],$v_0$=5[m/s]であるとき、$U_0^*\sim11.25$である。
 
 粒子法での各値は$D=1, g=9.8$であるので、$U_0^*=11.25$を得るために、剛体球の初速は35.12でなければならない。
 
@@ -305,14 +307,14 @@ iy=\lfloor(r_y-\rm{MIN\_Y})/DB \rfloor
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\columnwidth]{waveSurf_1226_1953_.png}
-  \caption{x=12における波高の時間発展}
+  \caption{$x$=12における波高の時間発展}
   \label{fig:waveSurfEvol}
 \end{figure}
 
 
 次に表面張力係数の比較を行う。表面張力を考慮した水面派の分散関係は
 \begin{equation}
-\omega=\sqrt{(g+\frac{\gamma}{\rho}k^2)k\rm{tanh}(\it{kh})}
+\omega=\sqrt{\left(g+\frac{\gamma}{\rho}k^2 \right)k\rm{tanh}(\it{kh})}
 \end{equation}
 で与えられる\cite{tatsumiKiso}。$\rho\sim1000, \omega\sim4.18$の値を用いて$\gamma$の値を求めると、6399.5を得た。
 
