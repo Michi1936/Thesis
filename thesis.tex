@@ -82,7 +82,7 @@ A(\bex)=\sum_b \frac{A_b}{\rho_b} W(\bex-\bex_b,h).
 ここで$W_{ab}=W(\bex_a-\bex_b)$である。
 
 \subsubsection{圧力項}
-得られた密度から圧力を計算する。非圧縮性を満たすためにはPoisson方程式$\nabla^2P=\rho\frac{\nabla\cdot\bm{v}}{\Delta t}$を解かなければならないが、計算コストが大きい。そのため本計算ではTait方程式と呼ばれる状態方程式を用いて圧力を導出する。
+得られた密度から圧力を計算する。非圧縮性を満たすためにはPoisson方程式$\frac{\nabla^2p}{\rho}=\nabla\cdot(\vex\cdot\nabla\vex)+\nabla \cdot \bm{f}$を解かなければならないが、計算コストが大きい。そのため本計算ではTait方程式と呼ばれる状態方程式を用いて圧力を導出する。
 
 Tait方程式は次のように表される、
 \begin{equation}
@@ -134,7 +134,26 @@ m_am_b\left(\frac{P_b}{\rho_b^2}+\frac{P_a}{\rho_a^2}\right)\bm{r}_{ab}F_{ab}
 と表すことができる。この式より粒子bから粒子aに働く力と粒子aから粒子bに働く力は、向きが反対で大きさが同じであることが分かる。以上の議論は\cite{Monaghan2005}に依る。
 
 \subsubsection{人工粘性項}
-計算の安定性向上および衝撃波の取り扱いのために人工粘性を導入する。粘性による加速度はMonaghanによる次の形式 \cite{Monaghan2005}を用いた、
+計算の安定性向上および衝撃波の取り扱いのために人工粘性を導入する。
+
+粘性項を粒子間の相対運動から導出するために、$\nabla_jW_{ij}$にかかる$\frac{p_i}{\rho_i^2}+\frac{p_j}{\rho_j^2}$の部分に新しく$\Pi_ij$という項を追加する。線形な形の、人工粘性の圧力は
+\begin{equation}
+q=-\alpha\rho hc\nabla\cdot v
+\end{equation}
+で与えられるため、$\pi_{ij}$は
+\begin{equation}
+  -\alpha \frac{hc}{\rho}\frac{\partial v}{\partial x}
+\end{equation}
+と近似することができる。ここで、
+\begin{equation}
+  \frac{v_{ij}}{x_{ji}}=\frac{v_i-v_j}{x_{ij}}=\frac{1}{x_{ij}}\left[ v_i-\left( v_i+x_{ji}\frac{\partial v_i}{\partial x_i} \right) \right] \sim \frac{\partial v_i}{\partial x_i}
+\end{equation}
+であるため、
+\begin{equation}
+\Pi_{ij}=-\alpha \frac{hc_i}{\rho_i}\frac{v_{ij}}{x_{ij}}
+\end{equation}
+となる。
+粘性による加速度はMonaghanによる次の形式 \cite{Monaghan2005}を用いた、
 \begin{equation}
 \frac{d\vex_a}{dt}=\begin{cases}
   -\sum_bm_b\Pi_{ab}\nabla_aW_{ab} & \vex_{ab}\cdot\bex_{ab}<0, \\
@@ -350,47 +369,48 @@ iy=\lfloor(r_y-\rm{MIN\_Y})/DB \rfloor
   \label{fig:contactAngles}
 \end{figure}
 
-図\ref{fig:PhobyDrop}および\ref{fig:PhileDrop}は接触角として$\frac{3}{4}\pi, \frac{\pi}{4}$を与えた時の流体の振る舞いを、80000ステップ時点で出力したものである。流体との接触角が$\frac{\pi}{2}$より小さいを親水性といい、$\frac{\pi}{2}$よりも大きい物を疎水性という \cite{Truscott2012}。図を見ると接触角がそれぞれ$\frac{\pi}{2}$よりも大きいあるいは小さいことが観測されるため、本モデルは親水性および疎水性の振る舞いを定性的に再現していると考えられる。
+図\ref{fig:PhobyDrop}および\ref{fig:PhileDrop}は接触角として$\frac{3}{4}\pi, \frac{\pi}{4}$を与えた時の流体の振る舞いを、80000ステップ時点で出力したものである。流体との接触角が$\frac{\pi}{2}$より小さいを親水性といい、$\frac{\pi}{2}$よりも大きい物を疎水性という \cite{Law2014}。図を見ると接触角がそれぞれ$\frac{\pi}{2}$よりも大きいあるいは小さいことが観測されるため、本モデルは親水性および疎水性の振る舞いを定性的に再現していると考えられる。
 
 次に接触角の設定を変えて数値計算を行った。
 \begin{figure}[H]
   \centering
-  \begin{subfigure}{0.4\columnwidth}
+  \begin{subfigure}{0.3\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1635_1001_.png}
-    \caption{接触角$\frac{5}{6}\pi$}
-    \label{fig:phoby_pi6}
+    \includegraphics[width=\columnwidth]{Phobyhalf40_0107_1622_1001.png}
+    \caption{接触角$\frac{7}{12}\pi$}
+    \label{fig:phoby_pi3}
   \end{subfigure}
-  \begin{subfigure}{0.4\columnwidth}
+  \begin{subfigure}{0.6\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1635_1001_wl.png}
+    \includegraphics[width=\columnwidth]{Phobyhalf40_0107_1622_1001_wl.png}
     \caption{補助線付き}
-    \label{fig:phoby_pi6wl}
+    \label{fig:phoby_pi3wl}
   \end{subfigure}
 
-  \begin{subfigure}{0.4\columnwidth}
+  \begin{subfigure}{0.3\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1646_1001_.png}
+    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1646_1001.png}
     \caption{接触角$\frac{3}{4}\pi$}
     \label{fig:phoby_pi4}
   \end{subfigure}
-  \begin{subfigure}{0.4\columnwidth}
+  \begin{subfigure}{0.6\columnwidth}
     \centering
     \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1646_1001_wl.png}
     \caption{補助線付き}
     \label{fig:phoby_pi4wl}
   \end{subfigure}
-  \begin{subfigure}{0.4\columnwidth}
+
+  \begin{subfigure}{0.3\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1658_1001_.png}
-    \caption{接触角$\frac{2}{3}\pi$}
-    \label{fig:phoby_pi3}
+    \includegraphics[width=\columnwidth]{Phobyhalf40_0107_1611_1001.png}
+    \caption{接触角$\frac{11}{12}\pi$}
+    \label{fig:phoby_pi6}
   \end{subfigure}
-  \begin{subfigure}{0.4\columnwidth}
+  \begin{subfigure}{0.6\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Phobyhalf40_1231_1658_1001_wl.png}
+    \includegraphics[width=\columnwidth]{Phobyhalf40_0107_1611_1001_wl.png}
     \caption{補助線付き}
-    \label{fig:phoby_pi3wl}
+    \label{fig:phoby_pi6wl}
   \end{subfigure}
 
   \caption{接触角を変化させた疎水性の床上の水滴}
@@ -439,8 +459,12 @@ iy=\lfloor(r_y-\rm{MIN\_Y})/DB \rfloor
   \caption{接触角を変化させた親水性の床上の水滴}
 \end{figure}
 
-設定した接触角の傾きは緑色の直線で、得られたグラフにフィッティングした傾きは黄色の直線で表されている。
-どの値に於いても、親水性および疎水性の定性的な再現は見られたが、接触角の値の変化は入力した値に対して小さいものとなった。
+接触角を測る手続きとして以下のような手順を用いる。
+
+水滴の底面とみなせる直線を引く。外縁部かつ水滴の下半球に存在する粒子を底面の粒子と呼ぶことにする。
+底面の粒子を、中心から右へと確認していき、初めて底面の直線よりy座標が高くなった底面の粒子の座標をP1とする。その粒子より右に数えて10番目に存在する底面の粒子の座標をP2とする。2点P1とP2の間に直線を引き、その傾きを接触角の大きさと呼ぶことにする。
+
+入力した接触角と得られた接触角の対応関係は、てんでんばらばらであった。図を見る限り入力した接触角の大小と出力された接触角の大小には相関関係があるようにも見えるが、それらを定量的に評価できる手続きを作り出すことができなかった。
 
 以下の数値計算においては、接触角$\frac{\pi}{4},\frac{3}{4}\pi$をそれぞれ浸水性・疎水性の代表的な値として用い、それらの接触角と対応する実験での振る舞いと比較を行った。
 
