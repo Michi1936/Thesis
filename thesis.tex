@@ -8,7 +8,7 @@
 \usepackage{subcaption}
 
 \begin{document}
-\title{水面に剛体が衝突した際に生じる気泡の解析}
+\title{親水性および疎水性の剛体を水面に衝突させた際に生じる空洞の数値解析}
 \author{京都大学理学研究科　物理学宇宙物理学専攻\\流体物理学研究室\\佐藤道矩}
 \maketitle
 \newpage
@@ -21,34 +21,35 @@
 
 水面の変形に関する研究では、Worthingtonによるもの \cite{Worthington1908}がその嚆矢として挙げられることが多い。彼は水面に水滴を衝突させる実験を複数回行い、その度に少しずつ異なるタイミングでストロボを焚いて写真を撮影することで、水飛沫の生成の連続写真を作成することに成功した。以来、撮影器具の進歩に合わせ、より鮮明な画像が撮影され続けてきた。……。
 
-水面に水滴や剛体を衝突させた際に界面が変形し、空気が水中に取り込まれることで気泡（cavity）が生成される現象が確認されている。生成される気泡の大きさは様々であり、剛体球に空気が引きずられるようなもの\cite{Worthington1908}\cite{Mallock1918}、水面の変形によって空気がちぎり取られるようなもの\cite{Oguz1990}などが一例である。
+水面に水滴や剛体を衝突させた際に界面が変形し、空洞(cavity)が生じる現象が確認されている。大気中で実験を行った場合、生成される空洞は気泡と呼ばれる。生成される気泡の大きさは様々であり、Aristoffらは空洞が閉じる位置に応じて、shallow sealやdeep sealといった分類を行っている\cite{Aristoff2009}。これら空洞の分類については、Truscottらによるreview論文\cite{Truscott2014}の模式図が視覚的に分かりやすい。
 
 空気が取り込まれる現象は音生成の原因となっている。Minnaert\cite{minnaert1933xvi}が”小川のせせらぎ、瀑布の轟音、海の潮騒についてほとんど分かっていない”と述べたこの現象は、Franz\cite{Franz1959}やPumphrey\cite{Pumphrey1990}らによって研究され、Leightonによる浩瀚な研究書\it{The Acoustic Bubble}\cite{leightonacoustic}にまとめられた。近年では、ハイスピードカメラを用いて、取り込まれた泡が実際に振動している様子が撮影されている\cite{Phillips2018}。
 
 \subsection{SPH法}
 流体を粒子の集合として計算する手法は粒子法と呼ばれ、\rm{Smoothed Particle Hydrodynamics}（略称SPH）法は粒子法のモデルの一つである。
 
-SPH法は1977年に、宇宙物理における気体運動の問題を解くための手法として、MonaghanとGingold\cite{Gingold1977}のペア及びLucy\cite{Lucy1977}が別々に発表した。1980年代には宇宙物理に加えて、電磁流体力学や弾性・破壊過程の計算に用いられるようになったが、非圧縮性流体に適応されるようになったのは1990年代の半ばになってからである。1994年にMonaghan\cite{Monaghan1994}が発表した手法が現在流体計算に用いられているモデルの基本となり、以来計算の目的に応じて様々な改良が施され続けている。
-
-流体の複雑な変形を容易に取り扱うことができることから、CG分野でもしばしば用いられており、、、
+SPH法は1977年に、宇宙物理における気体運動の問題を解くための手法として、MonaghanとGingold\cite{Gingold1977}のペア及びLucy\cite{Lucy1977}が別々に発表した。1980年代には宇宙物理に加えて、電磁流体力学や弾性・破壊過程の計算に用いられるようになったが、非圧縮性流体に適応されるようになったのは1990年代の半ばになってからである。1994年にMonaghan\cite{Monaghan1994}が発表した手法が現在流体計算に用いられているモデルの基本となり、以来計算の目的に応じて様々な改良が施され続けている(この史観はVioleauの論文に依拠している)。
 
 粒子法は流体を物理量を持った粒子の集合として計算する手法であり、計算領域を格子に分割して計算する手法との差を強調してmesh-freeな方法と呼ばれることもある。利点としては、粒子の運動がそのまま流体の運動になるため、流体の分離や合体といった複雑な変形を容易に扱うことができる。
 
 他の利点としては、プログラムの記述が容易であること、圧力計算の際に状態方程式を用いることで計算時間を大きく削減できることなどが挙げられる。
+
 欠点としては、計算の解像度が粒子数に依存するため運動を詳細に解析するためには大量の粒子が必要となり計算時間が増大すること、激しい流れを扱う計算では高周波振動(High-Frequency Oscillatory, HFO)が観測されることなどが挙げられる。こうした欠点を解決するためのモデルも開発されているが、それらがどこまで物理的に妥当なものであるかは各々に議論が必要となる。
 
 \subsection{先行研究}
-剛体球を水面に落とした際の変形に関する研究は、上で述べた通り古くから多数が行われている。近年では、剛体球表面の性質を変えたり、水面突入時の剛体に回転運動を与えるなど、様々なヴァリエーションが存在している。
+剛体球を水面に落とした際の変形に関する研究は、上で述べた通り古くから多数が行われている。ただ球を水面に落下させるだけではなく、剛体球表面の性質を変えたり、水面突入時の剛体に回転運動を与えるなど、様々なヴァリエーションが存在している。
 
-Duez\cite{Duez2007}らによる研究は、親水性あるいは疎水性の剛体球を水面に衝突させ、気泡が取り込まれる衝突速度のしきい値を実験から導いた。また彼らは、剛体速度と濡れの関係に関するEggers\cite{Eggers2004}の議論を基に、衝突速度のしきい値についての理論式を導出している。剛体速度と濡れの関係の議論はLandau\cite{landau1942}らによるものまで遡る。
+剛体球表面の性質と生成される空洞の関係に対しては、Worthingtonによってすでに指摘されている\cite{Worthington1908}。彼は小石をハンカチで磨く、あるいはサンドペーパーでこすることで表面の性質を変化させた。前者の性質はsmooth、後者の性質はroughと形容され、これらの球が水面に衝突した際にできる水しぶきが著しく異なることを報告している。
+
+Duez\cite{Duez2007}らによる研究は、親水性あるいは疎水性の剛体球を水面に衝突させ、空洞が生じる衝突速度のしきい値を実験から導いた。また彼らは、剛体速度と濡れの関係に関するEggers\cite{Eggers2004}の議論を基に、衝突速度のしきい値についての理論式を導出している。剛体速度と濡れの関係の議論はLandau\cite{landau1942}らによるものまで遡る。
 
 SPH法における表面張力のモデルは複数考案されている。
 
-一つはContinuum Surface Force (CSF)モデルと呼ばれるもので、カラー関数あるいは粒子の配置から流体界面の曲率や法線ベクトルを求め、その値に基づき表面張力を計算する。SPH法にはMorris\cite{Morris2000}によって導入された。
+一つはカラー関数あるいは粒子の配置から流体界面の曲率や法線ベクトルを求め、その値に基づき表面張力を計算するモデルであり、Continuum Surface Force (CSF)モデルと呼ばれる。SPH法にはMorris\cite{Morris2000}によって導入された。
 
-一つは、表面張力は微視的には分子間力に依るものであるため、粒子間にも相互作用力を導入し表面張力を再現するモデルである。この手法では流体粒子と個体粒子の間での相互作用力を変化させることで、個体の濡れ性を容易に表現することができる。Akinci\cite{Akinci2013}は流体粒子間の相互作用力を加え、表面積を最小にする計算を行うことで、表面張力を表現した。また個体粒子と流体粒子の間にも相互作用力を加え、個体の濡れ性をある程度制御している。
+一つは、表面張力は微視的には分子間力に依るものであるため、粒子間にも相互作用力を導入し表面張力を再現するモデルであり、Pair-wise Forceモデルと呼ばれる。。この手法では流体粒子と個体粒子の間での力を変化させることで、個体の濡れ性を容易に表現することができる。Akinci\cite{Akinci2013}は流体粒子間の相互作用力を加え、表面積を最小にする計算を行うことで、表面張力を表現した。また個体粒子と流体粒子の間にも相互作用力を加え、個体の濡れ性をある程度制御している。
 
-
+本論文の目的は、剛体が水面に衝突した際に生じる空洞に対し、剛体表面の親水・疎水性の違いが及ぼす影響を、SPH法を用いた2次元の数値計算を通して考察することである。
 
 \newpage
 \section{SPH法}
@@ -61,12 +62,14 @@ A(\bex)=\sum_b \frac{A_b}{\rho_b} W(\bex-\bex_b,h).
 \end{equation}
 ここで$A_b=A(\bex_b)$である。WはKernel関数と呼ばれるもので、本計算では次の関数を用いた、
 \begin{equation}
-  q=\frac{|\bex-\bex_b|}{h}, 
-  W(\bex-\bex_b,h)=\begin{cases}
-    \frac{15}{14\pi h^2} \left\{(2-q)^3-4(1-q)^3 \right\} & \text{$ 0 \leq q \leq 1$,}\\
-    \frac{15}{14\pi h^2} (2-q)^3 & \text{$1\leq q \leq 2$,} \\
-    0 & \text{otherwise.}
-\end{cases}
+  \begin{split}
+    &q=\frac{|\bex-\bex_b|}{h}, \\
+    &W(\bex-\bex_b,h)=\begin{cases}
+      \frac{15}{14\pi h^2} \left\{(2-q)^3-4(1-q)^3 \right\} & \text{$ 0 \leq q \leq 1$,}\\
+      \frac{15}{14\pi h^2} (2-q)^3 & \text{$1\leq q \leq 2$,} \\
+      0 & \text{otherwise.}
+    \end{cases}
+  \end{split}
 \end{equation}
 式(\ref{eqn:SPH_int})は、ある位置$\bex$に関して、$\bex$周囲に存在する粒子の物理量Aとその粒子までの距離に応じて減衰するKernel関数を掛けあわせた量を足し合わせることで、$\bex$における物理量Aを求めるものである。
 
@@ -92,23 +95,7 @@ Tait方程式は次のように表される、
     \right).
 \end{equation}
 本計算では$\gamma=7$である。
-係数Bは密度の変化幅に関係する係数であり、数値計算における音速と関連付けられる。音速は
-\begin{equation}
-C_s=\sqrt{\frac{\partial p}{\partial \rho}}
-\end{equation}
-で与えられるため、圧力が式(\ref{eqn:Tait})で与えられるとき
-\begin{equation}
-C_s^2=\frac{\partial p}{\partial \rho}=\frac{B\gamma}{\rho_0}\left(\frac{\rho}{\rho_0}\right)^{\gamma -1}
-\end{equation}
-となる。密度$\rho_0$の時の音速を$C_{s0}$と表すと
-\begin{equation}
-B=\frac{\rho_0C_{s0}^2}{\gamma}
-\end{equation}
-となり、式(\ref{eqn:Tait})は
-\begin{equation}
-P=\frac{\rho_0C_{s0}^2}{\gamma}\left(\left(\frac{\rho}{\rho_0}\right)^\gamma-1\right)
-\end{equation}
-となる。
+
 式(\ref{eqn:Tait})で得られた圧力を用いて、粒子に与えられる加速度は次のように与えられる、
 \begin{equation}
   \label{eqn:pressure_Ante}
@@ -131,40 +118,89 @@ P=\frac{\rho_0C_{s0}^2}{\gamma}\left(\left(\frac{\rho}{\rho_0}\right)^\gamma-1\r
 \begin{equation}
 m_am_b\left(\frac{P_b}{\rho_b^2}+\frac{P_a}{\rho_a^2}\right)\bm{r}_{ab}F_{ab}
 \end{equation}
-と表すことができる。この式より粒子bから粒子aに働く力と粒子aから粒子bに働く力は、向きが反対で大きさが同じであることが分かる。以上の議論は\cite{Monaghan2005}に依る。
+と表すことができる。この式より粒子bから粒子aに働く力と粒子aから粒子bに働く力は、向きが反対で大きさが同じであることが分かる。以上の議論は\cite{Monaghan2005}に依った。
+
+式(\ref{eqn:Tait})における係数Bについて詳述する。
+
+係数Bは密度の変化幅に関係する係数であり、数値計算における音速と関連付けられる。音速は
+\begin{equation}
+c_s=\sqrt{\frac{\partial p}{\partial \rho}}
+\end{equation}
+で与えられるため、圧力が式(\ref{eqn:Tait})で与えられるとき
+\begin{equation}
+c_s^2=\frac{\partial p}{\partial \rho}=\frac{B\gamma}{\rho_0}\left(\frac{\rho}{\rho_0}\right)^{\gamma -1}
+\end{equation}
+となる。密度$\rho_0$の時の音速を$c_{s0}$と表すと
+\begin{equation}
+B=\frac{\rho_0c_{s0}^2}{\gamma}
+\end{equation}
+となり、式(\ref{eqn:Tait})は
+\begin{equation}
+P=\frac{\rho_0c_{s0}^2}{\gamma}\left(\left(\frac{\rho}{\rho_0}\right)^\gamma-1\right)
+\end{equation}
+となる。
+
+音速$c_S$の値によって密度の変化幅は制御される。$\Delta \rho=\rho-\rho_0$としたとき、密度の変化$\frac{\left| \Delta \rho \right|}{\rho_0}$は、
+\begin{equation}
+\frac{\left| \Delta \rho \right|}{\rho_0}\sim \frac{\left| \vex_f \right|^2}{c_s^2}
+\end{equation}
+で評価することができる。ここで$\vex_f$は取り扱う現象に於ける典型的な流速である。
+
+密度変化の上限を$\eta$として、$\frac{\left| \Delta \rho \right|}{\rho_0}\sim \eta$を得るためには、$\frac{v_f}{c_s}<\sqrt{\eta}$が必要となる。以上の議論を基に、取り扱う現象の流速に応じて$c_S$は適当な値を入力する。
+
 
 \subsubsection{人工粘性項}
 計算の安定性向上および衝撃波の取り扱いのために人工粘性を導入する。
 
-粘性項を粒子間の相対運動から導出するために、$\nabla_jW_{ij}$にかかる$\frac{p_i}{\rho_i^2}+\frac{p_j}{\rho_j^2}$の部分に新しく$\Pi_ij$という項を追加する。線形な形の、人工粘性の圧力は
+粘性項を粒子間の相対運動から導出するために、$\nabla_aW_{ab}$にかかる$\frac{P_a}{\rho_a^2}+\frac{P_b}{\rho_b^2}$の部分に新しく$\Pi_{ab}$という項を追加する。線形な形の、人工粘性の圧力は
 \begin{equation}
-q=-\alpha\rho hc\nabla\cdot v
+  q=\begin{cases}
+    -\alpha \rho h c \nabla \cdot v & \nabla\cdot v<0 \\
+    0 & \nabla \cdot v>0
+  \end{cases}
 \end{equation}
-で与えられるため、$\pi_{ij}$は
+で与えられるため、$\Pi_{ab}$は
 \begin{equation}
   -\alpha \frac{hc}{\rho}\frac{\partial v}{\partial x}
 \end{equation}
 と近似することができる。ここで、
 \begin{equation}
-  \frac{v_{ij}}{x_{ji}}=\frac{v_i-v_j}{x_{ij}}=\frac{1}{x_{ij}}\left[ v_i-\left( v_i+x_{ji}\frac{\partial v_i}{\partial x_i} \right) \right] \sim \frac{\partial v_i}{\partial x_i}
+  \frac{v_{ab}}{x_{ji}}=\frac{v_a-v_b}{x_{ab}}=\frac{1}{x_{ab}}\left[ v_a-\left( v_a+x_{ji}\frac{\partial v_a}{\partial x_a} \right) \right] \sim \frac{\partial v_a}{\partial x_a}
 \end{equation}
 であるため、
 \begin{equation}
-\Pi_{ij}=-\alpha \frac{hc_i}{\rho_i}\frac{v_{ij}}{x_{ij}}
+\Pi_{ab}=-\alpha \frac{hc_a}{\rho_a}\frac{v_{ab}}{x_{ab}}
 \end{equation}
 となる。
-粘性による加速度はMonaghanによる次の形式 \cite{Monaghan2005}を用いた、
+
+この式には扱いづらい箇所が2点存在している。一つは分母の$x_{ab}$が$0$になったとき発散してしまうこと、一つは$\frac{c_a}{\rho_a}$のために$\Pi_{ab}\neq\Pi_{ba}$となっていることである。
+
+分母が0になることを防ぐために$\frac{1}{x_{ab}}$を
+\begin{equation}
+\frac{x_{ab}}{x_{ab}^2+\epsilon h^2},
+\end{equation}
+という式で置き換える。ここで$\epsilon$は1より十分小さい定数である。
+
+$c_a$および$\rho_a$はそれぞれ
+\begin{equation}
+  \begin{split}
+  \bar{c_{ab}}=\frac{1}{2}(c_a+c_b), \\
+  \bar{\rho_{ab}}=\frac{1}{2}(\rho_a+\rho_b),
+  \end{split}
+\end{equation}
+という量で置き換える。
+
+以上の議論より人工粘性による加速度は次のようになる、
 \begin{equation}
 \frac{d\vex_a}{dt}=\begin{cases}
   -\sum_bm_b\Pi_{ab}\nabla_aW_{ab} & \vex_{ab}\cdot\bex_{ab}<0, \\
   0 & \vex_{ab}\cdot\bex_{ab}\geq0.
 \end{cases}
 \end{equation}
-ここで$\Pi_{ab}$は以下のように与えられる、
 \begin{equation}
 \Pi_{ab}=-\nu\left(\frac{\vex_{ab}\cdot\bex_{ab}}{|\bex_{ab}|^2+\epsilon h^2}\right).
 \end{equation}
-$\nu$は人工粘性を制御する係数であり、$\nu=\frac{2\alpha h c_s}{\rho_a+\rho_b}$で決定される。
+$\nu$は人工粘性を制御する係数であり、$\nu=\frac{2\alpha h c_s}{\rho_a+\rho_b}$で決定される。以上の議論は\cite{Monaghan1983}に依る。
 
 \subsection{表面張力、親水性および疎水性の表現}
 表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang2016},\cite{Yang2017}を用いた。この手法は粒子の間に力を作用させることで、表面張力や個体表面での性質を再現する。粒子$i$に加えられる力は、
@@ -177,13 +213,13 @@ F^{\rm{int}}_i=\sum_{j} \bm{f}_{ji},
     0 & \text{$|\bm{r}_{ij}|\geq kh.$}
 \end{cases}
 \end{equation}
-ここで$\bm{r}_{ij}=\bm{r}_i-\bm{r}_{j}$、$r_{ij}=|\bm{r}_{ij}|$である。$k$はenlargement ratioと呼ばれるパラメータであり、相互作用の力が働く粒子の距離を調節している。
+ここで$\bm{r}_{ij}=\bm{r}_i-\bm{r}_{j}$、$r_{ij}=|\bm{r}_{ij}|$である。$k$はenlargement ratioと呼ばれるパラメータであり、相互作用力が働く距離を調節している。
 
 $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相に属しているかによって値は変化する。それらの値は次の関係を満たす。
 \begin{equation}
 \cos\theta=\frac{c_{\alpha\alpha}-c_{\beta\beta}+2c_{\omega\alpha}-2c_{\omega\beta}}{c_{\alpha\alpha} +c_{\beta\beta} -2c_{\alpha\beta}.}
 \end{equation}
-ここで$\theta$は流体と床の接触角であり、$\alpha,\beta,\omega$はそれぞれ流体、空気、床に粒子が存在していることを意味している。
+ここで$\theta$は流体と床の接触角であり、$\alpha,\beta,\omega$はそれぞれ流体、空気、床に粒子が存在していることを表す。例えば$c_{\alpha\omega}$は流体粒子と個体粒子の間に働く相互作用力の大きさ。
 
 今、$c_{\alpha\beta},c_{\omega\beta}$は小さいことが物理的な観測より分かっているため0とする。また$c_{\alpha\alpha}=c_{\beta\beta}$としてもよいため
 \begin{equation}
@@ -205,15 +241,14 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 壁となる領域に座標を固定した粒子を配置する方法を採用した。壁粒子が一列である場合、壁近傍での圧力が低下し流体粒子が壁を通り抜けることがある。この現象を防ぐため、3層にわたって壁粒子を配置した。
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\columnwidth]{wallBoundary.png}
+  \includegraphics[width=0.6\columnwidth]{wallBoundary.png}
   \caption{壁粒子の様子}
   \label{fig:wallParticles} 
 \end{figure}
 
-
-
 \subsection{剛体の表現}
 剛体の表現はPMS(Passively Moving Solid)法\cite{Gotoh2018}と呼ばれるモデルを用いた。
+
 剛体は複数の剛体粒子が集まったものとして表現される。各タイムステップごとに剛体粒子を流体粒子と同様に計算し、速度を導出する。次に得られた速度を用いて以下の量を計算する。
 \begin{equation}
   \bm{r}_g=\sum_{i}^n{\bm{r}_i}
@@ -238,23 +273,31 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 となる。ここで新しく得られた速度を用いて剛体粒子の座標を更新する。
 
 \subsection{近傍粒子の探索法}
-粒子法では、ある粒子はその影響範囲内に存在する他の粒子とのみ相互作用を計算すればよい。影響範囲内に存在するか否かを判定する最も単純な方法は、2つの粒子間の距離を計算することであるが、全ての粒子に対して距離の計算を行うと
-計算コストが大きくなる。本計算では、バケット構造を用いてある粒子の近傍にある粒子とのみ相互作用の計算をするようにしている。\cite{Koshiduka2014}ここで格子は粒子の位置の判別に用いられるのであって、Euler法のように格子自体が物理量を持っているわけではない。
-　
-計算領域全体に正方形のバケットを敷き詰め、それぞれのバケットは次のような番号を持っている
-\begin{equation}
-ib=ix+iy*nBx
-\end{equation}
-ここでibはバケットに付与された数、nBxはx軸方向に並べられたバケットの数であり、ix,iyはそれぞれバケットのx,y座標であり、次のようにして求められる。
-\begin{equation}
-ix=\lfloor(r_x-\rm{MIN\_X})/DB \rfloor
-\end{equation}
-\begin{equation}
-iy=\lfloor(r_y-\rm{MIN\_Y})/DB \rfloor
-\end{equation}
-ここで$r_x,r_y$は粒子のxおよびy座標、DBはバケット一辺の長さであり、MIN\_X,MIN\_Yは計算範囲におけるxおよびyの最小値である。
 
-近傍粒子の探索は以下のようにして行う……。
+粒子法では、ある粒子$a$はその影響半径内に存在する他の粒子からのみ相互作用を受ける。
+他の粒子が$a$の影響半径内に存在するか否かを判定する最も単純な方法は、2つの粒子間の距離を計算することである。
+しかし粒子$a$から遠く離れた粒子とまで距離の計算を行い、影響半径との比較を行うことは計算時間の増大を招く。
+
+本計算ではバケット構造を用い、粒子$a$近傍に存在している粒子とのみ粒子間距離および相互作用の計算を行っている\cite{Koshiduka2014}。ここで格子は粒子の位置の判別に用いられるのであって、Euler法のように格子自体が物理量を持っているわけではない。
+　
+
+計算領域全体に正方形のバケットを敷き詰める。粒子$a$が座標$(r_x, r_y)$に存在している時、粒子$a$の入っているバケットの番号は次のように与えられる、
+\begin{equation}
+\rm{ib=ix+iy*nBx}.
+\end{equation}
+ここでibはバケットの番号、nBxはx軸方向に並べられたバケットの数である。ix,iyはそれぞれバケットのx,y座標であり、次のようにして求められる。
+\begin{equation}
+\label{eqn:backet}
+  \begin{split}
+  \rm{ix=\lfloor(r_x-MIN\_X)/DB \rfloor}\\
+  \rm{iy=\lfloor(r_y-MIN\_Y)/DB \rfloor}
+\end{split}
+\end{equation}
+ここでDBはバケット一辺の長さであり、MIN\_X,MIN\_Yは計算範囲におけるxおよびyの最小値である。
+
+近傍粒子の探索は以下のようにして行う。
+
+粒子$a$の座標からixとiyを求め、バケットの番号ibを得る。また、バケットibの周囲に存在する8つのバケットの番号も得ることができる。バケットibおよびその周囲の8バケット内に存在している粒子と粒子$a$との距離を計算し、相互作用を計算する。
 
 
 \subsection{時間発展}
@@ -314,7 +357,7 @@ iy=\lfloor(r_y-\rm{MIN\_Y})/DB \rfloor
 水面を波立たせた初期条件を与え、時間発展をさせる。その時に見られる波の波長を理論値と比べた。
 まず重力波の比較を行う。重力波の分散関係は
 \begin{equation}
-  \omega(k)=\sqrt{gk\rm{tanh}\it{kh}}
+  \omega(k)=\sqrt{gk \tanh (kh)}
 \end{equation}
 で与えられる\cite{tatsumiKiso}。$g=9.8, k=\frac{2\pi}{\lambda}=\frac{2\pi}{6.0}, h=3.0$を代入すると$\omega\sim3.18$である。これより周期は$\frac{2\pi}{3.18}\sim1.98$となる。実験で得られた周期はおよそ2.0であるためまず水面波を大方再現しているものと考えられる。
 \begin{figure}[H]
@@ -333,7 +376,7 @@ iy=\lfloor(r_y-\rm{MIN\_Y})/DB \rfloor
 
 次に表面張力係数の比較を行う。表面張力を考慮した水面派の分散関係は
 \begin{equation}
-\omega=\sqrt{\left(g+\frac{\gamma}{\rho}k^2 \right)k\rm{tanh}(\it{kh})}
+\omega=\sqrt{\left(g+\frac{\gamma}{\rho}k^2 \right)k \tanh (kh)}
 \end{equation}
 で与えられる\cite{tatsumiKiso}。$\rho\sim1000, \omega\sim4.18$の値を用いて$\gamma$の値を求めると、6399.5を得た。
 
