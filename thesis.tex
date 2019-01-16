@@ -41,15 +41,13 @@ SPH法は1977年に、宇宙物理における気体運動の問題を解くた�
 \subsection{先行研究}
 剛体球を水面に落とした際の変形に関する研究は、上で述べた通り古くから多数が行われている。ただ球を水面に落下させるだけではなく、剛体球表面の性質を変えたり、水面突入時の剛体に回転運動を与えるなど、様々な発展形が存在している。
 
-本論文では、剛体表面の濡れ性と生成される空洞の関係について注目する。
+本論文では、剛体表面の濡れ性と生成される空洞の関係について注目する。以下、このテーマについての研究史を述べる。
 
 剛体球表面の性質と生成される空洞の関係に対しては、Worthingtonによってすでに指摘されている\cite{Worthington1908}。彼は小石をハンカチで磨く、あるいはサンドペーパーでこすることで表面の性質を変化させた。前者の性質はsmooth、後者の性質はroughと形容され、これらの球が水面に衝突した際にできる水しぶきや空洞が大きく異なることを報告している。
 
 Duez\cite{Duez2007}らによる研究は、親水性あるいは疎水性の剛体球を水面に衝突させ、空洞が生じる衝突速度のしきい値を実験から導いた。また彼らは、剛体速度と濡れの関係に関するEggers\cite{Eggers2004}の議論を基に、衝突速度のしきい値についての理論式を導出している。剛体速度と濡れの関係の議論はLandau\cite{landau1942}らによるものまで遡る。
 
-SPH法における表面張力のモデルは複数考案されている。
-
-一つはカラー関数あるいは粒子の配置から流体界面の曲率や法線ベクトルを求め、その値に基づき表面張力を計算するモデルであり、Continuum Surface Force (CSF)モデルと呼ばれる。SPH法にはMorris\cite{Morris2000}によって導入された。
+SPH法における濡れ性のモデルは以下のものがある。。
 
 一つは粒子間に相互作用力を導入し表面張力を再現するモデルであり、Pair-wise Forceモデルと呼ばれる\cite{Tartakovsky2005}。この手法は、表面張力が微視的には分子間力によるものであることから着想を得ている。
 
@@ -233,16 +231,6 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \cos\theta\simeq c_{\omega\alpha}/c_{\alpha\alpha}
 \end{equation}
 となる。
-\begin{table}[h]
-  \caption{相互作用の計算に用いられるパラメータ}
-  \label{interParam}
-  \begin{center}
-    \begin{tabular}{|c|c|}\hline
-      $k$&3.0 \\ \hline
-      $c_{\alpha\alpha}$ & 60.0 \\ \hline
-    \end{tabular}
-  \end{center}  
-\end{table}
 
 \subsection{壁粒子の表現}
 壁となる領域に座標を固定した粒子を配置する方法を採用した。壁粒子が一列である場合、壁近傍での圧力が低下し流体粒子が壁を通り抜けることがある。この現象を防ぐため、3層にわたって壁粒子を配置した。
@@ -360,28 +348,56 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \newpage
 \section{計算結果}
 \subsection{粘性、表面張力の測定}
+\label{subsec:surfaceCoef}
 粒子法における粘性・表面張力と、水が持つ粘性・表面張力を比較するために、次の数値計算を行った。
-水面を波立たせた初期条件を与え、時間発展をさせる。その時に見られる波の波長を理論値と比べた。
-まず重力波の比較を行う。重力波の分散関係は
+計算に用いたパラメータは以下のとおりである。
+\begin{table}[h]
+  \caption{節\ref{subsec:surfaceCoef}における各パラメータ}
+  \begin{center}
+    \begin{tabular}{|c|c|c|}\hline
+      影響半径&$h$&$\rm{1.00\times10^{-1}}$ \\ \hline
+      流体の密度&$\rho_0$&$\rm{1.00\times10^3}$ \\ \hline
+      粒子の質量&$m$&2.62 \\ \hline
+      人口粘性項&$\alpha$&$\rm{2.00\times10^{^2}}$ \\ \hline
+      重力加速度&$g$&9.80 \\ \hline
+      音速&$c_s$&$\rm{8.00\times10^1}$ \\ \hline
+      時間刻み幅&$dt$&$\rm{1.0\times10^{-4}}$ \\ \hline
+      enlargement length&$k$&3.00 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+図\ref{fig:waveSurfInit}のように水面を波立たせた初期条件を与え、時間発展をさせる。その時に見られる波の波長を理論値と比べた。
+まず重力波の比較を行う。流体粒子間の相互作用力は考えていない。重力波の分散関係は
 \begin{equation}
+  \label{eqn:dispRel}
   \omega(k)=\sqrt{gk \tanh (kh)}
 \end{equation}
-で与えられる\cite{tatsumiKiso}。$g=9.8, k=\frac{2\pi}{\lambda}=\frac{2\pi}{6.0}, h=3.0$を代入すると$\omega\sim3.18$である。これより周期は$\frac{2\pi}{3.18}\sim1.98$となる。実験で得られた周期はおよそ2.0であるためまず水面波を大方再現しているものと考えられる。
+で与えられる\cite{tatsumiKiso}。$g=9.8, k=\frac{2\pi}{\lambda}=\frac{2\pi}{6.0}, h=3.0$を代入すると$\omega\sim3.18$である。これより周期は$\frac{2\pi}{3.18}\sim1.98$となる。
+図\ref{fig:waveSurfEvol}より、実験で得られた周期はおよそ2.0となる。この値は式(\ref{eqn:dispRel})より得られる値とよく合っており、水面波を大方再現しているものと考えられる。
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\columnwidth]{waveSurf_1226_1953_3.png}
+  \includegraphics[width=0.6\columnwidth]{waveSurf_1226_1953_3.png}
   \caption{粒子の初期配置}
   \label{fig:waveSurfInit}
 \end{figure}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\columnwidth]{waveSurf_1226_1953_.png}
+  \includegraphics[width=0.6\columnwidth]{waveSurf_1226_1953_.png}
   \caption{$x$=12における波高の時間発展}
   \label{fig:waveSurfEvol}
 \end{figure}
 
 
-次に表面張力係数の比較を行う。表面張力を考慮した水面派の分散関係は
+次に表面張力係数の比較を行う。流体粒子間の相互作用$c_{\alpha\alpha}=30$とした。
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\columnwidth]{waveSurf_1227_1200.png}
+  \caption{表面張力を考慮した際の$x$=12における波高の時間発展}
+  \label{fig:waveSurfEvolwithSurfTension}
+\end{figure}
+
+表面張力を考慮した水面派の分散関係は
 \begin{equation}
 \omega=\sqrt{\left(g+\frac{\gamma}{\rho}k^2 \right)k \tanh (kh)}
 \end{equation}
@@ -391,7 +407,7 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 
 
 \subsection{親水性、疎水性の妥当性}
-
+\label{subsec:validity}
 
 半円状の流体を床の上に配置し、流体の運動が平衡状態に達した時の様子を比較する。
 \begin{figure}[H]
@@ -470,38 +486,38 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
   \centering
   \begin{subfigure}{0.4\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Philehalf40_1231_1500_1001_.png}
-    \caption{接触角$\frac{\pi}{6}$}
+    \includegraphics[width=\columnwidth]{Philehalf40_0109_2011_1001.png}
+    \caption{接触角$\frac{\pi}{12}$}
     \label{fig:phile_pi6}
   \end{subfigure}
   \begin{subfigure}{0.4\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Philehalf40_1231_1500_1001_wl.png}
+    \includegraphics[width=\columnwidth]{Philehalf40_0109_2011_1001_wl.png}
     \caption{補助線付き}
     \label{fig:phile_pi6wl}
   \end{subfigure}
 
   \begin{subfigure}{0.4\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Philehalf40_1231_1506_1001_.png}
+    \includegraphics[width=\columnwidth]{Philehalf40_0109_2037_1001.png}
     \caption{接触角$\frac{\pi}{4}$}
     \label{fig:phile_pi4}
   \end{subfigure}
   \begin{subfigure}{0.4\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Philehalf40_1231_1506_1001_wl.png}
+    \includegraphics[width=\columnwidth]{Philehalf40_0109_2037_1001_wl.png}
     \caption{補助線付き}
     \label{fig:phile_pi4wl}
   \end{subfigure}
   \begin{subfigure}{0.4\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Philehalf40_1231_1514_1001_.png}
-    \caption{接触角$\frac{\pi}{3}$}
+    \includegraphics[width=\columnwidth]{Philehalf40_0109_2020_1001.png}
+    \caption{接触角$\frac{5}{12}\pi$}
     \label{fig:phile_pi3}
   \end{subfigure}
   \begin{subfigure}{0.4\columnwidth}
     \centering
-    \includegraphics[width=\columnwidth]{Philehalf40_1231_1514_1001_wl.png}
+    \includegraphics[width=\columnwidth]{Philehalf40_0109_2020_1001_wl.png}
     \caption{補助線付き}
     \label{fig:phile_pi3wl}
   \end{subfigure}
@@ -522,7 +538,13 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \newpage
 \subsection{剛体球の水面への衝突}
 表面が親水性および疎水性の剛体球を水面に衝突させる。初速を変化させて、水面の変形による気泡の取り込みが見られるか否かを調べる。実験の値はDuez\cite{Duez2007}らによるものを参照した。
-\subsubsection{疎水性の剛体}
+
+式(\ref{eqn:Tait})における係数Bの値について議論する。
+
+$\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与えられる。$\eta$は0.01が典型的な値として採用される\cite{Becker2007}。
+水面に剛体を衝突させた際、剛体周りにおける流体の速度はおよそ40程度であるため、音速$c_s$は400程度が必要になる。流体の速度を音速で割った値はMach数と呼ばれる。以下節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}での音速の設定(Mach数：0.5)と、今述べた非圧縮性を満たす音速の設定(Mach数：0.1)、2通りの音速で剛体球の数値実験を行った。
+
+\subsubsection{Mach数大、疎水性の剛体}
 図\ref{fig:hydrophobic}は、初速を変化させて疎水性の剛体を水面に衝突させ、左右に分離した流体が再び合体する箇所をグラフに出力したものである。
 \begin{figure}[H]
   \centering
@@ -584,7 +606,7 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 初速20の時点で、界面の変形による気泡の取り込みが確認できる。
 
 
-\subsubsection{親水性の剛体}
+\subsubsection{Mach数大、親水性の剛体}
 図\ref{fig:hydrophilic}は、初速を変化させて親水性の剛体を水面に衝突させ、左右に分離した流体が再び合体する箇所をグラフに出力したものである。
 \begin{figure}[H]
   \centering
@@ -651,7 +673,11 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
   \label{fig:trajectory}
 \end{figure}
 
+
 左右に大きくずれているのは何故か。非圧縮性の問題は？云々……
+
+\subsubsection{Mach数小、疎水性の剛体}
+\subsubsection{Mach数小、親水性の剛体}
 \newpage
 
 \section{議論}
