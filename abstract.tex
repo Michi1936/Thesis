@@ -1,0 +1,195 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 京都大学理学研究科物理学・宇宙物理学専攻　修士論文/博士論文アブストラクト用テンプレート試案
+% phys_abst_template_v1.1.tex
+% 作成者：河野＠流体物理学研究室
+% 2012/04/10 Ver.1.1
+% 公開停止となったhirapropパッケージを使用しないように変更、動作確認環境を変更
+% 2010/01/31 Ver.1.0
+% 初版
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 試しに公開されているテンプレートに見た目が近づくように、texファイルを作ってみました。
+% 本当はスタイルファイルなどの方が使い勝手がいいと思いますが、それを作るだけの能力がないので。
+% 継承されているスタイルファイルが既にある場合は、そちらを使うのが楽だと思われます。
+% ただし、編集の難しいスタイルファイルなどに比べ、フォントサイズの変更などフォーマットに
+% 変化があった場合にはいじりやすいかと思います。
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 以下本体
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A4サイズ297mmx210mm
+\documentclass[a4paper]{jsarticle}
+% 左右余白20mm
+\setlength{\oddsidemargin}{-5.4truemm}
+\setlength{\textwidth}{170truemm}
+% 上余白20mm、下余白25mm
+\setlength{\voffset}{-5.4truemm}
+\setlength{\topmargin}{0truemm}
+\setlength{\headheight}{0truemm}
+\setlength{\headsep}{0truemm}
+\setlength{\textheight}{252truemm}
+\raggedbottom
+% ページ番号などを出力しない
+\pagestyle{empty}
+% 図のキャプションはFig.と表示
+\renewcommand{\figurename}{Fig.}
+% デフォルトでは別行で概要、と表示されるので、それを抑止
+\renewcommand{\abstractname}{}
+% 参考文献はReferencesと10.5ptボールド体で表示
+\renewcommand{\refname}{\fontfamily{ptm}\fontseries{b}\fontshape{n}\fontsize{11.36pt}{13.63pt}\selectfont References}
+% 数式用フォント、好みに合わせて、本文にあわせるならTimes系フォントがいいかもしれません
+\usepackage{mathpazo}
+% ComputerModernフォントを使用する場合、フォントサイズを正常に保ちます
+\usepackage{type1cm}
+% 図を入れる場合
+\usepackage{graphicx}
+% abstractを記述
+\usepackage{abstract}
+% 特殊な文字を使う場合
+\usepackage{otf}
+% プリアンプル部分終了
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 本体部分
+% 以下fontsize指定の一番目がフォントサイズ、2番目が行送りです
+% 各所でスペースを調整しています。各自の好み、文章の量に応じて変更してください
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% タイトル部分
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+%%%%%%%%%%%%%%%%%%
+% 和文タイトルの例
+%%%%%%%%%%%%%%%%%%
+% ノーマルな例
+% {\kanjifamily{gt}\kanjiseries{m}\fontsize{18pt}{27pt}\selectfont 修士論文アブストラクトのための\TeX テンプレート\\[6pt]
+% （和文18ポイントを使用）}
+% 和文タイトルで半角文字を使う場合、そのままだとComputerModernになります
+%%%%%%%%%%
+% 半角部分だけHelveticaを用いる方法
+{\kanjifamily{gt}\kanjiseries{m}\fontsize{18pt}{27pt}\selectfont 親水性および疎水性の剛体を水面に衝突させた際に生じる空洞の数値解析\\[6pt]
+}
+{\fontfamily{phv}\fontseries{m}\fontsize{18pt}{27pt}\selectfont }
+{\kanjifamily{gt}\kanjiseries{m}\fontsize{18pt}{27pt}\selectfont }
+%%%%%%%%%%
+% 明朝体にする場合
+% {\kanjifamily{mc}\kanjiseries{m}\fontsize{18pt}{27pt}\selectfont 修士論文アブストラクトのための\TeX テンプレート\\[6pt]
+% （和文18ポイントを使用）}
+%%%%%%%%%%%%%%%%%
+% 欧文タイトルの例
+% フォントサイズはjsarticle和文18pt相当=18/(0.962216*0.961)~欧文19.47pt
+%%%%%%%%%%
+% Times系フォントの場合
+%% {\fontfamily{ptm}\fontseries{m}\fontshape{n}\fontsize{19.47pt}{23.36pt}\selectfont \TeX \ template for the abstract of a PhD thesis\\[6pt]
+%% (Times 19.5pt used)}
+%%%%%%%%%%
+% Helveticaの場合
+% {\fontfamily{phv}\fontseries{m}\fontshape{n}\fontsize{19.47pt}{23.36pt}\selectfont \TeX \ template for the abstract of a PhD thesis\\[6pt]
+% (Helvetica 19.5pt used)}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\\[20pt]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 研究室と名前
+%%%%%%%%%%%%%%%%%
+% 和文例
+{\kanjifamily{mc}\kanjiseries{m}\fontsize{14pt}{21pt}\selectfont 流体物理学研究室　佐藤道矩}
+%%%%%%%%%%%%%%%%%
+% 欧文例
+% フォントサイズはjsarticle和文14pt相当
+%% {\fontfamily{ptm}\fontseries{m}\fontshape{n}\fontsize{15.14pt}{18.17pt}\selectfont Laboratory of typesetting for scientific documents 
+%% \ \ Nanashi-San}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 英文50ワード以内のアブストラクト
+\vspace{-12pt}
+\begin{abstract}
+\noindent{
+\hspace{-4.5pt}
+{\fontfamily{ptm}\fontseries{b}\fontshape{n}\fontsize{10.5pt}{12.6pt}\selectfont Abstract\ }
+{\fontfamily{ptm}\fontseries{m}\fontshape{n}\fontsize{10.5pt}{12.6pt}\selectfont This is an example of how phys\_abst\_template.tex is used.
+ phys\_abst\_template.tex is a template for the abstract of a PhD thesis or a Master's thesis. We can generate Microsoft Word-like document
+ using this file. This part should be written in English. (Times 10.5pt used)}
+%%%%%%%%%%%%%%%
+% 著作権表示
+\hspace{-4pt}
+{\fontfamily{ptm}\fontseries{m}\fontshape{n}\fontsize{10.5pt}{12.6pt}\selectfont \copyright}
+% 全角をつかってもいいかもしれません
+% {\kanjifamily{mc}\kanjiseries{m}\kanjishape{n}\fontsize{9.4pt}{11.4pt}\selectfont \copyright}
+{\fontfamily{ptm}\fontseries{m}\fontshape{it}\fontsize{10.5pt}{12.6pt}\selectfont 2010 Department of Physics, Kyoto University}
+}
+\end{abstract}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{5pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 以下本文
+%%%%%%%%%%%%%%%
+% 和文の例
+%%%%%%%%%%%%%%%
+{\kanjifamily{mc}\kanjiseries{m}\fontsize{10.5pt}{14pt}\selectfont 
+
+ 水面に水滴や剛体を衝突させた際に生じる現象、即ち水面の変形や気泡の生成は身近な物理現象の一つであり、２０世紀初頭のWorthington[1]以降数多くの研究が行われてきた。これらの現象の内、本研究で対象としたのは、水面に剛体を衝突させた際に生じる空洞生成と剛体表面の濡れ性の関係である。
+
+ 水面に剛体を衝突させた際、剛体の後流部分に気泡乃至は空洞が生成されることが知られている。空洞が生成されるか否かは、剛体の衝突速度、そして剛体表面の濡れ性が関係している。Duezら[2]による研究は異なる濡れ性の剛体を水面に衝突させ、空洞が生成される速度のしきい値を得た。特に疎水性の領域に於いて、衝突速度のしきい値は接触角の３乗で減少していく。
+
+ 本研究では、このしきい値のグラフを数値計算を用いて再現することを試みる。数値計算には、流体の分離や合体といった激しい運動を容易に取り扱えるSmoothed Particle Hydrodynamics法（略称　SPH法）を用いた。剛体部分との濡れ性については、粒子間に相互作用力を働かせ親水性や疎水性を再現するYangら[3]のモデルを用いた。まず床の上に水滴を静止させる実験を行うことで、Yangらのモデルが個体の濡れ性を定性的に再現することを確認した。親水性と疎水性の領域で、剛体を異なる速度で水面に衝突させ、空洞が生成される速度のしきい値を得た。得られた速度のしきい値は実験と定性的な一致を示しており、SPH法を
+
+% 図の例
+% test.epsを貼り込んでいます
+
+%%%%%%%%%%%%%%%%
+% 欧文の例
+% 意味のない単語の羅列だと味気ないので、一応意味があるようなふりをしています
+% 英語としては壊れていますので気にしないでください
+%%%%%%%%%%%%%%%%
+%% {\fontfamily{ptm}\fontseries{m}\fontshape{n}\fontsize{11.36pt}{13.63pt}\selectfont In recent years, we often write our theses and term papers
+%%  on computers. Although Microsoft Word is commonly used, it is not suitable to typeset complex mathematical equations and graphs.
+%%  TeX is more popular in academia, especially in mathematics, engineering and physics. It is suitable to typeset scientific documents
+%%  and is provided for Windows based systems, Macintosh, and many UNIX based systems[1]. Many students typeset their papers in TeX.
+%%  Despite that fact, templates for the abstract of a PhD thesis or a Master's thesis are available only in the Word document format (.doc)
+%%  and PDF (.pdf). TeX file (.tex) or TeX style file (.sty or .cls) may be more convenient for students.
+
+%% \begin{figure}[h]
+%% \begin{center}
+%% \includegraphics[width=100truemm]{test.eps}
+%% \caption{{\fontfamily{ptm}\fontseries{m}\fontshape{n}\fontsize{10pt}{12pt}\selectfont This is an example of caption. (Times 10pt used)}}
+%% \end{center}
+%% \end{figure}
+
+%% This is a tentative template of tex file. phys\_abst\_template is a tex source file.
+%%  phys\_abst\_template\_en.pdf and phys\_abst\_template\_jp.pdf are examples of compiled PDF file whose text is written
+%%  in English and Japanese respectively. To generate these PDF files, source file was compiled using MacTeX2011
+%%  and muskmelon's Ghostscript.app on OS X 10.7 Lion. The source file is expected to be work properly on many systems,
+%%  but without any warranty.
+%%  You may recieve some font warning though, it does not matter.
+
+%% Figure 1 is test.eps. In the pale purple rectangle, we can see some Japanese characters.
+
+%% Mathematical equations are written as follows[2].
+%% \begin{equation}
+%% \int_{-\infty}^{\infty} \exp \left( - x^2 \right) \mathrm{d} x = \sqrt{\pi}
+%% \end{equation}
+%% \begin{equation}
+%% \frac{\partial u}{\partial t} + 6u \frac{\partial u}{\partial x} + \frac{\partial^3 u}{\partial x^3} = 0
+%% \end{equation}
+
+%% Citation should be presented manually as follows.
+
+%% This is an example of citation[3]. (Times 11.36pt used)
+%% }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reference
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TeX側で番号をつける例です。数が少ないと思われるので、本文中の引用は手動で書くようにしています。
+% ここは和文10.5pt相当ではなく、10.5ptを使用しています。
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\fontfamily{ptm}\fontseries{m}\fontshape{n}\fontsize{10.5pt}{12.6pt}\selectfont 
+  \begin{thebibliography}{9}
+    \vspace{-5pt}
+  \item
+  A.M.Worthington, ``A study of splashes'', Lonngmans, Green, and Company.
+\item
+  Duez, C., Ybert, C., Clanet, C. \& Bocquet, L. Making a splash with water repellency. Nat. Phys. 3, 180–183 (2007).
+\item
+  Yang, T., Martin, R. R., Lin, M. C., Chang, J. \& Hu, S.-M. Pairwise Force SPH Model for Real-Time Multi-Interaction Applications. IEEE Trans. Vis. Comput. Graph. 23, 2235–2247 (2017).
+
+\end{thebibliography}
+}
+% おしまい
+\end{document}
