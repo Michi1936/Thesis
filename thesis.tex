@@ -45,7 +45,7 @@ SPH法は1977年に、宇宙物理における気体運動の問題を解くた�
 
 剛体球表面の性質と生成される空洞の関係に対しては、Worthingtonによってすでに指摘されている\cite{Worthington1908}。彼は小石をハンカチで磨く、あるいはサンドペーパーでこすることで表面の性質を変化させた。前者の性質はsmooth、後者の性質はroughと形容され、これらの球が水面に衝突した際にできる水しぶきや空洞が大きく異なることを報告している。
 
-Duez\cite{Duez2007}らによる研究は、親水性あるいは疎水性の剛体球を水面に衝突させ、空洞が生じる衝突速度のしきい値を実験から導いた。また彼らは、剛体速度と濡れの関係に関するEggers\cite{Eggers2004}の議論を基に、衝突速度のしきい値についての理論式を導出している。剛体の速度と濡れの関係の議論はLandau\cite{landau1942}らによるものまで遡る。
+Duez\cite{Duez2007}らによる研究は、親水性あるいは疎水性の剛体球を水面に衝突させ、空洞が生じる衝突速度のしきい値を実験から導いた。また彼らは、剛体速度と濡れの関係に関するEggers\cite{Eggers2004}の議論を基に、衝突速度のしきい値についての理論式を導出している。剛体速度と濡れの関係の議論はLandau\cite{landau1942}らによるものまで遡る。
 
 SPH法における濡れ性のモデルは次のものがある。
 
@@ -227,7 +227,8 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 
 今、$c_{\alpha\beta},c_{\omega\beta}$は小さいことが物理的な観測より分かっているため0とする。また$c_{\alpha\alpha}=c_{\beta\beta}$としてもよいため
 \begin{equation}
-\cos\theta\simeq c_{\omega\alpha}/c_{\alpha\alpha}
+\label{eqn:contactAngleSimplified}
+  \cos\theta\simeq c_{\omega\alpha}/c_{\alpha\alpha}
 \end{equation}
 となる。
 
@@ -680,6 +681,29 @@ $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与え�
 \newpage
 
 \section{議論}
+\subsection{接触角の問題について}
+\label{subsec:discContact}
+親水性領域に於いても$\frac{5}{12}\pi$では接触角が$\frac{\pi}{2}$を超える疎水性のような振る舞いが見られた。Yang\cite{Yang2017}において、式(\ref{eqn:contactAngleSimplified})では$\theta>\frac{1}{2}\pi$以上では$c_{\omega\alpha}$が負の値を取り、流体部分が剛体から浮かぶように振る舞ってしまうことが確認される。そのため彼らは改良された接触角の計算式
+\begin{equation}
+  \label{eqn:modifiedContactAngle}
+\cos \theta \approx 2c_{\omega\alpha}/c_{\alpha\alpha} -1
+\end{equation}
+を提案している。
+
+式(\ref{eqn:modifiedContactAngle})においては、$c_{\omega\alpha}<\frac{1}{2}c_{\alpha\alpha}$の領域で$theta>\frac{1}{2}\pi$となり疎水性の振る舞いを示すことになる。けれども、式(\ref{eqn:contactAngleSimplified})で$c_{\omega\alpha}<\frac{1}{2}c_{\alpha\alpha}$となるのは、$\theta>\frac{1}{3}\pi$の領域である。
+そのため式(\ref{eqn:modifiedContactAngle})の方がより正しく濡れ性を再現している場合、式(\ref{eqn:contactAngleSimplified})を用いた今回の実験では$\theta>\frac{1}{3}\pi$の領域で疎水性のような振る舞いを示すことになったと考えられる。
+
+ただし式(\ref{eqn:modifiedContactAngle})は$c_{\omega\alpha}$が負になることを防ぐために調整された”全く物理的に無意味な”式であり、この式を用いた計算がどれほど妥当なものであるかははっきりとした評価を下すことができない。今回の計算で得られた結果は、(i)式(\ref{eqn:contactAngleSimplified})は物理的に正しい議論から導出されているものの、接触角の再現には定性的、定量的、ともに限界が存在している(ii)式(\ref{eqn:modifiedContactAngle})は接触角を定性的、定量的によりよく再現していると考えられるが、物理的な論拠が乏しく、数値実験内で用いることが適当か否かの問題が生じる、ということになる。
+
+\subsection{空洞の生成について}
+\label{subsec:discCavityForm}
+節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}と同じ$c_s$で計算を行い、得られた流体の速度から再計算した$c_s$で改めて数値実験を行った。Mach数を変えたことで計算結果に大きな差が生じていることから、本実験においては流体の非圧縮性は重要な因子であることが分かる。
+
+まず、Mach数が大きい即ち圧縮性が顕著である場合での数値実験について考察する。
+
+親水性の領域においてはかなり低い衝突速度にて空洞の生成が見られた。これは剛体が水面に衝突した際、非圧縮性が保たれていないために、水面を深く押し下げ、空洞を大きくしたためと考えられる。
+疎水性の領域では空洞が見られたと言うこともできようが、今回の接触角のモデルで剛体と流体の間に空隙が存在しており、空洞生成を観測しようとする数値実験として適当であったか疑問が残る。
+
 
 キャビティが見えたか見えなかったかの議論。
 
@@ -689,6 +713,8 @@ $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与え�
 \newpage
 \section{結論}
 \subsection{まとめ}
+Duezの実験と比較して、親水性の領域では定性的な一致が得られ、疎水性の領域では定性的な一致が得られなかったと結論付ける。
+疎水性の領域に関して、今回用いた接触角のモデルでは剛体と流体の間に空隙が存在しており、空洞生成を観測しようとする数値実験ではかなりマズイ。
 Duez\cite{Duez2007}での結果を再現できたか否かに対してYes/Noの結論を書いた後、その根拠を書き記す予定。
 \subsection{今後の展望}
 左右の壁の位置が近すぎたのでは？Yang\cite{Yang2017}にある改良された接触角のモデルではどうか？

@@ -22,6 +22,8 @@
 \contentsline {subsubsection}{\numberline {3.3.3}Mach数小、疎水性の剛体}{21}
 \contentsline {subsubsection}{\numberline {3.3.4}Mach数小、親水性の剛体}{21}
 \contentsline {section}{\numberline {4}議論}{22}
+\contentsline {subsection}{\numberline {4.1}接触角の問題について}{22}
+\contentsline {subsection}{\numberline {4.2}空洞の生成について}{22}
 \contentsline {section}{\numberline {5}結論}{23}
 \contentsline {subsection}{\numberline {5.1}まとめ}{23}
 \contentsline {subsection}{\numberline {5.2}今後の展望}{23}
