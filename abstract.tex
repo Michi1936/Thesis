@@ -103,14 +103,16 @@
 \noindent{
 \hspace{-4.5pt}
 {\fontfamily{ptm}\fontseries{b}\fontshape{n}\fontsize{10.5pt}{12.6pt}\selectfont Abstract\ }
-{\fontfamily{ptm}\fontseries{m}\fontshape{n}\fontsize{10.5pt}{12.6pt}\selectfont When a rigid body enters water surface, a cavity sometimes forms. We investigated the relathionship between the formation of a cavity and wettability of the rigid body. In order to calculate cavity formation, we adopt a numerical simulation method called Smoothed Particle Hydrodynamics which is able to treat complex and violent dynamics of liquid. Our results of calculations are compared with previous experimental data from qualitative and quantitative point of view.}
+{\fontfamily{ptm}\fontseries{m}\fontshape{n}\fontsize{10.5pt}{12.6pt}\selectfont When a rigid body enters water surface, a cavity sometimes forms. We numerically investigate the relathionship between its formation and wettability of the rigid body with Smooothed Particle Hydrodynamics. Our results are compared with previous experimental data qualitatively and quantitatively.
+}
+
 %%%%%%%%%%%%%%%
 % 著作権表示
 \hspace{-4pt}
 {\fontfamily{ptm}\fontseries{m}\fontshape{n}\fontsize{10.5pt}{12.6pt}\selectfont \copyright}
 % 全角をつかってもいいかもしれません
 % {\kanjifamily{mc}\kanjiseries{m}\kanjishape{n}\fontsize{9.4pt}{11.4pt}\selectfont \copyright}
-{\fontfamily{ptm}\fontseries{m}\fontshape{it}\fontsize{10.5pt}{12.6pt}\selectfont 2010 Department of Physics, Kyoto University}
+{\fontfamily{ptm}\fontseries{m}\fontshape{it}\fontsize{10.5pt}{12.6pt}\selectfont 2018 Department of Physics, Kyoto University}
 }
 \end{abstract}
 \end{center}
@@ -123,20 +125,20 @@
 %%%%%%%%%%%%%%%
 {\kanjifamily{mc}\kanjiseries{m}\fontsize{10.5pt}{14pt}\selectfont 
 
- 水面に水滴や剛体を衝突させた際に生じる現象、即ち水面の変形や気泡の生成は身近な物理現象の一つであり、２０世紀初頭のWorthington[1]以降数多くの研究が行われてきた。これらの現象の内、本研究で対象としたのは、水面に剛体を衝突させた際に生じる空洞生成と剛体表面の濡れ性の関係である。
+ 水面に水滴や剛体を衝突させた際に生じる現象、即ち水面の変形や気泡の生成は身近な物理現象の一つであり、２０世紀初頭のWorthington[1]以降数多くの研究が行われてきた。これらの現象の内、本研究で注目したのは、水面に剛体を衝突させた際に生じる空洞生成と剛体表面の濡れ性の関係である。
 
- 水面に剛体を衝突させた際、剛体の後流部分に気泡ないしは空洞が生成されることが知られている。空洞が生成されるか否かは、剛体の衝突速度そして剛体表面の濡れ性が関係している。濡れ性は流体と剛体での接触角で定量的に評価される。Duezら[2]による研究は、異なる接触角を持つ剛体を水面に衝突させ、各接触角に対し空洞が生成される速度のしきい値を得た。特に疎水性の領域に於いて、衝突速度のしきい値は接触角の３乗で減少していく。
+ 水面に剛体を衝突させた際、剛体の後流部分に気泡ないしは空洞が生成されることが知られている。剛体の衝突速度を増加させることで空洞は生成されるようになり、この衝突速度のしきい値は剛体表面の濡れ性に応じて変化する。濡れ性は流体と剛体での接触角で定量的に評価される。Duezら[2]による実験は、異なる接触角を持つ剛体を水面に衝突させ、各接触角に対する衝突速度のしきい値を得た。特に疎水性の領域に於いて、衝突速度のしきい値は接触角の３乗で減少していく。
 
- 水面に突入した剛体周辺の運動や速度は、実験では詳細に観察することが難しい。また、この現象は流体の分離や合体そして剛体ー流体間の濡れを考慮しなければならず、数値計算としても差分法では困難である。そのため、流体の運動を粒子の運動として取り扱う粒子法の一種であるSmoothed Particle Hydrodynamics法(略称SPH法)を数値計算のモデルとして用いた。剛体部分との濡れ性については、粒子間に相互作用力を働かせ親水性や疎水性を再現するYangら[3]のモデルを用いる。
+ 水面に突入した剛体周辺の流れは、実験では詳細に観察することが難しい。したがって数値計算が必要となるが、この現象は流体の分離や合体そして剛体と流体間の濡れを考慮しなければならず、数値計算手法に差分法を用いるのは困難である。そのため、流体の運動を粒子の運動として取り扱う粒子法の一種であるSmoothed Particle Hydrodynamics法(略称SPH法)を数値計算のモデルとして用いた。剛体部分との濡れ性については、粒子間に相互作用力を働かせ親水性や疎水性を再現するYangら[3]のモデルを導入した。
 
  \begin{figure}[h]
    \begin{center}
      \includegraphics[width=50truemm]{rec300Phileball10_0103_1915_381_crop.png}
-     \caption{親水性の剛体を水面に突入させた際に見られる空洞。突入速度を増加させることで空洞が生成される。}
+     \caption{親水性の剛体を水面に突入させた際に見られる空洞。衝突速度をがしきい値を超えると空洞が生成される。}
    \end{center}
  \end{figure}
 
- 本研究の目的は、Duezらの実験データを参考に、疎水性および親水性における空洞の生成を定性的そして定量的に評価することである。まず、床の上に水滴を静止させる実験を行うことで、Yangらのモデルが個体の濡れ性を定性的に再現することを確認した。親水性と疎水性の領域で、剛体を異なる速度で水面に衝突させ、空洞が生成される速度のしきい値を得た。得られた速度のしきい値は親水性の領域では実験との定性的な一致が得られたが、疎水性の領域では空洞の生成が見られなかった。この結果について、親水性領域では定量的な評価を試み、疎水性領域では数値モデルの性質およびその性質に起因する現象を通じて実験との定性的な不一致に対する考察を試みた。
+ 本研究の目的は、Duezらの実験データを参考に、疎水性および親水性における空洞の生成を定性的そして定量的に評価することである。まず、床の上に水滴を静止させる実験を行うことで、Yangらのモデルが個体の濡れ性を定性的に再現することを確認した。次に、親水性と疎水性の領域で、剛体を異なる速度で水面に衝突させ、空洞が生成される速度のしきい値を得た。親水性の領域では、Fig.1のように空洞の生成が見られ、得られた速度のしきい値は実験と定性的に一致した。一方、疎水性の領域では空洞の生成が見られなかった。この結果について、親水性領域では定量的な評価を試みた。また、疎水性領域では数値モデルの限界に起因する振る舞いを通じて実験との定性的な不一致を考察した。
 
 % 図の例
 % test.epsを貼り込んでいます
@@ -193,9 +195,9 @@
   \item
   A.M.Worthington, ``A study of splashes'', Lonngmans, Green, and Company.
 \item
-  Duez, C., Ybert, C., Clanet, C. \& Bocquet, L. Making a splash with water repellency. Nat. Phys. 3, 180–183 (2007).
+  Duez, C., Ybert, C., Clanet, C. \& Bocquet, L. ``Making a splash with water repellency.'' Nat. Phys. 3, 180–183 (2007).
 \item
-  Yang, T., Martin, R. R., Lin, M. C., Chang, J. \& Hu, S.-M. Pairwise Force SPH Model for Real-Time Multi-Interaction Applications. IEEE Trans. Vis. Comput. Graph. 23, 2235–2247 (2017).
+  Yang, T., Martin, R. R., Lin, M. C., Chang, J. \& Hu, S.-M. ``Pairwise Force SPH Model for Real-Time Multi-Interaction Applications.'' IEEE Trans. Vis. Comput. Graph. 23, 2235–2247 (2017).
 
 \end{thebibliography}
 }

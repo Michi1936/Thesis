@@ -537,13 +537,21 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 
 \newpage
 \subsection{剛体球の水面への衝突}
+\subsubsection{実験の設定について}
 表面が親水性および疎水性の剛体球を水面に衝突させる。初速を変化させて、水面の変形による気泡の取り込みが見られるか否かを調べる。実験の値はDuez\cite{Duez2007}らによるものを参照した。
 
-式(\ref{eqn:Tait})における係数Bの値について議論する。
+
+式(\ref{eqn:Tait})における係数Bの値について述べておく。
 
 $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与えられる。$\eta$は0.01が典型的な値として採用される\cite{Becker2007}。
-水面に剛体を衝突させた際、剛体周りにおける流体の速度はおよそ40程度であるため、音速$c_s$は400程度が必要になる。流体の速度を音速で割った値はMach数と呼ばれる。以下節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}での音速の設定(Mach数：0.5)と、今述べた非圧縮性を満たす音速の設定(Mach数：0.1)、2通りの音速で剛体球の数値実験を行った。
 
+まず、節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}と同じ$c_s$で計算を行い、剛体周辺での流体の速度を計算する。得られた速度はおよそ40程度であったため、音速$c_s$は400程度が必要と判断した。
+流体の速度を音速で割った値はMach数と呼ばれる。以下節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}での音速の設定(Mach数：0.5)と、今述べた非圧縮性を満たす音速の設定(Mach数：0.1)、2通りの音速で剛体球の数値実験を行った。
+
+
+空洞が生成されたか否かは、以下のような基準のもとで、目視に頼った。
+
+水面に剛体が衝突すると、釣鐘を逆さにしたような凹みが生じ、その底部から剛体に向かって細長い空間が穿たれる。前者の大きな凹みを空間A、後者の細長い空間を空間Bと便宜的に呼ぶ。空間Bは、底の部分から左右の流体が合流することで空間が閉じていき、その合流部はやがて空間Aの底部に達する。しかし空間Bが底から閉じていく最中に、空間Bの上部でも左右の流体が合流し空間が閉じることがある。このとき空洞が生じたと判断する。
 \subsubsection{Mach数大、疎水性の剛体}
 図\ref{fig:hydrophobic}は、初速を変化させて疎水性の剛体を水面に衝突させ、左右に分離した流体が再び合体する箇所をグラフに出力したものである。
 \begin{figure}[H]
@@ -677,7 +685,69 @@ $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与え�
 左右に大きくずれているのは何故か。非圧縮性の問題は？云々……
 
 \subsubsection{Mach数小、疎水性の剛体}
+流体の非圧縮性を保つために$c_s$を大きくし、疎水性の剛体を水面に衝突させた。
+図を放り込む予定！
+
 \subsubsection{Mach数小、親水性の剛体}
+図\ref{fig:MachSPhile}は、Mach数$\sim0.1$の場合に、初速を変化させて親水性の剛体を水面に衝突させ、左右に分離した流体が再び合流する箇所をグラフに出力したものである。
+\begin{figure}[H]
+  \centering
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_0102_2331_311_crop.png}
+  \caption{衝突速度10}
+  \label{fig:MLPhilevel10}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_0103_0157_349_crop.png}
+  \caption{衝突速度20}
+  \label{fig:MLPhilevel20}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_0103_0449_363_crop.png}
+  \caption{衝突速度30}
+  \label{fig:MLPhilevel30}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_0103_0740_371_crop.png}
+  \caption{衝突速度40}
+  \label{fig:MLPhilevel40}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_0103_1030_361_crop.png}
+  \caption{衝突速度50}
+  \label{fig:MLPhilevel50}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_0103_1323_381_crop.png}
+  \caption{衝突速度60}
+  \label{fig:MLPhilevel60}
+\end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}
+\ContinuedFloat
+  \begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_0103_1618_373_crop.png}
+  \caption{衝突速度70}
+  \label{fig:MLPhilevel70}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phileball10_0103_1915_381_crop.png}
+  \caption{衝突速度80}
+  \label{fig:MLPhilevel80}
+\end{subfigure}
+\caption{Mach数0.1、初速を変化させて親水性の剛体を水面に衝突させた際の気泡の生成}
+\label{fig:MachSPhile}
+\end{figure}
+
 \newpage
 
 \section{議論}
