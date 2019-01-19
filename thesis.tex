@@ -150,20 +150,20 @@ P=\frac{\rho_0c_{s0}^2}{\gamma}\left(\left(\frac{\rho}{\rho_0}\right)^\gamma-1\r
 \end{equation}
 で評価することができる。ここで$\vex_f$は取り扱う現象に於ける典型的な流速である。
 
-密度変化の上限を$\eta$として、$\frac{\left| \Delta \rho \right|}{\rho_0}\sim \eta$を得るためには、$\frac{v_f}{c_s}<\sqrt{\eta}$が必要となる。以上の議論を基に、取り扱う現象の流速に応じて$c_S$は適当な値を入力する。係数Bの議論は\cite{Becker2007},\cite{Gotoh2018}に依る。
+密度変化の上限を$\eta$として、$\frac{\left| \Delta \rho \right|}{\rho_0}\sim \eta$を得るためには、$\frac{v_f}{c_s}<\sqrt{\eta}$が必要となる。以上の議論を基に、取り扱う現象の流速に応じて$c_s$は適当な値を入力する。係数Bの議論は\cite{Becker2007},\cite{Gotoh2018}に依る。
 
 
 \subsubsection{人工粘性項}
 計算の安定性向上および衝撃波の取り扱いのために人工粘性を導入する。
 
-粘性項を粒子間の相対運動から導出するために、$\nabla_aW_{ab}$にかかる$\frac{P_a}{\rho_a^2}+\frac{P_b}{\rho_b^2}$の部分に新しく$\Pi_{ab}$という項を追加する。線形な形の、人工粘性の圧力は
+粘性項を粒子間の相対運動から導出するために、$\nabla_aW_{ab}$にかかる$\frac{P_a}{\rho_a^2}+\frac{P_b}{\rho_b^2}$の部分に新しく$\Pi_{ab}$という項を追加する。人工粘性の圧力を線形な形で表すと
 \begin{equation}
   q=\begin{cases}
-    -\alpha \rho h c \nabla \cdot v & \nabla\cdot v<0 \\
-    0 & \nabla \cdot v>0
+    -\alpha \rho h c \nabla \cdot v & \nabla\cdot v<0, \\
+    0 & \nabla \cdot v>0,
   \end{cases}
 \end{equation}
-で与えられるため、$\Pi_{ab}$は
+となるため、$\Pi_{ab}$は
 \begin{equation}
   -\alpha \frac{hc}{\rho}\frac{\partial v}{\partial x}
 \end{equation}
@@ -543,9 +543,9 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 
 式(\ref{eqn:Tait})における係数Bの値について述べておく。
 
-$\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与えられる。$\eta$は0.01が典型的な値として採用される\cite{Becker2007}。
+密度の変化$\frac{\left| \delta \rho \right|}{\rho_0}\sim \frac{\left| v_f \right|^2}{c_s^2}\sim\eta$は1\%程度つまり$\eta\sim 0.01$が典型的な値として採用される\cite{Becker2007}。この誤差の範囲に収まるような音速$c_s$を設定する必要がある。
 
-まず、節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}と同じ$c_s$で計算を行い、剛体周辺での流体の速度を計算する。得られた速度はおよそ40程度であったため、音速$c_s$は400程度が必要と判断した。
+まず、節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}と同じ$c_s$で計算を行い、剛体周辺での流体の速度を計算する。この計算で得られた流体の速度を基に、音速$c_s$を計算する。得られた流体の速度はおよそ40程度であったため、音速$c_s$は400程度が必要と判断した。
 流体の速度を音速で割った値はMach数と呼ばれる。以下節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}での音速の設定(Mach数：0.5)と、今述べた非圧縮性を満たす音速の設定(Mach数：0.1)、2通りの音速で剛体球の数値実験を行った。
 
 
@@ -553,7 +553,7 @@ $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与え�
 
 水面に剛体が衝突すると、釣鐘を逆さにしたような凹みが生じ、その底部から剛体に向かって細長い空間が穿たれる。前者の大きな凹みを空間A、後者の細長い空間を空間Bと便宜的に呼ぶ。空間Bは、底の部分から左右の流体が合流することで空間が閉じていき、その合流部はやがて空間Aの底部に達する。しかし空間Bが底から閉じていく最中に、空間Bの上部でも左右の流体が合流し空間が閉じることがある。このとき空洞が生じたと判断する。
 \subsubsection{Mach数大、疎水性の剛体}
-図\ref{fig:hydrophobic}は、初速を変化させて疎水性の剛体を水面に衝突させ、左右に分離した流体が再び合体する箇所をグラフに出力したものである。
+図\ref{fig:MachLPhoby}は、初速を変化させて疎水性の剛体を水面に衝突させ、左右に分離した流体が再び合体する箇所をグラフに出力したものである。
 \begin{figure}[H]
   \centering
 \begin{subfigure}{0.3\columnwidth}
@@ -593,6 +593,7 @@ $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与え�
   \label{fig:vel60}
 \end{subfigure}
 \end{figure}
+
 \clearpage
 \begin{figure}
 \ContinuedFloat
@@ -608,10 +609,10 @@ $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与え�
   \caption{衝突速度80}
   \label{fig:vel80}
 \end{subfigure}
-\caption{初速を変化させて疎水性の剛体を水面に衝突させた際の気泡の生成}
-\label{fig:hydrophobic}
+\caption{初速を変化させて疎水性の剛体を水面に衝突させた際の空洞の生成}
+\label{fig:MachLPhoby}
 \end{figure}
-初速20の時点で、界面の変形による気泡の取り込みが確認できる。
+初速20の時点で、界面の変形による空洞の生成が確認できる。
 
 
 \subsubsection{Mach数大、親水性の剛体}
@@ -670,7 +671,7 @@ $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与え�
   \caption{衝突速度80}
   \label{fig:philevel80}
 \end{subfigure}
-\caption{初速を変化させて親水性の剛体を水面に衝突させた際の気泡の生成}
+\caption{初速を変化させて親水性の剛体を水面に衝突させた際の空洞の生成}
 \label{fig:hydrophilic}
 \end{figure}
 
@@ -681,13 +682,71 @@ $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与え�
   \label{fig:trajectory}
 \end{figure}
 
+衝突速度20の時点で空洞が生じていることが確認できる。
 
-左右に大きくずれているのは何故か。非圧縮性の問題は？云々……
 
 \subsubsection{Mach数小、疎水性の剛体}
 流体の非圧縮性を保つために$c_s$を大きくし、疎水性の剛体を水面に衝突させた。
 図を放り込む予定！
+\begin{figure}[H]
+  \centering
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_0111_1851_373_crop.png}
+  \caption{衝突速度10}
+  \label{fig:MSPhobyvel10}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_0111_2102_381_crop.png}
+  \caption{衝突速度20}
+  \label{fig:MSPhobyvel20}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_0111_2259_389_crop.png}
+  \caption{衝突速度30}
+  \label{fig:MSPhobyvel30}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_0112_0109_395_crop.png}
+  \caption{衝突速度40}
+  \label{fig:MSPhobyvel40}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_0112_0319_401_crop.png}
+  \caption{衝突速度50}
+  \label{fig:MSPhobyvel50}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_0118_1959_405_crop.png}
+  \caption{衝突速度60}
+  \label{fig:MSPhobyvel60}
+\end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}
+\ContinuedFloat
+  \begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{tempImg.png}
+  \caption{衝突速度70}
+  \label{fig:MSPhobyvel70}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_0118_2349_411_crop.png}
+  \caption{衝突速度80}
+  \label{fig:MSPhobyvel80}
+\end{subfigure}
+\caption{Mach数0.1、初速を変化させて疎水性の剛体を水面に衝突させた際の空洞の生成}
+\label{fig:MachSPhoby}
+\end{figure}
 
+衝突速度80の時点で空洞が生じていると判断する。それ以下ではほとんど変化が見られない。
 \subsubsection{Mach数小、親水性の剛体}
 図\ref{fig:MachSPhile}は、Mach数$\sim0.1$の場合に、初速を変化させて親水性の剛体を水面に衝突させ、左右に分離した流体が再び合流する箇所をグラフに出力したものである。
 \begin{figure}[H]
@@ -748,6 +807,7 @@ $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与え�
 \label{fig:MachSPhile}
 \end{figure}
 
+速度80に於いて空洞が生じていることが分かる。速度70に於いて空洞が生じているか否かは少し微妙である。70と80の間が速度のしきい値であると判断するのが適当かしらん。
 \newpage
 
 \section{議論}
@@ -763,11 +823,13 @@ $\frac{\left| \delta \rho \right|}{\rho_0}\sim\eta$で密度の変化は与え�
 式(\ref{eqn:modifiedContactAngle})においては、$c_{\omega\alpha}<\frac{1}{2}c_{\alpha\alpha}$の領域で$theta>\frac{1}{2}\pi$となり疎水性の振る舞いを示すことになる。けれども、式(\ref{eqn:contactAngleSimplified})で$c_{\omega\alpha}<\frac{1}{2}c_{\alpha\alpha}$となるのは、$\theta>\frac{1}{3}\pi$の領域である。
 そのため式(\ref{eqn:modifiedContactAngle})の方がより正しく濡れ性を再現している場合、式(\ref{eqn:contactAngleSimplified})を用いた今回の実験では$\theta>\frac{1}{3}\pi$の領域で疎水性のような振る舞いを示すことになったと考えられる。
 
-ただし式(\ref{eqn:modifiedContactAngle})は$c_{\omega\alpha}$が負になることを防ぐために調整された”全く物理的に無意味な”式であり、この式を用いた計算がどれほど妥当なものであるかははっきりとした評価を下すことができない。今回の計算で得られた結果は、(i)式(\ref{eqn:contactAngleSimplified})は物理的に正しい議論から導出されているものの、接触角の再現には定性的、定量的、ともに限界が存在している(ii)式(\ref{eqn:modifiedContactAngle})は接触角を定性的、定量的によりよく再現していると考えられるが、物理的な論拠が乏しく、数値実験内で用いることが適当か否かの問題が生じる、ということになる。
+ただし式(\ref{eqn:modifiedContactAngle})は$c_{\omega\alpha}$が負になることを防ぐために調整された”全く物理的に無意味な”式(not entirely physically meaningfulと表現されている)であり、この式を用いた計算がどれほど妥当なものであるかははっきりとした評価を下すことができない。
+
+今回の計算で得られた結果は、(i)式(\ref{eqn:contactAngleSimplified})は物理的に正しい議論から導出されているものの、接触角の再現には定性的、定量的、ともに限界が存在している(ii)式(\ref{eqn:modifiedContactAngle})は接触角を定性的、定量的によりよく再現していると考えられるが、物理的な論拠が乏しく、数値実験内で用いることが適当か否かの問題が生じる、ということになる。
 
 \subsection{空洞の生成について}
 \label{subsec:discCavityForm}
-節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}と同じ$c_s$で計算を行い、得られた流体の速度から再計算した$c_s$で改めて数値実験を行った。Mach数を変えたことで計算結果に大きな差が生じていることから、本実験においては流体の非圧縮性は重要な因子であることが分かる。
+節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}と同じ$c_s$で計算を行い、得られた流体の速度から再計算した$c_s$で改めて数値実験を行った。Mach数を変えたことで計算結果に大きな差が生じていることから、本実験において、流体の非圧縮性は振る舞いに大きく影響していることが分かる。
 
 まず、Mach数が大きい即ち圧縮性が顕著である場合での数値実験について考察する。
 
