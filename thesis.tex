@@ -45,7 +45,13 @@ SPH法は1977年に、宇宙物理における気体運動の問題を解くた�
 
 剛体球表面の性質と生成される空洞の関係に対しては、Worthingtonによってすでに指摘されている\cite{Worthington1908}。彼は小石をハンカチで磨く、あるいはサンドペーパーでこすることで表面の性質を変化させた。前者の性質はsmooth、後者の性質はroughと形容され、これらの球が水面に衝突した際にできる水しぶきや空洞が大きく異なることを報告している。
 
-Duez\cite{Duez2007}らによる研究は、親水性あるいは疎水性の剛体球を水面に衝突させ、空洞が生じる衝突速度のしきい値を実験から導いた。また彼らは、剛体速度と濡れの関係に関するEggers\cite{Eggers2004}の議論を基に、衝突速度のしきい値についての理論式を導出している。剛体速度と濡れの関係の議論はLandau\cite{landau1942}らによるものまで遡る。
+Duez\cite{Duez2007}らによる研究は、親水性あるいは疎水性の剛体球を水面に衝突させ、空洞が生じる衝突速度のしきい値を各接触角について実験から導いた。図\ref{fig:DuezRef}は接触角としきい値の関係図である。また、彼らは、剛体速度と濡れの関係に関するEggers\cite{Eggers2004}の議論を基に、衝突速度のしきい値についての理論式を導出している。剛体速度と濡れの関係の議論はLandau\cite{landau1942}らによるものまで遡る。
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\columnwidth]{DuezRef.png}
+  \caption{Duez\cite{Duez2007}より転載。横軸に接触角を縦軸に空洞が生じる速度のしきい値を取っている。\label{fig:DuezRef} }
+\end{figure}
+
 
 SPH法における濡れ性のモデルは次のものがある。
 
@@ -406,15 +412,13 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \begin{equation}
 \omega=\sqrt{\left(g+\frac{\gamma}{\rho}k^2 \right)k \tanh (kh)}
 \end{equation}
-で与えられる\cite{tatsumiKiso}。$\rho\sim1000, \omega\sim4.18$の値を用いて$\gamma$の値を求めると、6399.5を得た。
-
-表面張力を流体の密度で割った値を比較する。約18℃の水の場合、この値はおよそ73であり、数値計算から得られた値はおよそ６となる。これより、水の物性値と数値計算の間にはひと桁のズレが存在している。
+で与えられる\cite{tatsumiKiso}。$\rho\sim1000, \omega\sim4.18$の値を用いて$\gamma$の値を求めると、6399.5を得た。この値に関する議論は節\ref{subsec:discSurfWave}にて行う。
 
 
 \subsection{親水性、疎水性の妥当性}
 \label{subsec:validity}
 
-半円状の流体を床の上に配置し、流体の運動が平衡状態に達した時の様子を比較する。
+半円状の流体を床の上に配置し、流体の運動が平衡状態に達した時の様子を比較する。流体粒子間の相互作用の強さ$c_{\alpha\alpha}=60$とし、その他のパラメータは節\ref{subsec:surfaceCoef}と同じ値を用いた。
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\columnwidth]{Phobyhalf40_1116_1906_1.png}
@@ -543,18 +547,34 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 
 \subsubsection{実験の設定について}
 数値計算で用いたパラメータや粒子の初期配置について説明する。
+
 粒子の初期配置は図\ref{fig:initialStateWithRigid}である。60000ステップの計算を行い、流体部分が十分静止した後に剛体の運動を開始させた。
-\begin{figure}[ht]
+
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.3\columnwidth]{initialStateWithRigid.png}
-  \caption{\label{fig:initialStateWithRigid} }
+  \begin{minipage}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=0.5\columnwidth]{initialStateWithRigid.png}
+    \caption{計算の初期状態\label{fig:initialStateWithRigid} }
+  \end{minipage}
+    \begin{minipage}{0.5\columnwidth}
+    \centering
+    \includegraphics[width=0.6\columnwidth]{regionFull.png}
+\caption{計算領域の全体図\label{fig:regionFull}}
+  \end{minipage}
 \end{figure}
+
+
+
+計算領域全体の図は、一例として図\ref{fig:MLPhilevel80}の全体図を出力すると図\ref{fig:regionFull}のようになる。しかし、今回の数値計算は、剛体周辺における流体の振る舞いに注目しているため、計算領域全体の図は必要ではない。したがって、以下の紙面では剛体周辺を拡大したグラフを図として貼り付けている。
 
 
 
 式(\ref{eqn:Tait})における係数Bの値について述べる。
 
 密度の変化$\frac{\left| \delta \rho \right|}{\rho_0}\sim \frac{\left| v_f \right|^2}{c_s^2}\sim\eta$は1\%程度つまり$\eta\sim 0.01$が典型的な値として採用される\cite{Becker2007}。この誤差の範囲に収まるような音速$c_s$を設定する必要がある。
+
+また、流体粒子間の相互作用の強さ$c_{\alpha\alpha}=60$とし、その他のパラメータは節\ref{subsec:surfaceCoef}と同じ値を用いた。
 
 まず、節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}と同じ$c_s$で計算を行い、剛体周辺での流体の速度を計算する。この計算で得られた流体の速度を基に、音速$c_s$を計算する。得られた流体の速度はおよそ40程度であったため、音速$c_s$は400程度が必要と判断した。
 流体の速度を音速で割った値はMach数と呼ばれる。以下節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}での音速の設定(Mach数：0.5)と、今述べた非圧縮性を満たす音速の設定(Mach数：0.1)、2通りの音速で剛体球の数値実験を行った。
@@ -564,42 +584,43 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 
 水面に剛体が衝突すると、釣鐘を逆さにしたような凹みが生じ、その底部から剛体に向かって細長い空間が穿たれる。前者の大きな凹みを空間A、後者の細長い空間を空間Bと便宜的に呼ぶ。空間Bは、底の部分から左右の流体が合流することで空間が閉じていき、その合流部はやがて空間Aの底部に達する。しかし空間Bが底から閉じていく最中に、空間Bの上部でも左右の流体が合流し空間が閉じることがある。このとき空洞が生じたと判断する。
 \subsubsection{Mach数大、疎水性の剛体}
+\label{subsec:MLPhoby}
 図\ref{fig:MachLPhoby}は、初速を変化させて疎水性の剛体を水面に衝突させ、左右に分離した流体が再び合体する箇所をグラフに出力したものである。
 \begin{figure}[H]
   \centering
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phobyball10_1221_1836_389_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1221_1836_389_crop.png}
   \caption{衝突速度10}
   \label{fig:vel10}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phobyball10_1221_2215_389_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1221_2215_389_crop.png}
   \caption{衝突速度20}
   \label{fig:vel20}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_0151_393_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_0151_393_crop.png}
   \caption{衝突速度30}
   \label{fig:vel30}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_0528_403_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_0528_403_crop.png}
   \caption{衝突速度40}
   \label{fig:vel40}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_0903_401_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_0903_401_crop.png}
   \caption{衝突速度50}
   \label{fig:vel50}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_1237_401_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_1237_401_crop.png}
   \caption{衝突速度60}
   \label{fig:vel60}
 \end{subfigure}
@@ -610,13 +631,13 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \ContinuedFloat
   \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_1609_393_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_1609_393_crop.png}
   \caption{衝突速度70}
   \label{fig:vel70}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_1919_385_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phobyball10_1222_1919_385_crop.png}
   \caption{衝突速度80}
   \label{fig:vel80}
 \end{subfigure}
@@ -632,37 +653,37 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
   \centering
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phileball10_1219_2335_341_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1219_2335_341_crop.png}
   \caption{衝突速度10}
   \label{fig:philevel10}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_0312_351_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_0312_351_crop.png}
   \caption{衝突速度20}
   \label{fig:philevel20}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_0616_357_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_0616_357_crop.png}
   \caption{衝突速度30}
   \label{fig:philevel30}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_0950_347_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_0950_347_crop.png}
   \caption{衝突速度40}
   \label{fig:philevel40}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_1324_377_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_1324_377_crop.png}
   \caption{衝突速度50}
   \label{fig:philevel50}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_1701_377_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_1701_377_crop.png}
   \caption{衝突速度60}
   \label{fig:philevel60}
 \end{subfigure}
@@ -672,13 +693,13 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 \ContinuedFloat
   \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_2037_361_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1220_2037_361_crop.png}
   \caption{衝突速度70}
   \label{fig:philevel70}
 \end{subfigure}
 \begin{subfigure}{0.3\columnwidth}
   \centering
-  \includegraphics[width=\columnwidth]{rec300Phileball10_1221_0008_361_cropped.png}
+  \includegraphics[width=\columnwidth]{rec300Phileball10_1221_0008_361_crop.png}
   \caption{衝突速度80}
   \label{fig:philevel80}
 \end{subfigure}
@@ -759,6 +780,7 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 
 衝突速度80の時点で空洞が生じていると判断する。それ以下ではほとんど変化が見られない。
 \subsubsection{Mach数小、親水性の剛体}
+\label{subsec:MSPhile}
 図\ref{fig:MachSPhile}は、Mach数$\sim0.1$の場合に、初速を変化させて親水性の剛体を水面に衝突させ、左右に分離した流体が再び合流する箇所をグラフに出力したものである。
 \begin{figure}[H]
   \centering
@@ -814,41 +836,64 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
   \caption{衝突速度80}
   \label{fig:MLPhilevel80}
 \end{subfigure}
-\caption{Mach数0.1、初速を変化させて親水性の剛体を水面に衝突させた際の気泡の生成}
+\caption{Mach数0.1、初速を変化させて親水性の剛体を水面に衝突させた際の空洞の生成}
 \label{fig:MachSPhile}
 \end{figure}
 
-速度80に於いて空洞が生じていることが分かる。速度70に於いて空洞が生じているか否かは少し微妙である。70と80の間が速度のしきい値であると判断するのが適当かしらん。
-\newpage
+速度80に於いて空洞が生じていることが分かる。速度70に於いて空洞が生じているか否かは少し微妙である。70と80の間が速度のしきい値であると判断するのが適当か。
 
+\subsection{壁からの影響について}
+\label{subsec:wall}
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.4\columnwidth}
+    \centering
+    \includegraphics[width=0.5\columnwidth]{rec600Phobyball10_0117_1713_201.png}
+    \caption{剛体から側壁までの距離を長くとった計算の初期配置
+      \label{fig:rec600} }
+    \end{minipage}
+    \begin{minipage}{0.5\columnwidth}
+    \centering
+    \includegraphics[width=0.6\columnwidth]{largeRegionFull.png}
+    \caption{計算領域の全体図\label{fig:largeRegionFull}}
+  \end{minipage}
+\end{figure}
+
+壁からの影響の有無を調べるため、図\ref{fig:rec600}のように計算領域の横幅を拡大した設定で計算を行った。図\ref{fig:largeRegionFull}のように側壁付近で流体は静止していることが分かる。
+横幅を広くとった場合の計算に於いて、空洞の生成に関しては定性的、定量的にもほとんど変化は見られなかった。よって、空洞の生成に関して壁からの影響はそれほど影響が無く、節\ref{subsec:MLPhoby}から節\ref{subsec:MSPhile}における計算が十分妥当であるものとする。
+
+\newpage
 \section{議論}
 \subsection{表面張力波について}
-\label{subsec:label}
-表面張力を考慮しない重力波の計算において、数値計算で得られた周期と理論式から得られる周期はよく一致している。少なくとも重力波の計算において、今回用いたSPH法は定量的にも十分信頼できる結果を出力しているものと考えられる。
+\label{subsec:discSurfWave}
+表面張力を考慮しない重力波の計算において、数値計算で得られた周期と理論式から得られる周期はよく一致している。重力波の計算において、今回用いたSPH法は定量的にも信頼できる結果を出力しているものと考えられる。
 
 表面張力波においては、$\gamma\sim 6000$という値が得られた。この値が水の物性値とどの程度対応しているのかを調べるため、次元解析を行う。
-表面張力の次元は[$\rm{M/T^2}$]であるので、密度[$\rm{M/L^3}$]、単位時間$T_g$[T]、長さD[L]を用いて$\gamma\times T_g^2 \times \frac{1}{\rho} \times \frac{1}{D^3}$という計算を行い、無次元化する。
-水の場合、$\gamma\sim 7.34\times 10^{-2}$、$\rho\sim 1000$、であるので、$1.86\times 10^{-2}$という値が得られる。
+表面張力の次元は[$\rm{M/T^2}$]であるので、密度[$\rm{M/L^3}$]、長さ$\lambda$[L]、単位時間$T_g=(\frac{\lambda}{g})^{\frac{1}{2}}$[s]を用いて$\gamma\times T_g^2 \times \frac{1}{\rho} \times \frac{1}{\lambda^3}$という計算を行い、表面張力を無次元化する。
+約18℃の水の場合、$\gamma\sim 7.3\times 10^{-2}\rm{[kgs^{-2}]}$、$\rho\sim 1.00\times 10^3$[$\rm{kgm^{-3}}$]、$\lambda\sim 1.7\times10^{-2}$[m]であるので\cite{tatsumiKiso}、無次元化された表面張力係数は
+$ 2.6\times10^{-2}$という値が得られる。
 
-数値実験で得られた値を用いて同様の計算を行うと、$6.14\times 10^{-1}$という値が得られる。よって数値計算での$\gamma$と物性値の$\gamma$ではオーダーがひと桁程度異なっていると言える。
+数値計算の各値にも同様の計算を行う。$\gamma\sim6.4\times 10^3$、$\lambda\sim 6.0$などを用いると、$1.8\times 10^{-2}$という値が得られる。数値計算での$\gamma$と物性値の$\gamma$ではオーダーがほぼ同じとなっている。
 
-このズレは、表面張力の係数である$c_{\alpha\alpha}$を変更しても大きくは変化しなかった。
-今回用いた表面張力の数値モデルでは、粒子間の相互作用力の大きさ$c_{\alpha\alpha}$と相互作用を考える粒子間の距離$k$という2つのパラメータが存在している。$k$の値を変え、表面張力波の変化を調べることは今回できなかった。
+よって、表面張力の大きさは、水の物性値と定量的によく一致しているものと考えられる。
 
+今回の計算では、$c_{\alpha\alpha}$一例に対してのみ定量的な評価を行った。よって、他の$c_{\alpha\alpha}$や今回変化させることのなかった$k$の値を変えることで、異なる物性値の流体を再現できるかを調べることはできていない。
 
 \subsection{接触角の問題について}
 \label{subsec:discContact}
-親水性領域に於いても$\frac{5}{12}\pi$では接触角が$\frac{\pi}{2}$を超える疎水性のような振る舞いが見られた。Yang\cite{Yang2017}において、式(\ref{eqn:contactAngleSimplified})では$\theta>\frac{1}{2}\pi$以上では$c_{\omega\alpha}$が負の値を取り、流体部分が剛体から浮かぶように振る舞ってしまうことが確認される。そのため彼らは改良された接触角の計算式
+親水性領域に於いても$\frac{5}{12}\pi$では接触角が$\frac{\pi}{2}$を超える疎水性のような振る舞いが見られた。この原因について考察する。
+
+今回用いた式(\ref{eqn:contactAngleSimplified})では$\theta>\frac{1}{2}\pi$以上では$c_{\omega\alpha}$が負の値を取り、流体部分が剛体から浮かぶように振る舞ってしまうことが確認される。Yang\cite{Yang2017}らはこの点に着目し、改良された接触角の計算式
 \begin{equation}
   \label{eqn:modifiedContactAngle}
 \cos \theta \approx 2c_{\omega\alpha}/c_{\alpha\alpha} -1
 \end{equation}
 を提案している。
 
-式(\ref{eqn:modifiedContactAngle})においては、$c_{\omega\alpha}<\frac{1}{2}c_{\alpha\alpha}$の領域で$theta>\frac{1}{2}\pi$となり疎水性の振る舞いを示すことになる。けれども、式(\ref{eqn:contactAngleSimplified})で$c_{\omega\alpha}<\frac{1}{2}c_{\alpha\alpha}$となるのは、$\theta>\frac{1}{3}\pi$の領域である。
+式(\ref{eqn:modifiedContactAngle})においては、$c_{\omega\alpha}<\frac{1}{2}c_{\alpha\alpha}$の領域で$\theta>\frac{1}{2}\pi$となり疎水性の振る舞いを示すことになる。けれども、式(\ref{eqn:contactAngleSimplified})で$c_{\omega\alpha}<\frac{1}{2}c_{\alpha\alpha}$となるのは、$\theta>\frac{1}{3}\pi$の領域である。
 そのため式(\ref{eqn:modifiedContactAngle})の方がより正しく濡れ性を再現している場合、式(\ref{eqn:contactAngleSimplified})を用いた今回の実験では$\theta>\frac{1}{3}\pi$の領域で疎水性のような振る舞いを示すことになったと考えられる。
 
-ただし式(\ref{eqn:modifiedContactAngle})は$c_{\omega\alpha}$が負になることを防ぐために調整された”全く物理的に無意味な”式(not entirely physically meaningfulと表現されている)であり、この式を用いた計算がどれほど妥当なものであるかははっきりとした評価を下すことができない。
+ただし式(\ref{eqn:modifiedContactAngle})は$c_{\omega\alpha}$が負になることを防ぐために調整された”全く物理的に無意味な”式(not entirely physically meaningfulと表現されている)であり、この式を用いた計算がどれほど妥当なものであるかははっきりとした評価を下すことができず、今回の計算での採用は見送った。。
 
 今回の計算で得られた結果は、(i)式(\ref{eqn:contactAngleSimplified})は物理的に正しい議論から導出されているものの、接触角の再現には定性的、定量的、ともに限界が存在している(ii)式(\ref{eqn:modifiedContactAngle})は接触角を定性的、定量的によりよく再現していると考えられるが、物理的な論拠が乏しく、数値実験内で用いることが適当か否かの問題が生じる、ということになる。
 
@@ -857,22 +902,24 @@ $c_{ij}$は２粒子間の相互作用の強さであり、各粒子がどの相
 節\ref{subsec:surfaceCoef}および節\ref{subsec:validity}と同じ$c_s$で計算を行い、得られた流体の速度から再計算した$c_s$で改めて数値実験を行った。Mach数を変えたことで計算結果に大きな差が生じていることから、本実験において、流体の非圧縮性は振る舞いに大きく影響していることが分かる。
 
 まず、Mach数が大きい即ち圧縮性が顕著である場合での数値実験について考察する。
-\begin{figure}[ht]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\columnwidth]{thresholdcs80.png}
-  \caption{\label{fig:threscs80} }
+  \caption{Mach数が大きい場合での衝突速度のしきい値
+    \label{fig:threscs80} }
 \end{figure}
 
-接触角と空洞が生成された速度を図にまとめると図\ref{fig:threscs80}のようになった。
+接触角と空洞が生成された速度を図にまとめると図\ref{fig:threscs80}のようになった。接触角は、設定した値ではなく、節\ref{subsec:validity}での計算結果から測定した値を用いた。
 
 親水性の領域においてはかなり低い衝突速度にて空洞の生成が見られた。これは剛体が水面に衝突した際、非圧縮性が保たれていないために、水面を深く押し下げ、空洞を大きくしたためと考えられる。
 疎水性の領域では空洞が見られたと言うこともできようが、今回の接触角のモデルで剛体と流体の間に空隙が存在しており、空洞生成を観測しようとする数値実験として適当であったか疑問が残る。
 
-Mach数が小さい場合の数値実験について考察する。
-\begin{figure}[ht]
+Mach数が小さい即ち流体の非圧縮性が十分に保たれている場合の数値実験について考察する。
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\columnwidth]{thresholdcs400.png}
-  \caption{\label{fig:threscs400} }
+  \caption{Mach数が小さい場合での衝突速度のしきい値
+    \label{fig:threscs400} }
 \end{figure}
 
 接触角と空洞が生成された速度を図にまとめると図\ref{fig:threscs400}のようになった。
@@ -888,16 +935,18 @@ Mach数が小さい場合の数値実験について考察する。
 \newpage
 \section{結論}
 \subsection{まとめ}
-Duezの実験と比較して、親水性の領域では定性的な一致が得られ、疎水性の領域では定性的な一致が得られなかったと結論付ける。
+Duezの実験と比較して、剛体の衝突速度を増加させることで空洞生成が見られるようになるという点では定性的に一致している。速度のしきい値は、実験においては親水性でのしきい値のほうが疎水性でのしきい値より大きくなっているが、この大小関係は今回の数値計算に置いて見られなかった。
 疎水性の領域に関して、今回用いた接触角のモデルでは剛体と流体の間に空隙が存在しており、空洞生成を観測しようとする数値実験ではかなりマズイ。
-Duez\cite{Duez2007}での結果を再現できたか否かに対してYes/Noの結論を書いた後、その根拠を書き記す予定。
+
 \subsection{今後の展望}
+疎水性において、剛体部分と流体部分の間に空隙が生じるという非物理的な現象が確認されている。これを改善したモデルを用いる方法が第一である。けれどもそのモデルがどれほど物理的に正しいものであるかは…
+また今回の計算は２次元で行っている。
 左右の壁の位置が近すぎたのでは？Yang\cite{Yang2017}にある改良された接触角のモデルではどうか？
 SPHの誤差を修正するモデルを加えてはどうか？そのモデルの物理的な妥当性は議論が必要で云々……など今回試していない事柄について書き記す予定。
 \newpage
 
 \section{謝辞}
-感謝の意を表す予定。
+本研究を進めるにあたり、藤定義准教授には研究に対するアドバイスや議論をしていただきました。また、松本剛助教授には、日々の数値計算や解析、修論の構成および推敲に関して多大なご助力を戴きました。博士課程の蛭田佳樹さん、岸達郎さんには、物理や数学の知識、また計算機についてなど様々なことでお世話になりました。修士課程の丸石崇史さん、山田遥さん、酒井亮さんには、研究生活を通じて多くをお世話になりました。ここに感謝の意を表します。
 \newpage
 
 \bibliography{thesis}
