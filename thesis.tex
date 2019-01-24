@@ -12,6 +12,8 @@
 \author{京都大学理学研究科　物理学宇宙物理学専攻\\流体物理学研究室\\佐藤道矩}
 \maketitle
 \newpage
+　
+\newpage
 
 \tableofcontents
 \newpage
@@ -56,13 +58,13 @@ Duez\cite{Duez2007}らによる研究は、親水性あるいは疎水性の剛�
 SPH法における濡れ性のモデルは次のものがある。
 
 一つは粒子間に相互作用力を導入して表面張力や濡れ性を再現するモデルであり、Pair-wise Forceモデルと呼ばれる\cite{Tartakovsky2005}。この手法は、表面張力などの力が微視的には分子間力によるものであることから着想を得ている。
-粒子間の相互作用力の取り方は多数考案されている\cite{Tartakovsky2005},\cite{Becker2007},\cite{Akinci2013}。
-しかし不自然な網目模様が現れたり、相互作用力以外の補正項が必要になる\cite{Akinci2013}など、粒子間の相互作用のみで表面張力や濡れ性を表すのは困難であった。Yang\cite{Yang2016},\cite{Yang2017}らの手法は、より広い範囲の粒子からの相互作用を考えることで、表面張力や濡れ性を特別な補正無しで実現した。
+粒子間の相互作用力の取り方は多数考案されている\cite{Tartakovsky2005, Becker2007, Akinci2013}。
+しかし不自然な網目模様が現れたり、相互作用力以外の補正項が必要になる\cite{Akinci2013}など、粒子間の相互作用のみで表面張力や濡れ性を表すのは困難であった。Yang\cite{Yang2016, Yang2017}らの手法は、より広い範囲の粒子からの相互作用を考えることで、表面張力や濡れ性を特別な補正無しで実現した。
 
 本論文の目的は、剛体が水面に衝突した際に生じる空洞に対し、剛体表面の親水・疎水性の違いが及ぼす影響を、SPH法を用いた2次元の数値計算を通して考察することである。そして、得られた数値計算の結果とDuez\cite{Duez2007}の実験結果を比較することで、実験の補完的な考察を目指す。
 
 \newpage
-\section{SPH法}
+\section{数値計算手法（SPH法）}
 今回用いたSPH法について説明する。節\ref{sub:SPHEqn}で標準的なSPH法の仕様を記述し、それより後ろの節では今回の計算のために追加した仕様について記述する。
 \subsection{SPH法の支配方程式}
 \label{sub:SPHEqn}
@@ -158,7 +160,7 @@ P=\frac{\rho_0c_{s0}^2}{\gamma}\left(\left(\frac{\rho}{\rho_0}\right)^\gamma-1\r
 \end{equation}
 で評価することができる。ここで$\vex_f$は取り扱う現象に於ける典型的な流速である。
 
-密度変化の上限を$\eta$として、$\frac{\left| \Delta \rho \right|}{\rho_0}\sim \eta$を得るためには、$\frac{v_f}{c_s}<\sqrt{\eta}$が必要となる。以上の議論を基に、取り扱う現象の流速に応じて$c_s$は適当な値を入力する。係数Bの議論は\cite{Becker2007},\cite{Gotoh2018}に依る。
+密度変化の上限を$\eta$として、$\frac{\left| \Delta \rho \right|}{\rho_0}\sim \eta$を得るためには、$\frac{v_f}{c_s}<\sqrt{\eta}$が必要となる。以上の議論を基に、取り扱う現象の流速に応じて$c_s$は適当な値を入力する。係数Bの議論は\cite{Becker2007, Gotoh2018}に依る。
 
 
 \subsubsection{人工粘性項}
@@ -220,7 +222,7 @@ $\nu$は人工粘性を制御する係数であり、
 で決定される。以上の議論は\cite{Monaghan1983}に依る。
 
 \subsection{表面張力、親水性および疎水性の表現}
-表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang2016},\cite{Yang2017}を用いた。この手法は粒子の間に力を作用させることで、表面張力や個体表面での性質を再現する。粒子$i$に加えられる力は、
+表面張力および親水性、疎水性の表現にはYangらの手法 \cite{Yang2016, Yang2017}を用いた。この手法は粒子の間に力を作用させることで、表面張力や個体表面での性質を再現する。粒子$i$に加えられる力は、
 \begin{equation}
 F^{\rm{int}}_i=\sum_{j} \bm{f}_{ji},
 \end{equation}
@@ -386,9 +388,10 @@ i_b=i_x+i_y*n_{Bx}.
 
 表面張力を考慮した水面派の分散関係は
 \begin{equation}
-\omega=\sqrt{\left(g+\frac{\gamma}{\rho}K^2 \right)K \tanh (KH)}
+  \omega=\sqrt{\left(g+\frac{\gamma}{\rho}K^2 \right)K \tanh (KH)}
+  \label{eqn:surfaceWave}
 \end{equation}
-で与えられる\cite{tatsumiKiso}。ここで$\gamma$は表面張力係数、$\rho$は密度である。$K=\frac{2\pi}{6.0}$、$\rho\sim1000, 図\ref{fig:waveSurfEvolwithSurfTension}より得られる\omega\sim4.18$の値を用いて$\gamma$の値を求めると、6399.5を得た。この値に関する議論は節\ref{subsec:discSurfWave}にて行う。
+で与えられる\cite{tatsumiKiso}。ここで$\gamma$は表面張力係数、$\rho$は密度である。$K=\frac{2\pi}{6.0}$、$\rho\sim1000$である。 図\ref{fig:waveSurfEvolwithSurfTension}より、時刻5頃までの波から周期を読み取り$\omega\sim4.18$とする。以上の値を式\ref{eqn:surfaceWave}に代入して$\gamma$の値を求めると、6399.5を得た。この値に関する議論は節\ref{subsec:discSurfWave}にて行う。
 
 
 \subsection{親水性、疎水性の妥当性}
@@ -512,6 +515,7 @@ i_b=i_x+i_y*n_{Bx}.
   \label{fig:compHydrophile}
 \end{figure}
 
+図\ref{fig:phoby_pi3wl}、\ref{fig:phoby_pi4wl}、\ref{fig:phoby_pi6wl}および図\ref{fig:phile_pi3wl}、\ref{fig:phile_pi4wl}、\ref{fig:phile_pi6wl}での補助線は、赤の破線が設定した接触角の傾きを、緑の直線が計算結果に対する接線を表している。
 疎水性の領域では、図\ref{fig:compHydrophoby}のように、設定した接触角に対して流体振る舞いはほとんど変化しなかった。そのため、以下の実験では異なる接触角を表現することが困難であるとし、$\frac{3}{4}\pi$を設定した場合のみを疎水性の剛体として用いることにした。
 
 親水性の領域では、図\ref{fig:compHydrophile}のように、設定した接触角に対して流体の振る舞いが変化し、異なる接触角が出力された。しかし、$\frac{5}{12}\pi$では図\ref{fig:phile_pi3}のように親水性の領域であるはずにもかかわらず疎水性のような振る舞いをしてしている。
@@ -859,7 +863,7 @@ i_b=i_x+i_y*n_{Bx}.
 
 約18℃の水の場合、$\gamma\sim 7.3\times 10^{-2}\rm{[kgs^{-2}]}$、$\rho\sim 1.00\times 10^3$[$\rm{kgm^{-3}}$]、$\lambda\sim 1.7\times10^{-2}$[m]であるので\cite{tatsumiKiso}、$\tilde{\gamma}\sim 2.6\times10^{-2}$という値が得られる。
 
-数値計算の各値にも同様の計算を行う。$\gamma\sim6.4\times 10^3$、$\lambda\sim 6.0$を用いると、$\tilde{\gamma}\sim1.8\times 10^{-2}$という値が得られる。数値計算での$\tilde{\gamma}$と物性値の$\tilde{\gamma}$ではオーダーがほぼ同じとなっている。
+数値計算の各値にも同様の計算を行う。$\gamma\sim6.4\times 10^3$、$\lambda\sim 6.0$、$\rho\sim1.0\times10^3$を用いると、$\tilde{\gamma}\sim1.8\times 10^{-2}$という値が得られる。数値計算での$\tilde{\gamma}$と物性値の$\tilde{\gamma}$ではオーダーがほぼ同じとなっている。
 
 よって、表面張力の大きさは、水の物性値と定量的によく一致しているものと考えられる。
 
@@ -883,7 +887,7 @@ i_b=i_x+i_y*n_{Bx}.
 
 ただし式(\ref{eqn:modifiedContactAngle})は$c_{\omega\alpha}$が負になることを防ぐために調整された”全く物理的に無意味な”式(not entirely physically meaningfulと表現されている\cite{Yang2017})であり、この式を用いた計算がどれほど妥当なものであるかははっきりとした評価を下すことができず、今回の計算での採用は見送った。
 
-今回の計算で得られた結果は、(i)式(\ref{eqn:contactAngleSimplified})は物理的に正しい議論から導出されているものの、接触角の再現には定性的、定量的、ともに限界が存在している(ii)式(\ref{eqn:modifiedContactAngle})は接触角を定性的、定量的によりよく再現していると考えられるが、物理的な論拠が乏しく、数値実験内で用いることが適当か否かの問題が生じる、ということになる。
+今回の計算で得られた結果は、(i)式(\ref{eqn:contactAngleSimplified})は物理的に正しい議論から導出されているものの、接触角の再現には定性的、定量的、ともに限界が存在している(ii)式(\ref{eqn:modifiedContactAngle})は接触角を定性的、定量的によりよく再現していると考えられるが、物理的な論拠が乏しく、数値実験内で用いることが適当か否かの問題が生じる。
 
 \subsection{空洞の生成について}
 \label{subsec:discCavityForm}
@@ -928,7 +932,7 @@ Mach数が小さい場合での計算では、親水性・疎水性の場合と�
 剛体球の直径Dと重力加速度gから、基準となる速度$U_g=\left( gD \right)^{\frac{1}{2}}$を定義する。$U_g$を用いて無次元化された剛体の衝突速度$\tilde{U}$を算出し、数値計算と実験を比較する。
 
 
-数値計算で得られた速度のしきい値80であり、$D=1.0$、$g=9.8$であった。よって$\tilde{U}_0^{num}$は25.6である(numはnumericalの略)。実験での速度のしきい値8[m/s]であり、剛体の直径は$2.0\times 10^{-2}$[m]、重力加速度は9.8[$\rm{m/s^2}$]である。よって$\tilde{U}_0^{exp}$は18.1となる(expはexperimentalの略)。$\tilde{U}_0^{num}$と$\tilde{U}_0^{exp}$のオーダーは一致しているため、今回数値計算で得られた速度のしきい値は実験での速度のしきい値と定量的にも大まかには合っているものと結論付ける。
+数値計算で得られた速度のしきい値は80であり、$D=1.0$、$g=9.8$であった。よって$\tilde{U}_0^{\rm{num}}$は25.6である(numはnumericalの略)。実験での速度のしきい値8[m/s]であり、剛体の直径は$2.0\times 10^{-2}$[m]、重力加速度は9.8[$\rm{m/s^2}$]である。よって$\tilde{U}_0^{\rm{exp}}$は18.1となる(expはexperimentalの略)。$\tilde{U}_0^{\rm{num}}$と$\tilde{U}_0^{\rm{exp}}$のオーダーは一致しているため、今回数値計算で得られた速度のしきい値は実験での速度のしきい値と定量的にも大まかには合っているものと結論付ける。
 
 \subsubsection{Reynolds数、Weber数}
 Reynolds数を比較するために、式(\ref{eqn:kinArtVisc})にある$\alpha h c_s$の部分を粘度$\mu$相当するものと仮定する。あくまでも式の形から予想したものであり、人工粘性とNavier-Stokes方程式の粘性が同一であると主張しているわけではない。各値を代入すると$0.02\cdot 0.1 \cdot 400 \sim 8.00\times 10^{-1}$が得られる。レイノルズ数は$Re=\frac{\rho U D}{\mu}$なので、今回の数値計算における$Re$は$\frac{10^3\cdot U \cdot 1}{8.00\times10^{-1}}\sim \frac{U}{8}\times10^4$になる。今$U$は10から80の間であるため、$Re\sim 10^4-10^5$となる。この値はDuezらの実験での$Re$と同じ範囲にあたる。
