@@ -1,9 +1,14 @@
 \documentclass[dvipdfmx,12pt]{beamer}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{amsmath}
 \usepackage{pxjahyper}
 \usepackage{minijs}
 \renewcommand{\kanjifamilydefault}{\gtdefault}
 \usetheme{Antibes}
 \setbeamertemplate{navigation symbols}{}
+\bmdefine{\bex}{x}
+\bmdefine{\vex}{v}
 
 \title{親水性および疎水性の剛体を水面に衝突させた際に生じる空洞の数値解析}
 \author{佐藤道矩}
@@ -14,12 +19,56 @@
 \titlepage
 \end{frame}
 
-\section*{目次}
+\section{目次}
 \begin{frame}\frametitle{内容}
 \tableofcontents
 \end{frame}
 
-\section{概要}
+\section{SPH法について}
+\begin{frame}\frametitle{数式の解説}
+  流体を粒子の集合として計算する手法を粒子法といい、SPH法はその一種である。
+  
+  座標$\bm{x}$の粒子がもつ物理量Aは次のように表現される、
+  \[A(\bex)=\sum_b \frac{A_b}{\rho_b} W(\bex-\bex_b,h).\]
+  \[W(\bex-bex_b, h)\]はKernel関数と呼ばれ、距離に応じて減衰する関数である。
+\end{frame}
+
+
+\section{SPH法について}
+\begin{frame}{続き}
+圧力による加速度
+\[\frac{d\vex_a}{dt}=-\sum_bm_b\left(\frac{P_a}{\rho_a^2}+\frac{P_b}{\rho_b^2}\right)\nabla_aW_{ab}\]
+
+人工粘性による加速度
+\[\frac{d\vex_a}{dt}=\begin{cases}
+  -\sum_bm_b\Pi_{ab}\nabla_aW_{ab} & \vex_{ab}\cdot\bex_{ab}<0, \\
+  0 & \vex_{ab}\cdot\bex_{ab}\geq0.
+\end{cases}
+\]
+ここで
+\[\Pi_{ab}=-\nu\left(\frac{\vex_{ab}\cdot\bex_{ab}}{|\bex_{ab}|^2+\epsilon h^2}\right),
+  \nu=\frac{2\alpha h c_s}{\rho_a+\rho_b}.\]
+\end{frame}
+
+\section{濡れ性の表現}
+\begin{frame}{濡れ性の表現}
+粒子間に相互作用の力を働かせることで、表面張力や濡れ性を表現する。
+\[  \bm{f}_{ji}=\begin{cases}
+    c_{ij}m_im_j\cos\left(\frac{3\pi}{2kh}r_{ij}\right)\frac{\bm{r}_{ij}}{r_{ij}} & \text{$|\bm{r}_{ij}|\leq kh,$}\\
+    0 & \text{$|\bm{r}_{ij}|\geq kh.$}
+  \end{cases}\]
+ここで$c_{ij}$は以下のように表される
+\[ \cos\theta\simeq c_{\omega\alpha}/c_{\alpha\alpha}\]
+$c_{\alpha\alpha}$は流体粒子間での力を、$c_{\omega\alpha}$は流体粒子と個体粒子の間での力を表す。
+
+\end{frame}
+\section{目的}
+\begin{itemize}
+\item 濡れ性の確認
+\item 剛体を水面に衝突させる
+\end{itemize}
+
+
 
 
 \end{document}
