@@ -1,10 +1,15 @@
-\documentclass[dvipdfmx,12pt]{beamer}
+\documentclass[12pt]{beamer}
 \usepackage{float}
 \usepackage{bm}
 \usepackage{amsmath}
-\usepackage{pxjahyper}
-\usepackage{minijs}
-\renewcommand{\kanjifamilydefault}{\gtdefault}
+\usepackage{luatexja}
+%\usepackage{pxjahyper}
+%\usepackage{minijs}
+%\usepackage{media9}
+\usepackage{multimedia}
+\usepackage{graphicx}
+
+%\renewcommand{\kanjifamilydefault}{\gtdefault}
 \usetheme{Antibes}
 \setbeamertemplate{navigation symbols}{}
 \bmdefine{\bex}{x}
@@ -24,30 +29,37 @@
 \tableofcontents
 \end{frame}
 
+\section{本研究の概要}
+\begin{frame}\frametitle{本研究の概要}
+  \begin{itemize}
+    \item 水面に剛体を衝突させた際に、剛体の後流に空洞が生じることが知られている。
+
+    \item 空洞が生じるかどうかは、剛体の衝突速度や濡れ性に支配される。
+
+    \item 数値計算を用いて、濡れ性と空洞の生じる衝突速度を計算する。
+
+    \end{itemize}
+\end{frame}
+
+\section{先行研究}
+\begin{frame}
+  Duez2007では異なる接触角に対して空洞が生じる衝突速度のしきい値を実験から導いた。
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{DuezRef.png}
+    \caption{Duez2007より引用\label{fig:DuezRef} }
+  \end{figure}
+この値を参考にし、数値計算を行った。
+\end{frame}
+
+
 \section{SPH法について}
 \begin{frame}\frametitle{数式の解説}
   流体を粒子の集合として計算する手法を粒子法といい、SPH法はその一種である。
   
   座標$\bm{x}$の粒子がもつ物理量Aは次のように表現される、
   \[A(\bex)=\sum_b \frac{A_b}{\rho_b} W(\bex-\bex_b,h).\]
-  \[W(\bex-bex_b, h)\]はKernel関数と呼ばれ、距離に応じて減衰する関数である。
-\end{frame}
-
-
-\section{SPH法について}
-\begin{frame}{続き}
-圧力による加速度
-\[\frac{d\vex_a}{dt}=-\sum_bm_b\left(\frac{P_a}{\rho_a^2}+\frac{P_b}{\rho_b^2}\right)\nabla_aW_{ab}\]
-
-人工粘性による加速度
-\[\frac{d\vex_a}{dt}=\begin{cases}
-  -\sum_bm_b\Pi_{ab}\nabla_aW_{ab} & \vex_{ab}\cdot\bex_{ab}<0, \\
-  0 & \vex_{ab}\cdot\bex_{ab}\geq0.
-\end{cases}
-\]
-ここで
-\[\Pi_{ab}=-\nu\left(\frac{\vex_{ab}\cdot\bex_{ab}}{|\bex_{ab}|^2+\epsilon h^2}\right),
-  \nu=\frac{2\alpha h c_s}{\rho_a+\rho_b}.\]
+  \[W(\bex-\bex_b, h)\]はKernel関数と呼ばれ、距離に応じて減衰する関数である。
 \end{frame}
 
 \section{濡れ性の表現}
@@ -63,10 +75,111 @@ $c_{\alpha\alpha}$は流体粒子間での力を、$c_{\omega\alpha}$は流体�
 
 \end{frame}
 \section{目的}
-\begin{itemize}
-\item 濡れ性の確認
-\item 剛体を水面に衝突させる
-\end{itemize}
+\begin{frame}\frametitle{行った計算}
+  \begin{itemize}
+  \item 表面張力波の測定(本発表では省略)
+  \item 濡れ性の確認
+  \item 剛体を水面に衝突させる
+  \end{itemize}
+\end{frame}
+
+\section{親水性の表現}
+\begin{frame}\frametitle{親水性の表現}
+  \begin{columns}[t]
+    \begin{column}{0.3\textwidth}
+      \begin{center}
+        \includegraphics[height=3.0cm]{./Philehalf40_0121_1652_1001_wl.png}
+      \end{center}
+    \end{column}
+
+    \begin{column}{0.3\textwidth}
+      \begin{center}
+        \includegraphics[height=3.0cm]{./Philehalf40_0121_1659_1001_wl.png}
+      \end{center}
+    \end{column}
+
+    \begin{column}{0.3\textwidth}
+      \begin{center}
+        \includegraphics[height=3.0cm]{./Philehalf40_0121_1704_1001_wl.png}
+      \end{center}
+    \end{column}
+  \end{columns}
+    
+\end{frame}
+
+\section{疎水性の表現}
+\begin{frame}\frametitle{疎水性の表現}
+  \begin{columns}[t]
+    \begin{column}{0.3\textwidth}
+      \begin{center}
+        \includegraphics[height=3.0cm]{./Phobyhalf40_0121_1734_1001_wl.png}
+      \end{center}
+    \end{column}
+
+    \begin{column}{0.3\textwidth}
+      \begin{center}
+        \includegraphics[height=3.0cm]{./Phobyhalf40_0121_1740_1001_wl.png}
+      \end{center}
+    \end{column}
+
+    \begin{column}{0.3\textwidth}
+      \begin{center}
+        \includegraphics[height=3.0cm]{./Phobyhalf40_0121_1746_1001_wl.png}
+      \end{center}
+    \end{column}
+
+  \end{columns}
+    \begin{itemize}
+    \item 接触角の定量的な再現はできなかった。
+      \item 以下の計算では$\frac{1}{4}\pi$、$\frac{3}{4}\pi$の2つを親水性・疎水性として用いた。
+    \end{itemize}
+\end{frame}
+
+\section{水面への衝突}
+\begin{frame}\frametitle{水面への衝突}
+  \movie[
+  autostart,
+  loop,
+  poster,
+  width=0.8\linewidth,
+  height=0.6\linewidth
+  ]{代替テキスト}{0103_1915_partial.mp4}
+\end{frame}
+
+\section{速度のしきい値}
+\begin{frame}\frametitle{速度のしきい値}
+  \begin{itemize}
+  \item 空洞が生じる速度のしきい値は以下のようになった。
+  \end{itemize}
+  \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      \begin{center}
+        \includegraphics[height=3.0cm]{./thresholdcs400.png}
+      \end{center}
+    \end{column}
+  \end{columns}
+  \begin{itemize}
+    \item 得られたしきい値８０について考察する。
+  \end{itemize}
+\end{frame}
+
+\section{次元解析}
+\begin{frame}\frametitle{次元解析}
+  剛体の直径$D$と重力加速度$g$を用いて基準となる速度$U_g=(gD)^{\frac{1}{2}}$を定義する。
+  得られたしきい値を$U_g$で割った値を比較する。
+  \begin{itemize}
+  \item 数値実験
+  \end{itemize}
+  $D=1$、$g=9.8$より$U_g\sim25.6$
+  \begin{itemize}
+  \item 数値実験
+  \end{itemize}
+  $D=2.0\times10^{-2}$[m]、$g=9.8$[$m/s^2$]より$U_g\sim18.1$
+
+  しきい値のオーダーは一致している。
+  定量的にもよい値が得られた。
+  
+\end{frame}
 
 
 
